@@ -129,7 +129,6 @@ class FpdApiController extends Controller
 
     public function update(UpdateFpdRequest $request, Fpd $fpd)
     {
-        // dd($request->all());
         // Update FPD
         $fpd->update($request->validated());
         if($media = $request->input('lampiran', [])) {
