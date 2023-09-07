@@ -8,12 +8,17 @@
               <i class="material-icons">remove_red_eye</i>
             </div>
             <h4 class="card-title">
-              {{ $t('global.view') }}
+              {{ $t('global.view') }} Detail
               <strong>{{ $t('cruds.fpd.title_singular') }}</strong>
             </h4>
           </div>
           <div class="card-body">
-            <back-button></back-button>
+            <div class="row">
+              <div class="col-lg-3">
+                <back-button></back-button>
+              </div>
+            </div>
+            
           </div>
           <div class="card-body">
             <div class="row">
@@ -23,36 +28,27 @@
                     <tbody>
                       <tr>
                         <td class="text-primary">
-                          {{ $t('cruds.fpd.fields.id') }}
+                          {{ $t('cruds.fpd.fields.code') }}
                         </td>
                         <td>
-                          {{ entry.id }}
+                          {{ entry.code }}
                         </td>
                       </tr>
                       <tr>
                         <td class="text-primary">
-                          {{ $t('cruds.fpd.fields.code_voucher') }}
+                          {{ $t('cruds.fpd.fields.user') }}
                         </td>
                         <td>
-                          {{ entry.code_voucher }}
+                          <datatable-single :row="entry" field="user.name">
+                          </datatable-single>
                         </td>
                       </tr>
                       <tr>
                         <td class="text-primary">
-                          {{ $t('cruds.fpd.fields.transact_type') }}
+                          {{ $t('cruds.fpd.fields.created_at') }}
                         </td>
                         <td>
-                          <datatable-enum :row="entry" field="transact_type">
-                          </datatable-enum>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary">
-                          {{ $t('cruds.fpd.fields.klasifikasi') }}
-                        </td>
-                        <td>
-                          <datatable-enum :row="entry" field="klasifikasi">
-                          </datatable-enum>
+                          {{ entry.created_at }}
                         </td>
                       </tr>
                       <tr>
@@ -75,24 +71,6 @@
                       </tr>
                       <tr>
                         <td class="text-primary">
-                          {{ $t('cruds.fpd.fields.user') }}
-                        </td>
-                        <td>
-                          <datatable-single :row="entry" field="user.name">
-                          </datatable-single>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary">
-                          {{ $t('cruds.fpd.fields.status') }}
-                        </td>
-                        <td>
-                          <datatable-enum :row="entry" field="status">
-                          </datatable-enum>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.req_date') }}
                         </td>
                         <td>
@@ -104,15 +82,33 @@
                           {{ $t('cruds.fpd.fields.processed_date') }}
                         </td>
                         <td>
-                          {{ entry.processed_date }}
+                          {{ entry.processed_date ?? '-' }}
                         </td>
                       </tr>
                       <tr>
                         <td class="text-primary">
-                          {{ $t('cruds.fpd.fields.ket') }}
+                          {{ $t('cruds.fpd.fields.transact_type') }}
                         </td>
                         <td>
-                          {{ entry.ket }}
+                          <datatable-enum :row="entry" field="transact_type">
+                          </datatable-enum>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.code_voucher') }}
+                        </td>
+                        <td>
+                          {{ entry.code_voucher ?? '-' }}
+                        </td>
+                      </tr>                      
+                      <tr>
+                        <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.status') }}
+                        </td>
+                        <td>
+                          <datatable-enum :row="entry" field="status">
+                          </datatable-enum>
                         </td>
                       </tr>
                       <tr>
@@ -133,6 +129,54 @@
               </div>
             </div>
           </div>
+          <div class="card-body">
+            <bootstrap-alert />
+            <table class="table table-bordered" name="inputItem">
+              <thead>
+                  <th>Account</th>
+                  <th>Amount</th>
+                  <th v-if="parseInt(entry.status) > 4">Realisasi Amount</th>
+                  <th>Site</th>
+                  <th>Notes</th>
+              </thead>
+              <tbody>
+                <tr v-for="(item, k) in entry.items" :key="k">
+                  <td>
+                      {{item.account.name}}
+                  </td>
+                  <td>
+                      {{item.amount}}
+                  </td>
+                  <td v-if="parseInt(entry.status) > 4">
+                      {{item.real_amount}}
+                  </td>
+                  <td>
+                      {{item.site ? item.site.name : '-'}}
+                  </td>
+                  <td>
+                      {{item.ket}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="card-body">
+            <h4><strong>Alur Pengajuan FPD</strong></h4>
+              <timeline v-for="(item, index) in timelineData" :key="index">
+                <timeline-item v-if="item.proses == 'selesai'" bg-color="green">
+                  {{ item.status }}
+                  <p v-if="item.tanggal">Tanggal : {{ item.tanggal }}</p>
+                  <p v-if="item.user">Diproses Oleh : {{ item.user }}</p>
+                </timeline-item>
+                <timeline-item v-if="item.proses == 'proses'" bg-color="yellow">
+                  {{ item.status }}
+                  <p v-if="item.tanggal">Tanggal : {{ item.tanggal }}</p>
+                </timeline-item>
+                <timeline-item v-if="item.proses == ''" bg-color="red">
+                  {{ item.status }}
+                </timeline-item>
+              </timeline>
+          </div>
         </div>
       </div>
     </div>
@@ -141,14 +185,15 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import DatatableEnum from '@components/Datatables/DatatableEnum'
 import DatatableSingle from '@components/Datatables/DatatableSingle'
+import DatatableEnum from '@components/Datatables/DatatableEnum'
 import DatatableAttachments from '@components/Datatables/DatatableAttachments'
+import "vue-cute-timeline/dist/index.css";
 
 export default {
   components: {
-    DatatableEnum,
     DatatableSingle,
+    DatatableEnum,
     DatatableAttachments
   },
   data() {
@@ -158,7 +203,7 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('FpdsSingle', ['entry'])
+    ...mapGetters('FpdsSingle', ['entry', 'timelineData'])
   },
   watch: {
     '$route.params.id': {

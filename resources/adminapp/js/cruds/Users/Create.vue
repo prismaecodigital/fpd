@@ -118,9 +118,10 @@
                       :closeOnSelect="false"
                       multiple
                       @input="updateBu"
-                      @search.focus="focusField('bus')"
-                      @search.blur="clearFocus"
+                      @change="updateBu"
                     />
+                    <span class="select-all badge" @click="selectAllBu">Pilih Semua</span>
+                    <span class="select-all badge" @click="deselectAllBu">Batalkan pilihan</span>
                   </div>
                   <div
                     class="form-group bmd-form-group"
@@ -137,13 +138,13 @@
                       label="name"
                       :key="'depts-field'"
                       :value="entry.depts"
-                      :options="depts"
+                      :options="lists.depts"
                       :closeOnSelect="false"
                       multiple
                       @input="updateDept"
-                      @search.focus="focusField('depts')"
-                      @search.blur="clearFocus"
                     />
+                    <span class="select-all badge" @click="selectAllDept">Pilih Semua</span>
+                    <span class="select-all badge" @click="deselectAllDept">Batalkan pilihan</span>
                   </div>
                   <div
                     class="form-group bmd-form-group"
@@ -227,8 +228,23 @@ export default {
       'setRoles',
       'setBus',
       'setDepts',
-      'fetchCreateData'
+      'fetchCreateData',
+      'setListDepts'
     ]),
+    selectAllBu() {
+      this.setBus('all');
+    },
+    deselectAllBu() {
+      this.setBus([]);
+      this.setDepts([])
+      this.setListDepts([])
+    },
+    selectAllDept() {
+      this.setDepts('all')
+    },
+    deselectAllDept() {
+      this.setDepts([])
+    },
     updateName(e) {
       this.setName(e.target.value)
     },
@@ -246,27 +262,7 @@ export default {
     },
     updateBu(value) {
       this.setDepts([])
-      const bu_ids = value.map(function (data) {
-        return data.id;
-    });
-      this.setBus(value)
-      if(value[0] != null) {
-        axios.get('/budept-all', {
-          params: {
-              bu: bu_ids
-          }
-        })
-        .then(response => {
-            this.depts = response.data;
-        })
-        .catch(error => {
-            console.log(error);
-        });
-      }
-      else {
-        this.depts = []
-      }
-      
+      this.setBus(value)      
     },
     updateDept(value) {
       this.setDepts(value)

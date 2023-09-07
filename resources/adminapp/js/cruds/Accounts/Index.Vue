@@ -16,7 +16,7 @@
             <router-link
               class="btn btn-primary"
               v-if="$can(xprops.permission_prefix + 'create')"
-              :to="{ name: xprops.route + '.create' }"
+              :to="{ name: xprops.route + '.create', query : {id: query.id} }"
             >
               <i class="material-icons">
                 add
@@ -95,6 +95,13 @@ export default {
           title: 'cruds.account.fields.name',
           field: 'name',
           thComp: TranslatedHeader,
+          sortable: true
+        },
+        {
+          title: 'cruds.account.fields.parent',
+          field: 'parent.name',
+          thComp: TranslatedHeader,
+          tdComp: DatatableSingle,
           sortable: true
         },
         {

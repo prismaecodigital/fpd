@@ -5,18 +5,8 @@
       v-if="$can('account_access')"
       :to="{ name: xprops.route + '.index', query: { id: row.id } }"
     >
-      <i class="material-icons">remove_red_eye</i>
+      Account
     </router-link>
-
-    <a
-      href="#"
-      class="btn btn-round btn-danger"
-      v-if="$can('bu_dept_site_delete')"
-      @click.prevent="destroyData(row.id)"
-      type="button"
-    >
-      <i class="material-icons">delete</i>
-    </a>
   </div>
 </template>
 

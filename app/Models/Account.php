@@ -57,9 +57,14 @@ class Account extends Model
         return $this->belongsToMany(Dept::class);
     }
 
-    public function scopeParent($query)
+    public function scopeParents($query)
     {
         return $query->where('parent_id', null)->with('childrens');
+    }
+
+    public function parent()
+    {
+        return $this->belongsTo(Account::class, 'parent_id');
     }
     
     public function childrens()

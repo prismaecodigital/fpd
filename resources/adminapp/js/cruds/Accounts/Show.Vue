@@ -59,7 +59,7 @@
                           {{ $t('cruds.account.fields.dept') }}
                         </td>
                         <td>
-                          <datatable-list :row="entry" field="dept.name">
+                          <datatable-list :row="entry" field="depts.name">
                           </datatable-list>
                         </td>
                       </tr>

@@ -7,7 +7,7 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dept extends Model
+class FpdItem extends Model
 {
     use HasAdvancedFilter, HasFactory;
 
@@ -30,6 +30,12 @@ class Dept extends Model
     protected $dates = [
         'created_at',
         'updated_at',
+    ];
+
+    protected $casts = [
+        'fpd_id'     => 'integer',
+        'site_id'   => 'integer',
+        'account_id'   => 'integer',
     ];
 
     protected $fillable = [

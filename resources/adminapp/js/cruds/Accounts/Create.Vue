@@ -74,12 +74,36 @@
                       name="bu"
                       label="name"
                       :key="'bu-field'"
+                      disabled
                       :value="entry.bu_id"
                       :options="lists.bu"
                       :reduce="entry => entry.id"
                       @input="updateBu"
                       @search.focus="focusField('bu')"
                       @search.blur="clearFocus"
+                    />
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.parent_id !== null,
+                      'is-focused': activeField == 'parent'
+                    }"
+                  >
+                    <label class="required">{{
+                      $t('cruds.account.fields.parent')
+                    }}</label>
+                    <v-select
+                      name="parent"
+                      label="name"
+                      :key="'parent-field'"
+                      :value="entry.parent_id"
+                      :options="lists.parent"
+                      :reduce="entry => entry.id"
+                      @input="updateParent"
+                      @search.focus="focusField('parent')"
+                      @search.blur="clearFocus"
+                      :null-option="true"
                     />
                   </div>
                   <div
@@ -104,6 +128,8 @@
                       @search.focus="focusField('depts')"
                       @search.blur="clearFocus"
                     />
+                    <span class="select-all badge" @click="selectAllDept">Pilih Semua</span>
+                    <span class="select-all badge" @click="deselectAllDept">Batalkan pilihan</span>
                   </div>
                 </div>
               </div>
@@ -130,16 +156,29 @@ import { mapGetters, mapActions } from 'vuex'
 
 export default {
   data() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFromURL = urlParams.get('id');
     return {
+      idFromURL : idFromURL,
       status: '',
-      activeField: ''
+      activeField: '',
+      query: { sort: 'id', order: 'asc', limit: 100, s: '', id: idFromURL }
     }
   },
   computed: {
     ...mapGetters('AccountsSingle', ['entry', 'loading', 'lists'])
   },
   mounted() {
-    this.fetchCreateData()
+    this.fetchCreateData(this.idFromURL)
+  },
+  watch: {
+    query: {
+      handler(query) {
+        this.setQuery(query)
+        this.fetchCreateData()
+      },
+      deep: true
+    }
   },
   beforeDestroy() {
     this.resetState()
@@ -152,8 +191,15 @@ export default {
       'setName',
       'setBu',
       'setDept',
+      'setParent',
       'fetchCreateData'
     ]),
+    selectAllDept() {
+      this.setDept('all')
+    },
+    deselectAllDept() {
+      this.setDept([])
+    },
     updateCode(e) {
       this.setCode(e.target.value)
     },
@@ -166,10 +212,13 @@ export default {
     updateDept(value) {
       this.setDept(value)
     },
+    updateParent(value) {
+      this.setParent(value)
+    },
     submitForm() {
       this.storeData()
         .then(() => {
-          this.$router.push({ name: 'accounts.index' })
+          this.$router.push({ name: 'accounts.index', query : {id: this.idFromURL} })
           this.$eventHub.$emit('create-success')
         })
         .catch(error => {

@@ -27,6 +27,10 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Get site based on bu
     Route::get('busite', 'SiteApiController@busite');;
 
+    // Get account based on bu
+    Route::get('buaccount', 'AccountApiController@buaccount');
+    Route::get('deptaccount', 'AccountApiController@deptaccount');
+
     // Dept
     Route::resource('depts', 'DeptApiController');
 
@@ -38,9 +42,14 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('accounts', 'AccountApiController');
 
     // Fpd
+    Route::post('fpds/media', 'FpdApiController@storeMedia')->name('fpds.storeMedia');
+    Route::get('calendar', 'FpdApiController@calendar')->name('fpds.calendar');
     Route::resource('fpds', 'FpdApiController');
     Route::resource('fpd-items','FpdItemApiController')->except(['create','edit']);
     Route::resource('status-histories','StatusHistoryApiController')->except(['create','edit']);
+
+    // Fpd Done
+    Route::resource('fpd-dones', 'FpdDoneApiController')->parameters(['fpd-dones' => 'fpd'])->only(['index','show']);
 
     // Change password
         Route::get('password/edit', 'ChangePasswordController@edit')->name('password.edit');

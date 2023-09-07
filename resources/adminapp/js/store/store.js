@@ -21,6 +21,9 @@ import AccountsIndex from './cruds/Accounts'
 import AccountsSingle from './cruds/Accounts/single'
 import FpdsIndex from './cruds/Fpds'
 import FpdsSingle from './cruds/Fpds/single'
+import FpdDonesIndex from './cruds/FpdDones'
+import FpdDonesSingle from './cruds/FpdDones/single'
+import CalendarIndex from './cruds/Calendar/index'
 
 Vue.use(Vuex)
 
@@ -46,7 +49,10 @@ export default new Vuex.Store({
     AccountsIndex,
     AccountsSingle,
     FpdsIndex,
-    FpdsSingle
+    FpdsSingle,
+    FpdDonesIndex,
+    FpdDonesSingle,
+    CalendarIndex,
   },
   strict: debug
 })

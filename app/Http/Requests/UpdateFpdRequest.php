@@ -41,7 +41,7 @@ class UpdateFpdRequest extends FormRequest
                 'required',
             ],
             'status' => [
-                'required',
+                'nullable',
                 'in:' . implode(',', Arr::pluck(Fpd::STATUS_SELECT, 'value')),
             ],
             'req_date' => [
@@ -56,9 +56,22 @@ class UpdateFpdRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'items' => [
+                'required', // Make sure 'items' is present
+                'array', // Ensure 'items' is an array
+            ],
+            'items.*.account_id' => [
+                'required',
+            ],
+            'items.*.amount' => [
+                'required',
+            ],
+            'items.*.real_amount' => [
+                'required_if:status,4', // Make 'real_amount' required if 'status' is 4 for each item
+            ],
             'lampiran' => [
                 'array',
-                'nullable',
+                'required_if:status,4'
             ],
             'lampiran.*.id' => [
                 'integer',

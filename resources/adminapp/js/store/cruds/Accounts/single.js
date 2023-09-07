@@ -6,6 +6,7 @@ function initialState() {
         name: '',
         bu_id: null,
         depts: [],
+        parent_id: null,
         created_at: '',
         updated_at: '',
         deleted_at: ''
@@ -102,6 +103,9 @@ function initialState() {
     setDept({ commit }, value) {
       commit('setDept', value)
     },
+    setParent({ commit }, value) {
+      commit('setParent', value)
+    },
     setCreatedAt({ commit }, value) {
       commit('setCreatedAt', value)
     },
@@ -111,9 +115,11 @@ function initialState() {
     setDeletedAt({ commit }, value) {
       commit('setDeletedAt', value)
     },
-    fetchCreateData({ commit }) {
-      axios.get(`${route}/create`).then(response => {
+    fetchCreateData({ state, commit }, idFromUrl) {
+      const params = { ...state.query, id: idFromUrl};
+      axios.get(`${route}/create`, { params }).then(response => {
         commit('setLists', response.data.meta)
+        commit('setBu', parseInt(response.data.meta.bu_id))
       })
     },
     fetchEditData({ commit, dispatch }, id) {
@@ -146,7 +152,18 @@ function initialState() {
       state.entry.bu_id = value
     },
     setDept(state, value) {
-      state.entry.depts = value
+      if(value == 'all') {
+        state.entry.depts = state.lists.depts
+        console.log(state.entry.depts)
+      }
+      else {
+        state.entry.depts = value
+        console.log(state.entry.depts)
+      }
+    },
+    setParent(state, value) {
+      state.entry.parent_id = value
+      console.log(state.entry.parent_id)
     },
     setCreatedAt(state, value) {
       state.entry.created_at = value

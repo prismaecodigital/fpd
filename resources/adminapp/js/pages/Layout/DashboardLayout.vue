@@ -92,9 +92,29 @@ export default {
           ]
         },
         {
-          title: 'cruds.fpd.title',
+          title: 'FPD',
           icon: 'table_view',
-          path: { name: 'fpds.index' },
+          path: { name: 'fpd' },
+          gate: 'fpd_access',
+          children: [
+            {
+              title: 'cruds.fpd.title',
+              icon: 'table_view',
+              path: { name: 'fpds.index' },
+              gate: 'fpd_access'
+            },
+            {
+              title: 'Selesai',
+              icon: 'table_view',
+              path: { name: 'fpd-dones.index' },
+              gate: 'fpd_access'
+            },
+          ]
+        },
+        {
+          title: 'cruds.fpd.calendar',
+          icon: 'table_view',
+          path: { name: 'fpds.calendar' },
           gate: 'fpd_access'
         },
         {

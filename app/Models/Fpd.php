@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\MediaLibrary\HasMedia;
 use Spatie\MediaLibrary\InteractsWithMedia;
+use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class Fpd extends Model implements HasMedia
 {
@@ -21,6 +22,7 @@ class Fpd extends Model implements HasMedia
         'status_label',
         'klasifikasi_label',
         'lampiran',
+        'total_amount'
     ];
 
     protected $dates = [
@@ -33,6 +35,7 @@ class Fpd extends Model implements HasMedia
     protected $orderable = [
         'id',
         'code_voucher',
+        'code',
         'bu.name',
         'dept.name',
         'user.name',
@@ -43,6 +46,7 @@ class Fpd extends Model implements HasMedia
     protected $filterable = [
         'id',
         'code_voucher',
+        'code',
         'bu.name',
         'dept.name',
         'user.name',
@@ -63,36 +67,71 @@ class Fpd extends Model implements HasMedia
 
     public const STATUS_SELECT = [
         [
-            'label' => 'a',
+            'label' => 'Menunggu Persetujuan Leader',
             'value' => '0',
         ],
         [
-            'label' => 'b',
+            'label' => 'Menunggu Persetujuan Direktur',
             'value' => '1',
         ],
         [
-            'label' => 'c',
+            'label' => 'Menunggu Penjadwalan Finance',
             'value' => '2',
+        ],
+        [
+            'label' => 'Menunggu Proses Finance',
+            'value' => '3',
+        ],
+        [
+            'label' => 'Confirm, Menunggu Realisasi',
+            'value' => '4',
+        ],
+        [
+            'label' => 'Realisasi, Menunggu Persetujuan Leader',
+            'value' => '5',
+        ],
+        [
+            'label' => 'Realisasi, Menunggu Proses Finance',
+            'value' => '6',
+        ],
+        [
+            'label' => 'Konfirmasi Selisih oleh User',
+            'value' => '7',
+        ],
+        [
+            'label' => 'Selesai',
+            'value' => '8',
+        ],
+        [
+            'label' => 'Tidak Disetujui',
+            'value' => '99',
         ],
     ];
 
     public const KLASIFIKASI_SELECT = [
         [
-            'label' => 'a',
-            'value' => '0',
+            'label' => 'Operasional',
+            'value' => 'Operasional',
         ],
         [
-            'label' => 'b',
-            'value' => '1',
+            'label' => 'Hutang Supplier',
+            'value' => 'Hutang_Supplier',
         ],
         [
-            'label' => 'c',
-            'value' => '2',
+            'label' => 'Hutang NonSupplier',
+            'value' => 'Hutang_NonSupplier',
         ],
+    ];
+
+    protected $casts = [
+        'bu_id'     => 'integer',
+        'dept_id'   => 'integer',
+        'user_id'   => 'integer',
     ];
 
     protected $fillable = [
         'code_voucher',
+        'code',
         'transact_type',
         'klasifikasi',
         'bu_id',
@@ -138,12 +177,18 @@ class Fpd extends Model implements HasMedia
 
     public function items()
     {
-        return $this->hasMany(FpdItem::class, 'fpd_items', 'fpd_id');
+        return $this->hasMany(FpdItem::class, 'fpd_id')->with(['account','site']);
     }
 
-    public function statusHistory()
+    public function getTotalAmountAttribute()
     {
-        return $this->hasMany(StatusHistory::class, 'status_histories', 'fpd_id');
+        $totalAmount = $this->items->sum('amount');
+        return number_format($totalAmount, 0, ',', '.');
+    }
+
+    public function statusHistories()
+    {
+        return $this->hasMany(StatusHistory::class, 'fpd_id')->with('user');
     }
 
     public function getStatusLabelAttribute()
@@ -169,6 +214,11 @@ class Fpd extends Model implements HasMedia
     public function setProcessedDateAttribute($value)
     {
         $this->attributes['processed_date'] = $value ? Carbon::createFromFormat(config('project.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function getCreatedAtAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('d-m-Y') : null;
     }
 
     public function getLampiranAttribute()

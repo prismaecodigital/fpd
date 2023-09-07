@@ -114,8 +114,29 @@ const actions = {
   setRoles({ commit }, value) {
     commit('setRoles', value)
   },
-  setBus({ commit}, value) {
+  setBus({ commit, state}, value) {
     commit('setBus', value)
+    if(value === 'all') {
+      console.log('all')
+      var bus = state.lists.bus.map(item => item.id)
+    } else {
+      var bus = value.map(item => item.id)
+    }
+    console.log(bus)
+    if (bus[0] !== undefined && bus[0] !== null && bus[0] !== '') {
+      axios.get('/budept', {
+        params: {
+            bu: bus
+        }
+      })
+      .then(response => {
+        console.log(response.data)
+        commit('setListDepts', response.data)
+      })
+    }
+  },
+  setListDepts({commit}, lists) {
+    commit('setListDepts', lists)
   },
   setDepts({ commit }, value) {
     commit('setDepts', value)
@@ -176,10 +197,24 @@ const mutations = {
     state.entry.roles = value
   },
   setBus(state, value) {
-    state.entry.bus = value
+    if(value == 'all') {
+      state.entry.bus = state.lists.bus
+      console.log(state.entry.bus)
+    }
+    else {
+      state.entry.bus = value
+      console.log(state.entry.bus)
+    }
   },
   setDepts(state, value) {
-    state.entry.depts = value
+    if(value == 'all') {
+      state.entry.depts = state.lists.depts
+      console.log(state.entry.depts)
+    }
+    else {
+      state.entry.depts = value
+      console.log(state.entry.depts)
+    }
   },
   setRememberToken(state, value) {
     state.entry.remember_token = value
@@ -198,6 +233,10 @@ const mutations = {
   },
   setLists(state, lists) {
     state.lists = lists
+  },
+  setListDepts(state, lists) {
+    state.lists.depts = lists
+    console.log(state.lists.depts)
   },
   setLoading(state, loading) {
     state.loading = loading

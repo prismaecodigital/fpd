@@ -105,7 +105,7 @@
                             fill="#FFFFFF"
                             fill-rule="evenodd"
                             xlink:href="#path-1"
-                          ></use>
+                          ></use> 
                         </g>
                         <g
                           id="upload-cloud"
@@ -143,7 +143,7 @@
             </svg>
           </figure>
           <span class="font-weight-bold">Drop files here to upload</span>
-          <p class="separator"><span> or </span></p>
+          <br>
           <button type="button" class="btn btn-azure">
             Browse
           </button>

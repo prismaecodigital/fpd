@@ -9,15 +9,15 @@ function initialState() {
       password: null,
       roles: [],
       remember_token: '',
-      bu: [],
-      dept: [],
+      bus: [],
+      depts: [],
       created_at: '',
       updated_at: '',
       deleted_at: ''
     },
     lists: {
       roles: [],
-      dept: []
+      depts: []
     },
     loading: false
   }
@@ -168,10 +168,10 @@ const mutations = {
     state.entry.remember_token = value
   },
   setBu(state, value) {
-    state.entry.bu = value
+    state.entry.bus = value
   },
   setDept(state, value) {
-    state.entry.dept = value
+    state.entry.depts = value
   },
   setCreatedAt(state, value) {
     state.entry.created_at = value

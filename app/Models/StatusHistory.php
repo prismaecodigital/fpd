@@ -7,7 +7,7 @@ use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Dept extends Model
+class StatusHistory extends Model
 {
     use HasAdvancedFilter, HasFactory;
 

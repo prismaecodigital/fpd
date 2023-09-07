@@ -78,8 +78,32 @@
                       :options="lists.bu"
                       :reduce="entry => entry.id"
                       @input="updateBu"
+                      disabled
                       @search.focus="focusField('bu')"
                       @search.blur="clearFocus"
+                    />
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.parent_id !== null,
+                      'is-focused': activeField == 'parent'
+                    }"
+                  >
+                    <label class="required">{{
+                      $t('cruds.account.fields.parent')
+                    }}</label>
+                    <v-select
+                      name="parent"
+                      label="name"
+                      :key="'parent-field'"
+                      :value="entry.parent_id"
+                      :options="lists.parent"
+                      :reduce="entry => entry.id"
+                      @input="updateParent"
+                      @search.focus="focusField('parent')"
+                      @search.blur="clearFocus"
+                      :null-option="true"
                     />
                   </div>
                   <div
@@ -104,6 +128,8 @@
                       @search.focus="focusField('depts')"
                       @search.blur="clearFocus"
                     />
+                    <span class="select-all badge" @click="selectAllDept">Pilih Semua</span>
+                    <span class="select-all badge" @click="deselectAllDept">Batalkan pilihan</span>
                   </div>
                 </div>
               </div>
@@ -158,8 +184,15 @@ export default {
       'setCode',
       'setName',
       'setBu',
-      'setDept'
+      'setDept',
+      'setParent',
     ]),
+    selectAllDept() {
+      this.setDept('all')
+    },
+    deselectAllDept() {
+      this.setDept([])
+    },
     updateCode(e) {
       this.setCode(e.target.value)
     },
@@ -171,6 +204,9 @@ export default {
     },
     updateDept(value) {
       this.setDept(value)
+    },
+    updateParent(value) {
+      this.setParent(value)
     },
     submitForm() {
       this.updateData()

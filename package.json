@@ -33,6 +33,11 @@
         "vuex": "^3.5.1"
     },
     "dependencies": {
+        "@fullcalendar/core": "^6.1.8",
+        "@fullcalendar/daygrid": "^6.1.8",
+        "@fullcalendar/interaction": "^6.1.8",
+        "@fullcalendar/timegrid": "^6.1.8",
+        "@fullcalendar/vue": "^6.1.8",
         "bootstrap-vue": "^2.23.1",
         "file-saver": "^2.0.5",
         "vue-cute-timeline": "^1.2.10",

@@ -79,6 +79,51 @@ class PermissionsTableSeeder extends Seeder
             ],
             [
                 'title' => 'fpd_show'
+            ],
+            [
+                'title' => 'finance'
+            ],
+            [
+                'title' => 'user'
+            ],
+            [
+                'title' => 'leader'
+            ],
+            [
+                'title' => 'direktur'
+            ],
+            [
+                'title' => '0'
+            ],
+            [
+                'title' => '1'
+            ],
+            [
+                'title' => '2'
+            ],
+            [
+                'title' => '3'
+            ],
+            [
+                'title' => '4'
+            ],
+            [
+                'title' => '5'
+            ],
+            [
+                'title' => '6'
+            ],
+            [
+                'title' => '7'
+            ],
+            [
+                'title' => '8'
+            ],
+            [
+                'title' => 'admin'
+            ],
+            [
+                'title' => 'profile'
             ]
         ];
 

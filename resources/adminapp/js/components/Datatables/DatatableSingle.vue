@@ -1,10 +1,10 @@
 <template>
   <div>
-    <span v-if="row[entry.key]" class="badge badge-pill badge-azure">
+    <span v-if="row[entry.key]" class="badge-pill badge-azure">
       {{ row[entry.key][entry.field] }}
     </span>
-    <span v-else class="badge badge-pill badge-orange">
-      Not Assigned
+    <span v-else class="badge-pill badge-orange">
+      -
     </span>
   </div>
 </template>

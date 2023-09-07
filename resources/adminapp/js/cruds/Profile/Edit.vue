@@ -126,48 +126,48 @@
                                     <div
                     class="form-group bmd-form-group"
                     :class="{
-                      'is-filled': entry.dept.length !== 0,
-                      'is-focused': activeField == 'bu'
+                      'is-filled': entry.depts.length !== 0,
+                      'is-focused': activeField == 'bus'
                     }"
                   >
                     <label class="">{{
                       $t('cruds.user.fields.bu')
                     }}</label>
                     <v-select
-                      name="bu"
+                      name="bus"
                       label="name"
-                      :key="'bu-field'"
-                      :value="entry.bu"
-                      :options="lists.bu"
+                      :key="'bus-field'"
+                      :value="entry.bus"
+                      :options="lists.bus"
                       :closeOnSelect="false"
                       :disabled="true"
                       multiple
                       @input="updateBu"
-                      @search.focus="focusField('dept')"
+                      @search.focus="focusField('depts')"
                       @search.blur="clearFocus"
                     />
                   </div>
                   <div
                     class="form-group bmd-form-group"
                     :class="{
-                      'is-filled': entry.dept.length !== 0,
-                      'is-focused': activeField == 'dept'
+                      'is-filled': entry.depts.length !== 0,
+                      'is-focused': activeField == 'depts'
                     }"
                   >
                     <label class="">{{
                       $t('cruds.user.fields.dept')
                     }}</label>
                     <v-select
-                      name="dept"
+                      name="depts"
                       label="name"
-                      :key="'dept-field'"
-                      :value="entry.dept"
+                      :key="'depts-field'"
+                      :value="entry.depts"
                       :options="depts"
                       :closeOnSelect="false"
                       multiple
                       :disabled="true"
                       @input="updateDept"
-                      @search.focus="focusField('dept')"
+                      @search.focus="focusField('depts')"
                       @search.blur="clearFocus"
                     />
                   </div>

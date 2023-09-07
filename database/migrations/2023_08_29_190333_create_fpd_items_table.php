@@ -17,8 +17,8 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->foreignId('account_id')->references('id')->on('accounts')->onDelete('cascade');
             $table->decimal('amount', 15, 2);
-            $table->decimal('real_amount', 15, 2);
-            $table->string('ket');
+            $table->decimal('real_amount', 15, 2)->nullable();
+            $table->string('ket')->nullable();
             $table->foreignId('fpd_id')->references('id')->on('fpds')->onDelete('cascade');
             $table->foreignId('site_id')->nullable()->references('id')->on('sites')->onDelete('set null');
             $table->timestamps();

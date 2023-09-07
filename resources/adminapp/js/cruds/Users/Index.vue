@@ -104,7 +104,13 @@ export default {
         },
         {
           title: 'cruds.user.fields.bu',
-          field: 'bus.name',
+          field: 'bus.code',
+          thComp: TranslatedHeader,
+          tdComp: DatatableList
+        },
+        {
+          title: 'cruds.user.fields.dept',
+          field: 'depts.code',
           thComp: TranslatedHeader,
           tdComp: DatatableList
         },

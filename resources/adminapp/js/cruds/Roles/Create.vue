@@ -35,8 +35,6 @@
                       type="text"
                       :value="entry.title"
                       @input="updateTitle"
-                      @focus="focusField('title')"
-                      @blur="clearFocus"
                       required
                     />
                   </div>

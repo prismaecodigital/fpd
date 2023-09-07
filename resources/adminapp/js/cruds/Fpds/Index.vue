@@ -68,7 +68,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import DatatableActions from '@components/Datatables/DatatableActions'
+import FpdActions from '@components/Datatables/FpdActions'
 import TranslatedHeader from '@components/Datatables/TranslatedHeader'
 import HeaderSettings from '@components/Datatables/HeaderSettings'
 import GlobalSearch from '@components/Datatables/GlobalSearch'
@@ -84,11 +84,10 @@ export default {
     return {
       columns: [
         {
-          title: 'cruds.fpd.fields.id',
-          field: 'id',
+          title: 'cruds.fpd.fields.code',
+          field: 'code',
           thComp: TranslatedHeader,
-          sortable: true,
-          colStyle: 'width: 100px;'
+          sortable: true
         },
         {
           title: 'cruds.fpd.fields.code_voucher',
@@ -98,14 +97,14 @@ export default {
         },
         {
           title: 'cruds.fpd.fields.bu',
-          field: 'bu.name',
+          field: 'bu.code',
           thComp: TranslatedHeader,
           tdComp: DatatableSingle,
           sortable: true
         },
         {
           title: 'cruds.fpd.fields.dept',
-          field: 'dept.name',
+          field: 'dept.code',
           thComp: TranslatedHeader,
           tdComp: DatatableSingle,
           sortable: true
@@ -131,9 +130,15 @@ export default {
           sortable: true
         },
         {
+          title: 'cruds.fpd.fields.amount',
+          field: 'total_amount',
+          thComp: TranslatedHeader,
+          sortable: true
+        },
+        {
           title: 'global.actions',
           thComp: TranslatedHeader,
-          tdComp: DatatableActions,
+          tdComp: FpdActions,
           visible: true,
           thClass: 'text-right',
           tdClass: 'text-right td-actions',

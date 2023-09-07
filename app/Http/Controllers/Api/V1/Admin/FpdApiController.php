@@ -8,30 +8,95 @@ use App\Http\Requests\UpdateFpdRequest;
 use App\Http\Resources\Admin\FpdResource;
 use App\Models\Bu;
 use App\Models\Dept;
+use App\Models\Site;
 use App\Models\Fpd;
+use App\Models\FpdItem;
+use App\Models\Account;
+use App\Models\StatusHistory;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
+use Carbon\Carbon;
 
 class FpdApiController extends Controller
 {
     public function index()
-    {
+    {        
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter());
+        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('status', '<', '8')->paginate(request('limit', 10)));
     }
 
     public function store(StoreFpdRequest $request)
     {
-        $fpd = Fpd::create($request->validated());
+        // Generate Code and Store FPD
+        $dept = Dept::findOrFail($request->dept_id);
+        $bu = Bu::findOrFail($request->bu_id);
+
+        $data = $request->only([
+            'req_date',
+            'processed_date',
+            'bu_id',
+            'dept_id',
+            'code_voucher',
+            'transact_type',
+            'klasifikasi'
+        ]);
+    
+        $data['user_id'] = auth()->user()->id;
+        $data['created_at'] = Carbon::now();
+        if(auth()->user()->hasRole('leader')) {
+            $data['status'] = '1';
+        }
+        else {
+            $data['status'] = '0';
+        }
+        $data['code'] = $this->generateCode($dept->code, $bu->code, $data['created_at']);
+    
+        $fpd = Fpd::create($data);
 
         if ($media = $request->input('lampiran', [])) {
             Media::whereIn('id', data_get($media, '*.id'))
                 ->where('model_id', 0)
                 ->update(['model_id' => $fpd->id]);
         }
+
+        // rename media        
+        foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
+            $file->file_name = $fpd->code.$index;
+            $file->save();
+        }
+
+        // Store FPDItem    
+        foreach ($request->items as $itemData) {
+            $item = FpdItem::create([
+                'fpd_id' => $fpd->id,
+                'account_id' => $itemData['account_id'],
+                'amount' => $itemData['amount'],
+                'site_id'   => $itemData['site_id'],
+                'ket' => $itemData['ket'] ?? '',
+            ]);
+        }
+        
+        // Store StatusHistory
+        if(auth()->user()->hasRole('leader')) {
+            $statusHistory = StatusHistory::create(
+                [
+                    'fpd_id'    => $fpd->id,
+                    'status'    => (string)((int)$fpd->status-1),
+                    'user_id'   => $fpd->user_id,
+                ]
+            );
+        }
+
+        $statusHistory = StatusHistory::create(
+            [
+                'fpd_id'    => $fpd->id,
+                'status'    => $fpd->status,
+                'user_id'   => $fpd->user_id,
+            ]
+        );
 
         return (new FpdResource($fpd))
             ->response()
@@ -49,6 +114,8 @@ class FpdApiController extends Controller
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
                 'klasifikasi'   => Fpd::KLASIFIKASI_SELECT,
+                'accounts'      => Account::get(['id','name']),
+                'site'          => Site::get(['id','name'])
             ],
         ]);
     }
@@ -57,14 +124,81 @@ class FpdApiController extends Controller
     {
         abort_if(Gate::denies('fpd_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdResource($fpd->load(['bu', 'dept', 'user']));
+        return new FpdResource($fpd->load(['items', 'bu', 'dept', 'user', 'statusHistories']));
     }
 
     public function update(UpdateFpdRequest $request, Fpd $fpd)
     {
+        // dd($request->all());
+        // Update FPD
         $fpd->update($request->validated());
+        if($media = $request->input('lampiran', [])) {
+            $fpd->updateMedia($request->input('lampiran', []), 'fpd_lampiran');
+            Media::whereIn('id', data_get($media, '*.id'))
+            ->where('model_id', 0)
+            ->update(['model_id' => $fpd->id]);
+        }
 
-        $fpd->updateMedia($request->input('lampiran', []), 'fpd_lampiran');
+        // Rename media        
+        foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
+            $file->file_name = $fpd->code.$index;
+            $file->save();
+        }
+
+        // Update Status
+        if($request->approve !== null) {
+            if($request->approve === "1" && (int)$fpd->status < 8) 
+            {
+                if((((int)$fpd->status === 0 || (int)$fpd->status === 4) && auth()->user()->hasRole('leader')) || 
+                    ((int)$fpd->status === 1 && auth()->user()->hasRole('finance')))
+                    {
+                        $fpd->update(['status' => (string)((int)$fpd->status + 2)]);
+                        $statusHistory0 = StatusHistory::create(
+                            [
+                                'fpd_id'    => $fpd->id,
+                                'status'    => (string)((int)$fpd->status - 1),
+                                'user_id'   => auth()->user()->id,
+                            ]
+                        );
+                        $statusHistory1 = StatusHistory::create(
+                            [
+                                'fpd_id'    => $fpd->id,
+                                'status'    => $fpd->status,
+                                'user_id'   => auth()->user()->id,
+                            ]
+                        );
+                    }
+                else {
+                    $fpd->update(['status' => (string)((int)$fpd->status + 1)]);
+                    $statusHistory = StatusHistory::create(
+                        [
+                            'fpd_id'    => $fpd->id,
+                            'status'    => $fpd->status,
+                            'user_id'   => auth()->user()->id,
+                        ]
+                    );
+                }
+            }
+            if($request->approve === "0" && (int)$fpd->status < 8) 
+            {
+                $fpd->update(['status' => '99']);
+            }
+        }
+
+        // Delete all FPDItem then create new
+        foreach($fpd->items as $item) {
+            $item->delete();
+        }
+        foreach ($request->items as $itemData) {
+            $item = FpdItem::create([
+                'fpd_id' => $fpd->id,
+                'account_id' => $itemData['account_id'],
+                'amount' => $itemData['amount'],
+                'real_amount' => $itemData['real_amount'],
+                'site_id'   => $itemData['site_id'],
+                'ket' => $itemData['ket'] ?? '',
+            ]);
+        }
 
         return (new FpdResource($fpd))
             ->response()
@@ -76,13 +210,15 @@ class FpdApiController extends Controller
         abort_if(Gate::denies('fpd_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
-            'data' => new FpdResource($fpd->load(['bu', 'dept'])),
+            'data' => new FpdResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories'])),
             'meta' => [
                 'bu'            => Bu::get(['id', 'name']),
-                'dept'          => Dept::get(['id', 'name']),
+                'dept'          => Dept::where('bu_id', $fpd->bu_id)->get(['id', 'name']),
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
                 'klasifikasi'   => Fpd::KLASIFIKASI_SELECT,
+                'accounts'      => Account::where('bu_id', $fpd->bu_id)->get(['id','name']),
+                'site'          => Site::where('bu_id', $fpd->bu_id)->orWhere('name','-')->get(['id','name'])
             ],
         ]);
     }
@@ -113,4 +249,35 @@ class FpdApiController extends Controller
 
         return response()->json($media, Response::HTTP_CREATED);
     }
+
+    protected function generateCode($deptCode, $buCode, $createdAt)
+    {
+        $count = Fpd::whereYear('created_at', $createdAt)
+            ->whereMonth('created_at', $createdAt)
+            ->count();
+    
+        $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+        $dateCode = substr($createdAt, 2, 2) . substr($createdAt, 5, 2);
+    
+        return $buCode . $deptCode . $dateCode . $number;
+    }
+
+    public function calendar(Request $request)
+    {
+        // dd($request->all());
+        if(empty($request->bu)) {
+            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 8)->whereIn('bu_id', auth()->user()->bus->pluck('id'))->get();
+        }
+        else {
+            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 8)->where('bu_id', $request->bu)->get();
+        }
+
+        return response([
+            'data' => new FpdResource($fpds),
+            'meta' => [
+                'bu'            => Bu::get(['id', 'name']),
+            ],
+        ]);
+    }
+
 }

@@ -41,7 +41,7 @@ class StoreFpdRequest extends FormRequest
                 'required',
             ],
             'status' => [
-                'required',
+                'nullable',
                 'in:' . implode(',', Arr::pluck(Fpd::STATUS_SELECT, 'value')),
             ],
             'req_date' => [
@@ -51,6 +51,16 @@ class StoreFpdRequest extends FormRequest
             'ket' => [
                 'string',
                 'nullable',
+            ],
+            'items' => [
+                'required', // Make sure 'items' is present
+                'array', // Ensure 'items' is an array
+            ],
+            'items.*.account_id' => [
+                'required',
+            ],
+            'items.*.amount' => [
+                'required',
             ],
         ];
     }

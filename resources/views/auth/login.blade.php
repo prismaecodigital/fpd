@@ -9,7 +9,7 @@
                         @csrf
                         <div class="card card-login">
                             <div class="card-header card-header-primary text-center">
-                                <h4 class="card-title">{{ __('global.login') }}</h4>
+                                <h4 class="card-title">FPBD</h4>
                             </div>
 
                             @if(session('status'))
@@ -65,13 +65,13 @@
 
                                 <div class="d-flex justify-content-between">
                                     @if(Route::has('password.request'))
-                                        <a class="btn btn-link btn-primary" href="{{ route('password.request') }}">
+                                        <a class="btn btn-link" href="{{ route('password.request') }}">
                                             {{ __('global.forgot_password') }}
                                         </a>
                                     @endif
 
                                     @if(Route::has('register'))
-                                        <a class="btn btn-link btn-primary" href="{{ route('register') }}">
+                                        <a class="btn btn-link" href="{{ route('register') }}">
                                             {{ __('global.register') }}
                                         </a>
                                     @endif

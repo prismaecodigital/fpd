@@ -22,8 +22,8 @@ return [
         ],
     ],
     'role' => [
-        'title'          => 'Peranan',
-        'title_singular' => 'Peranan',
+        'title'          => 'Roles',
+        'title_singular' => 'Roles',
         'fields'         => [
             'id'                 => 'ID',
             'id_helper'          => ' ',
@@ -264,8 +264,8 @@ return [
         ]
     ],
     'account' => [
-        'title'          => 'Accounts',
-        'title_singular' => 'Account',
+        'title'          => 'COA',
+        'title_singular' => 'COA',
         'fields'         => [
             'id'                => 'ID',
             'id_helper'         => ' ',
@@ -292,9 +292,15 @@ return [
     'fpd' => [
         'title'          => 'FPD',
         'title_singular' => 'FPD',
+        'calendar'              => 'Calendar',
         'fields'         => [
+            'calendar'              => 'Calendar',
             'id'                    => 'ID',
             'id_helper'             => ' ',
+            'code'                  => 'ID',
+            'code_helper'           => ' ',
+            'amount'                => 'Amount',
+            'amount_helper'         => ' ',
             'code_voucher'          => 'Code Voucher',
             'code_voucher_helper'   => ' ',
             'transact_type'         => 'Transact Type',
@@ -309,8 +315,8 @@ return [
             'status_helper'         => ' ',
             'req_date'              => 'Tanggal Dibutuhkan',
             'req_date_helper'       => ' ',
-            'processed_date'        => 'Processed Date',
-            'processed_date_helper' => ' ',
+            'processed_date'        => 'Tanggal Prosess Finance',
+            'processed_date_helper' => '',
             'ket'                   => 'Ket',
             'ket_helper'            => ' ',
             'lampiran'              => 'Lampiran',

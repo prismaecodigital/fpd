@@ -31,6 +31,11 @@ class StoreAccountRequest extends FormRequest
                 'exists:bus,id',
                 'required',
             ],
+            'parent_id' => [
+                'integer',
+                'exists:bus,id',
+                'nullable',
+            ],
             'dept' => [
                 'array',
             ],

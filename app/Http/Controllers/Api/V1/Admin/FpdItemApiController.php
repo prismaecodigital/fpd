@@ -17,7 +17,7 @@ class FpdItemApiController extends Controller
     {
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdItemResource(FpdItem::advancedFilter());
+        return new FpdItemResource(FpdItem::advancedFilter()->paginate(request('limit', 10)));
     }
 
     public function store(StoreFpdItemRequest $request)

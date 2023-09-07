@@ -18,7 +18,7 @@ class SiteApiController extends Controller
     {
         abort_if(Gate::denies('bu_dept_site_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new SiteResource(Site::with('bu')->advancedFilter());
+        return new SiteResource(Site::with('bu')->advancedFilter()->paginate(request('limit', 10)));
     }
 
     public function store(StoreSiteRequest $request)

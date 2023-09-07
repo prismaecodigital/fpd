@@ -233,11 +233,35 @@ const routes = [
         meta: { title: 'cruds.fpd.title' }
       },
       {
+        path: 'fpds/:id/editData',
+        name: 'fpds.editData',
+        component: () => import('@cruds/Fpds/EditData.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
         path: 'profile/edit',
         name: 'profile.password.edit',
         component: () => import('@cruds/Profile/Edit.vue'),
         meta: { title: 'Profile' }
-      }
+      },
+      {
+        path: 'calendar',
+        name: 'fpds.calendar',
+        component: () => import('@cruds/Fpds/Calendar.vue'),
+        meta: { title: 'Calendar' }
+      },
+      {
+        path: 'fpd-dones',
+        name: 'fpd-dones.index',
+        component: () => import('@cruds/FpdDones/Index.vue'),
+        meta: { title: 'Done' }
+      },
+      {
+        path: 'fpd-dones/:id',
+        name: 'fpd-dones.show',
+        component: () => import('@cruds/FpdDones/Show.vue'),
+        meta: { title: 'Done' }
+      },
     ]
   }
 ]

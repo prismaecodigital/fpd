@@ -276,6 +276,63 @@ $body-bg: #f8fafc;
     background-color: rgb(255, 177, 177);
 }
 
+.bg-white {
+    background-color: white !important;
+}
+
+td.day.old, td.day.new {
+    color: transparent !important;
+    cursor: not-allowed !important;
+}
+
+.font12 {
+    font-size: 12px !important;
+}
+
+.main-panel >.content {
+    margin-top: 20px !important;
+}
+
+.labelCalendar {
+    border-radius: 2px;
+    padding: 2px 5px;
+    color: white;
+    font-size: 14px;
+    letter-spacing: 1px;
+}
+
+.labelCalendar01 {
+    background-color: #7a71e3;
+}
+.labelCalendar23 {
+    background-color: #aae371;
+}
+.labelCalendar4 {
+    background-color: #d8e371;
+}
+.labelCalendar56 {
+    background-color: #b271e3;
+}
+.labelCalendar78 {
+    background-color: #71e38c;
+}
+.labelCalendar99 {
+    background-color: #e37171;
+}
+
+.select-all:hover {
+    cursor: pointer;
+}
+
+.text-right {
+    width: 170px !important;
+}
+
+.badge {
+    font-size: 0.8rem !important;
+    background: azure !important;
+}
+
 @media (max-width: 768px) {
     table > thead > tr > th, table > tbody > tr > td, table > tbody > tr > td > div > span,
     table > tbody > tr > td > div > a {
