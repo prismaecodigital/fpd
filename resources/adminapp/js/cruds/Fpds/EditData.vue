@@ -287,7 +287,7 @@
                     <td>
                         <input class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
-                    <td v-if="entry.status >=4">
+                    <td v-if="entry.status >= 4">
                         <input required class="form-control wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)"/>
                     </td>
                     <td>
@@ -335,7 +335,7 @@
                     <td>
                         <input disabled class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
-                    <td v-if="entry.status >=7">
+                    <td v-if="entry.status >= 4">
                         <input class="form-control wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)" required/>
                     </td>
                     <td>

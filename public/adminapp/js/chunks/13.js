@@ -742,7 +742,7 @@ var render = function render() {
           return _vm.updateItemAmount(k, $event);
         }
       }
-    })]), _vm._v(" "), _vm.entry.status >= 7 ? _c("td", [_c("input", {
+    })]), _vm._v(" "), _vm.entry.status >= 4 ? _c("td", [_c("input", {
       staticClass: "form-control wrapText required",
       attrs: {
         type: "number",
