@@ -36,11 +36,14 @@
                   :options="config"
               >
                   <template #eventContent="{ event }">
-                  <span v-if="parseInt(event.extendedProps.status) < 2" class="labelCalendar labelCalendar01">{{ event.extendedProps.code }}</span>
-                  <span v-else-if="parseInt(event.extendedProps.status) === 2 || parseInt(event.extendedProps.status) === 3" class="labelCalendar labelCalendar23">{{ event.extendedProps.code }}</span>
+                  <span v-if="parseInt(event.extendedProps.status) === 0" class="labelCalendar labelCalendar1">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 1" class="labelCalendar labelCalendar1">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 2" class="labelCalendar labelCalendar2">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 3" class="labelCalendar labelCalendar3">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 4" class="labelCalendar labelCalendar4">{{ event.extendedProps.code }}</span>
-                  <span v-else-if="parseInt(event.extendedProps.status) === 5 || parseInt(event.extendedProps.status) === 6" class="labelCalendar labelCalendar56">{{ event.extendedProps.code }}</span>
-                  <span v-else-if="parseInt(event.extendedProps.status) === 7 || parseInt(event.extendedProps.status) === 8" class="labelCalendar labelCalendar78">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 5" class="labelCalendar labelCalendar5">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 6" class="labelCalendar labelCalendar6">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 7" class="labelCalendar labelCalendar7">{{ event.extendedProps.code }}</span>
                   <span v-else class="labelCalendar labelCalendar99">{{ event.extendedProps.code }}</span>
                   </template>
               </full-calendar>
@@ -160,7 +163,7 @@ export default {
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek'
+          right: 'dayGridMonth'
         },
         initialView: 'dayGridMonth',
       }

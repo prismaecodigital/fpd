@@ -19,8 +19,7 @@ class UpdateFpdRequest extends FormRequest
     {
         return [
             'code_voucher' => [
-                'string',
-                'nullable',
+                'required_if:status,3'
             ],
             'transact_type' => [
                 'required',
@@ -48,10 +47,6 @@ class UpdateFpdRequest extends FormRequest
                 'date_format:' . config('project.date_format'),
                 'required',
             ],
-            'processed_date' => [
-                'date_format:' . config('project.date_format'),
-                'nullable',
-            ],
             'ket' => [
                 'string',
                 'nullable',
@@ -68,6 +63,9 @@ class UpdateFpdRequest extends FormRequest
             ],
             'items.*.real_amount' => [
                 'required_if:status,4', // Make 'real_amount' required if 'status' is 4 for each item
+            ],
+            'processed_date' => [
+                'required_if:status,2',
             ],
             'lampiran' => [
                 'array',

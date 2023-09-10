@@ -69,7 +69,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         headerToolbar: {
           left: 'prev,next today',
           center: 'title',
-          right: 'dayGridMonth,timeGridWeek'
+          right: 'dayGridMonth'
         },
         initialView: 'dayGridMonth'
       };
@@ -206,16 +206,22 @@ var render = function render() {
       key: "eventContent",
       fn: function fn(_ref) {
         var event = _ref.event;
-        return [parseInt(event.extendedProps.status) < 2 ? _c("span", {
-          staticClass: "labelCalendar labelCalendar01"
-        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 2 || parseInt(event.extendedProps.status) === 3 ? _c("span", {
-          staticClass: "labelCalendar labelCalendar23"
+        return [parseInt(event.extendedProps.status) === 0 ? _c("span", {
+          staticClass: "labelCalendar labelCalendar1"
+        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 1 ? _c("span", {
+          staticClass: "labelCalendar labelCalendar1"
+        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 2 ? _c("span", {
+          staticClass: "labelCalendar labelCalendar2"
+        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 3 ? _c("span", {
+          staticClass: "labelCalendar labelCalendar3"
         }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 4 ? _c("span", {
           staticClass: "labelCalendar labelCalendar4"
-        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 5 || parseInt(event.extendedProps.status) === 6 ? _c("span", {
-          staticClass: "labelCalendar labelCalendar56"
-        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 7 || parseInt(event.extendedProps.status) === 8 ? _c("span", {
-          staticClass: "labelCalendar labelCalendar78"
+        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 5 ? _c("span", {
+          staticClass: "labelCalendar labelCalendar5"
+        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 6 ? _c("span", {
+          staticClass: "labelCalendar labelCalendar6"
+        }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 7 ? _c("span", {
+          staticClass: "labelCalendar labelCalendar7"
         }, [_vm._v(_vm._s(event.extendedProps.code))]) : _c("span", {
           staticClass: "labelCalendar labelCalendar99"
         }, [_vm._v(_vm._s(event.extendedProps.code))])];

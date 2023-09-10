@@ -41,7 +41,7 @@ class UsersApiController extends Controller
 
         return response([
             'meta' => [
-                'roles' => Role::get(['id', 'title']),
+                'roles' => Role::whereNot('title','admin')->get(['id', 'title']),
                 'bus' => Bu::get(['id', 'name']),
                 'depts' => Dept::get(['id', 'name']),
             ],
@@ -74,7 +74,7 @@ class UsersApiController extends Controller
         return response([
             'data' => new UserResource($user->load(['roles','bus','depts'])),
             'meta' => [
-                'roles' => Role::get(['id', 'title']),
+                'roles' => Role::whereNot('title','admin')->get(['id', 'title']),
                 'bus' => Bu::get(['id', 'name']),
                 'depts' => Dept::get(['id', 'name']),
             ],

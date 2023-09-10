@@ -62,12 +62,6 @@ class FpdApiController extends Controller
                 ->update(['model_id' => $fpd->id]);
         }
 
-        // rename media        
-        foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
-            $file->file_name = $fpd->code.$index;
-            $file->save();
-        }
-
         // Store FPDItem    
         foreach ($request->items as $itemData) {
             $item = FpdItem::create([
@@ -138,12 +132,6 @@ class FpdApiController extends Controller
             ->update(['model_id' => $fpd->id]);
         }
 
-        // Rename media        
-        foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
-            $file->file_name = $fpd->code.$index;
-            $file->save();
-        }
-
         // Update Status
         if($request->approve !== null) {
             if($request->approve === "1" && (int)$fpd->status < 8) 
@@ -181,6 +169,14 @@ class FpdApiController extends Controller
             if($request->approve === "0" && (int)$fpd->status < 8) 
             {
                 $fpd->update(['status' => '99']);
+            }
+        }
+
+        // Rename media        
+        if($fpd->status >= 3) {
+            foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
+                $file->file_name = $fpd->code_voucher.'-'.$index;
+                $file->save();
             }
         }
 
