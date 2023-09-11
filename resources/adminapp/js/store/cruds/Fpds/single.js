@@ -329,11 +329,13 @@ function initialState() {
       ]
       if(entry.status != '99') {
         entry.status_histories.forEach(function(val, index) {
-          if(val.status == state.timelineData[index+1].status_val) {
-            state.timelineData[index].tanggal = moment(val.created_at).format('DD MMMM YYYY, HH:mm')
-            state.timelineData[index].user = val.user.name
-            state.timelineData[index].proses = 'selesai'
-          }
+          state.timelineData.forEach(function(x, y) {
+            if(val.status == x.status_val) {
+              state.timelineData[y].tanggal = moment(val.created_at).format('DD MMMM YYYY, HH:mm')
+              state.timelineData[y].user = val.user.name
+              state.timelineData[y].proses = 'selesai'
+            }
+          })
           state.timelineData[entry.status_histories.length].proses = 'proses'
         })
       }
@@ -430,6 +432,7 @@ function initialState() {
     },
     setApprove(state, value) {
       state.entry.approve = value
+      console.log(state.entry.approve)
     },
     setLists(state, lists) {
       state.lists = lists

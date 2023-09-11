@@ -131,7 +131,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak',
         showCloseButton: true
       }).then(function (result) {
         if (result.isConfirmed) {
@@ -172,7 +173,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         value: value
       });
     },
-    approveData: function approveData(id) {
+    approveData: function approveData() {
       var _this4 = this;
       this.$swal({
         title: 'Approve?',
@@ -187,6 +188,29 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
           var value = true;
           _this4.setApprove(value);
           _this4.submitForm();
+        }
+      });
+    },
+    needRealisasi: function needRealisasi() {
+      Swal.fire({
+        title: 'Approve',
+        text: 'Butuh Realisasi ?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#0e0e0e',
+        confirmButtonText: 'Ya',
+        denyButtonText: 'Tidak'
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          // User clicked "Yes"
+          var value = true;
+          console.log(result.isConfirmed);
+        } else if (result.isCancelled) {
+          // User clicked "No"
+          var _value = false;
+          console.log(_value);
+          // Handle the "No" action here if needed
         }
       });
     },
@@ -802,7 +826,7 @@ var render = function render() {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "row"
-  }, [_vm.entry.status != 4 ? _c("div", {
+  }, [_vm.entry.status != 4 && _vm.entry.status != 3 ? _c("div", {
     staticClass: "col-lg-2"
   }, [_c("button", {
     staticClass: "btn btn-primary",
@@ -813,6 +837,19 @@ var render = function render() {
       click: function click($event) {
         $event.preventDefault();
         return _vm.approveData();
+      }
+    }
+  }, [_vm._v("\n                  Approve\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status === "3" ? _c("div", {
+    staticClass: "col-lg-2"
+  }, [_c("button", {
+    staticClass: "btn btn-primary",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: function click($event) {
+        $event.preventDefault();
+        return _vm.needRealisasi();
       }
     }
   }, [_vm._v("\n                  Approve\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status != 4 ? _c("div", {

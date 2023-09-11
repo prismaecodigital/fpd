@@ -44,7 +44,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }, {
         title: 'cruds.userManagement.title',
-        icon: 'person',
+        icon: 'account_box',
         path: {
           name: 'user_management'
         },
@@ -80,65 +80,65 @@ __webpack_require__.r(__webpack_exports__);
         gate: 'bu_dept_site_access',
         children: [{
           title: 'cruds.bu.title',
-          icon: 'table_view',
+          icon: 'business',
           path: {
             name: 'bus.index'
           },
           gate: 'bu_dept_site_access'
         }, {
           title: 'cruds.site.title',
-          icon: 'table_view',
+          icon: 'work',
           path: {
             name: 'sites.index'
           },
           gate: 'bu_dept_site_access'
         }, {
           title: 'cruds.dept.title',
-          icon: 'table_view',
+          icon: 'work_outline',
           path: {
             name: 'depts.index'
           },
           gate: 'bu_dept_site_access'
-        }, {
-          title: 'cruds.account.title',
-          icon: 'table_view',
-          path: {
-            name: 'listBu'
-          },
-          gate: 'account_access'
         }]
       }, {
         title: 'FPD',
-        icon: 'table_view',
+        icon: 'dynamic_form',
         path: {
           name: 'fpd'
         },
         gate: 'fpd_access',
         children: [{
           title: 'cruds.fpd.title',
-          icon: 'table_view',
+          icon: 'loop',
           path: {
             name: 'fpds.index'
           },
           gate: 'fpd_access'
         }, {
           title: 'Selesai',
-          icon: 'table_view',
+          icon: 'check_circle',
           path: {
             name: 'fpd-dones.index'
           },
           gate: 'fpd_access'
         }]
       }, {
+        title: 'cruds.account.title',
+        icon: 'account_balance',
+        path: {
+          name: 'listBu'
+        },
+        gate: 'account_access'
+      }, {
         title: 'cruds.fpd.calendar',
-        icon: 'table_view',
+        icon: 'calendar_view_month',
         path: {
           name: 'fpds.calendar'
         },
         gate: 'fpd_access'
       }, {
         title: 'Profile',
-        icon: 'table_view',
+        icon: 'person',
         path: {
           name: 'profile.password.edit'
         },

@@ -25,7 +25,7 @@ class FpdApiController extends Controller
     {        
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('status', '<', '8')->paginate(request('limit', 10)));
+        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->whereIn('bu_id', auth()->user()->bus->pluck('id'))->where('status', '<', '8')->paginate(request('limit', 10)));
     }
 
     public function store(StoreFpdRequest $request)
@@ -192,6 +192,20 @@ class FpdApiController extends Controller
                 'real_amount' => $itemData['real_amount'],
                 'site_id'   => $itemData['site_id'],
                 'ket' => $itemData['ket'] ?? '',
+            ]);
+        }
+
+        // Added if request tidak memerlukan realisasi
+        if($request->approve === "2") {
+            $fpd->update(['status' => '8']);
+            foreach($fpd->items as $item) {
+                $item->update(['real_amount' => $item->amount]);
+            }
+
+            $statusHistory = StatusHistory::create([
+                'fpd_id'    => $fpd->id,
+                'user_id'   => auth()->user()->id,
+                'status'    => $fpd->status,
             ]);
         }
 

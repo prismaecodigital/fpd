@@ -176,7 +176,7 @@ const routes = [
             meta: { title: 'cruds.dept.title' }
           },
           {
-            path: 'accounts',
+            path: 'accounts/list',
             name: 'accounts.index',
             component: () => import('@cruds/Accounts/Index.vue'),
             meta: { title: 'cruds.account.title' }
@@ -200,7 +200,7 @@ const routes = [
             meta: { title: 'cruds.account.title' }
           },
           {
-            path: 'listBu',
+            path: 'accounts',
             name: 'listBu',
             component: () => import('@cruds/Accounts/List.vue'),
             meta: { title: 'cruds.account.title' }

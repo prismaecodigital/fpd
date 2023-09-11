@@ -362,8 +362,13 @@
             </div>
             <div v-if="entry.status < 8 && $can(entry.status)" class="card-body">
               <div class="row">
-                <div v-if="entry.status != 4" class="col-lg-2">
+                <div v-if="entry.status != 4 && entry.status != 3" class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="approveData()">
+                    Approve
+                  </button>                  
+                </div>
+                <div v-if="entry.status === '3'" class="col-lg-2">
+                  <button type='button' class="btn btn-primary" @click.prevent="needRealisasi()">
                     Approve
                   </button>                  
                 </div>
@@ -394,9 +399,11 @@
 import { mapGetters, mapActions } from 'vuex'
 import Attachment from '@components/Attachments/Attachment'
 import DatatableAttachments from '@components/Datatables/DatatableAttachments'
+import Swal from 'sweetalert2'
 
 export default {
   components: {
+    Swal,
     Attachment,
     DatatableAttachments
   },
@@ -510,7 +517,8 @@ export default {
         showCancelButton: true,
         confirmButtonColor: '#3085d6',
         cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes',
+        confirmButtonText: 'Ya',
+        cancelButtonText: 'Tidak',
         showCloseButton: true,
       }).then(result => {
         if(result.isConfirmed) {
@@ -536,7 +544,7 @@ export default {
     updateItemSite(index,value) {
       this.setItemSite({index, value})
     },
-    approveData(id) {
+    approveData() {
       this.$swal({
         title: 'Approve?',
         text: 'Yakin ?',
@@ -550,6 +558,30 @@ export default {
             let value = true
             this.setApprove(value)
             this.submitForm()
+        }
+      })
+    },
+    needRealisasi() {
+     Swal.fire({
+        title: 'Approve',
+        text: 'Butuh Realisasi ?',
+        showDenyButton: true,
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#0e0e0e',
+        confirmButtonText: 'Ya',
+        denyButtonText: 'Tidak'
+      }).then(result => {
+        if (result.isConfirmed) {
+          // User clicked "Ya"
+          let value = true
+          this.setApprove(value)
+          this.submitForm()
+        } else if (result.isDenied) {
+          let value = "2"
+          this.setApprove(value)
+          this.submitForm()
+          // Handle the "No" action here if needed
         }
       })
     },

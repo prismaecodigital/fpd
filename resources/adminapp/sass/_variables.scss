@@ -342,6 +342,11 @@ td.day.old, td.day.new {
     background: azure !important;
 }
 
+.collapse .nav {
+    padding-left: 15px;
+    transition: all 0.5s;
+}
+
 @media (max-width: 768px) {
     table > thead > tr > th, table > tbody > tr > td, table > tbody > tr > td > div > span,
     table > tbody > tr > td > div > a {
@@ -349,5 +354,9 @@ td.day.old, td.day.new {
     }
     .card-body {
         overflow-x: scroll !important;
+    }
+
+    .collapse .nav {
+        padding-left: 5px;
     }
 }
