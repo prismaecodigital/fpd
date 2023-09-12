@@ -379,7 +379,7 @@
                 </div>
                 <div v-if="entry.status === '4' && $can('4')" class="col-lg-2">
                   <button type='button' class="btn btn-success" @click.prevent="approveData()">
-                    LanjutkanProses
+                    Lanjutkan Proses
                   </button>
                 </div>
                 <div v-if="$can('finance')" class="col-lg-1">

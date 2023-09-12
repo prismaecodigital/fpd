@@ -46,7 +46,7 @@ class DataChangeEmailNotification extends Notification implements ShouldQueue
             ->subject('FPD Notification')
             ->greeting('Hello, ')
             ->line('FPD nomor ' . $this->data['code'] . ' telah ' . $this->data['action'] . ' oleh ' . $this->data['user'] . ' dengan alasan ' . $this->data['ket'])
-            ->line('Silahkan diproses lebih lanjut.')
+            ->line('')
             ->action(config('app.name'), (config('app.url').'/admin/fpds/'.$this->data['id']))
             ->line('Thank you')
             ->line(config('app.name') . ' Team')

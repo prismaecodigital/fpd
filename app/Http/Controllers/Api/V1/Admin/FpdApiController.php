@@ -25,7 +25,7 @@ class FpdApiController extends Controller
     {        
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->whereIn('bu_id', auth()->user()->bus->pluck('id'))->where('status', '<', '8')->paginate(request('limit', 10)));
+        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '8')->paginate(request('limit', 10)));
     }
 
     public function store(StoreFpdRequest $request)
@@ -103,7 +103,7 @@ class FpdApiController extends Controller
 
         return response([
             'meta' => [
-                'bu'            => Bu::get(['id', 'name']),
+                'bu'            => Bu::whereIn('id', auth()->user()->bus->pluck('id'))->get(['id', 'name']),
                 'dept'          => Dept::get(['id', 'name']),
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
@@ -175,7 +175,7 @@ class FpdApiController extends Controller
         // Rename media        
         if($fpd->status >= 3) {
             foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
-                $file->file_name = $fpd->code_voucher.'-'.$index;
+                $file->file_name = $fpd->code_voucher.'-'.$index+1;
                 $file->save();
             }
         }

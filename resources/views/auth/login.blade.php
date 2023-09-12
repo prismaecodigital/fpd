@@ -9,7 +9,7 @@
                         @csrf
                         <div class="card card-login">
                             <div class="card-header card-header-primary text-center">
-                                <h4 class="card-title">FPBD</h4>
+                                <h4 class="card-title">FPD</h4>
                             </div>
 
                             @if(session('status'))

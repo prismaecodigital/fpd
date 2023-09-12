@@ -27,6 +27,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _components_Attachments_Attachment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/Attachments/Attachment */ "./resources/adminapp/js/components/Attachments/Attachment.vue");
 /* harmony import */ var _components_Datatables_DatatableAttachments__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/Datatables/DatatableAttachments */ "./resources/adminapp/js/components/Datatables/DatatableAttachments.vue");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! sweetalert2 */ "./node_modules/sweetalert2/dist/sweetalert2.all.js");
+/* harmony import */ var sweetalert2__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(sweetalert2__WEBPACK_IMPORTED_MODULE_3__);
 function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
 function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
 function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
@@ -36,8 +38,10 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
 
 
 
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
+    Swal: sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a,
     Attachment: _components_Attachments_Attachment__WEBPACK_IMPORTED_MODULE_1__["default"],
     DatatableAttachments: _components_Datatables_DatatableAttachments__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
@@ -192,7 +196,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       });
     },
     needRealisasi: function needRealisasi() {
-      Swal.fire({
+      var _this5 = this;
+      sweetalert2__WEBPACK_IMPORTED_MODULE_3___default.a.fire({
         title: 'Approve',
         text: 'Butuh Realisasi ?',
         showDenyButton: true,
@@ -203,19 +208,20 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         denyButtonText: 'Tidak'
       }).then(function (result) {
         if (result.isConfirmed) {
-          // User clicked "Yes"
+          // User clicked "Ya"
           var value = true;
-          console.log(result.isConfirmed);
-        } else if (result.isCancelled) {
-          // User clicked "No"
-          var _value = false;
-          console.log(_value);
+          _this5.setApprove(value);
+          _this5.submitForm();
+        } else if (result.isDenied) {
+          var _value = "2";
+          _this5.setApprove(_value);
+          _this5.submitForm();
           // Handle the "No" action here if needed
         }
       });
     },
     rejectData: function rejectData() {
-      var _this5 = this;
+      var _this6 = this;
       this.$swal({
         title: 'Reject ?',
         text: 'Masukkan Alasan',
@@ -228,12 +234,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }).then(function (result) {
         if (result.value) {
           var value = result.value;
-          _this5.setKet(value);
+          _this6.setKet(value);
           var value2 = false;
-          _this5.setApprove(value2);
-          _this5.submitForm();
+          _this6.setApprove(value2);
+          _this6.submitForm();
         } else {
-          _this5.$swal({
+          _this6.$swal({
             icon: 'error',
             title: 'Failed',
             text: 'Masukkan Alasan'
@@ -245,16 +251,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       return "".concat(axios.defaults.baseURL).concat(name, "/media");
     },
     submitForm: function submitForm() {
-      var _this6 = this;
+      var _this7 = this;
       this.updateData().then(function () {
-        _this6.$router.push({
+        _this7.$router.push({
           name: 'fpds.index'
         });
-        _this6.$eventHub.$emit('update-success');
+        _this7.$eventHub.$emit('update-success');
       })["catch"](function (error) {
-        _this6.status = 'failed';
+        _this7.status = 'failed';
         _.delay(function () {
-          _this6.status = '';
+          _this7.status = '';
         }, 3000);
       });
     },
@@ -878,7 +884,7 @@ var render = function render() {
         return _vm.approveData();
       }
     }
-  }, [_vm._v("\n                  LanjutkanProses\n                ")])]) : _vm._e(), _vm._v(" "), _vm.$can("finance") ? _c("div", {
+  }, [_vm._v("\n                  Lanjutkan Proses\n                ")])]) : _vm._e(), _vm._v(" "), _vm.$can("finance") ? _c("div", {
     staticClass: "col-lg-1"
   }, [_c("button", {
     staticClass: "btn btn-default",

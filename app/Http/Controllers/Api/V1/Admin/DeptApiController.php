@@ -82,10 +82,10 @@ class DeptApiController extends Controller
     {
         $bus = $request->input('bu');
         if(gettype($bus) == 'array') {
-            $depts = Dept::whereIn('bu_id', $bus)->get();
+            $depts = Dept::whereIn('bu_id', $bus)->whereIn('id', auth()->user()->depts->pluck('id'))->get();
         }
         if(gettype($bus) == 'string') {
-            $depts = Dept::where('bu_id', $bus)->get();
+            $depts = Dept::where('bu_id', $bus)->whereIn('id', auth()->user()->depts->pluck('id'))->get();
         }
         if(!isset($bus)) {
             $depts = [''=> 'Select BU First'];
