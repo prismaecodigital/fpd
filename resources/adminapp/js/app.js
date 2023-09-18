@@ -29,6 +29,15 @@
  Vue.use(GlobalComponents)
  Vue.use(GlobalDirectives)
  Vue.use(GlobalMixins)
+
+Vue.filter('currency', function (value) {
+  if (typeof value !== 'number') {
+    return value;
+  }
+  return value.toFixed(2).replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1,');
+});
+
+
  
  /**
   * Next, we will create a fresh Vue application instance and attach it to
@@ -47,5 +56,5 @@
    },
    methods: {
      ...mapActions('I18NStore', ['fetchLanguages'])
-   }
+   },
  })

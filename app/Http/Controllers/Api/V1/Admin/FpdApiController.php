@@ -21,11 +21,19 @@ use Carbon\Carbon;
 
 class FpdApiController extends Controller
 {
-    public function index()
-    {        
+    public function list()
+    {
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '8')->paginate(request('limit', 10)));
+        return new BuResource(Bu::has('fpds')->advancedFilter()->paginate(request('limit', 10)));
+        
+    }
+
+    public function index(Request $request)
+    {
+        abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        return new FpdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '8')->paginate(request('limit', 10)));
     }
 
     public function store(StoreFpdRequest $request)
@@ -97,12 +105,13 @@ class FpdApiController extends Controller
             ->setStatusCode(Response::HTTP_CREATED);
     }
 
-    public function create()
+    public function create(Request $request)
     {
         abort_if(Gate::denies('fpd_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'meta' => [
+                'bu_id'         => $request->bu_id,
                 'bu'            => Bu::whereIn('id', auth()->user()->bus->pluck('id'))->get(['id', 'name']),
                 'dept'          => Dept::get(['id', 'name']),
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
@@ -122,8 +131,7 @@ class FpdApiController extends Controller
     }
 
     public function update(UpdateFpdRequest $request, Fpd $fpd)
-    {
-        // Update FPD
+    {        // Update FPD
         $fpd->update($request->validated());
         if($media = $request->input('lampiran', [])) {
             $fpd->updateMedia($request->input('lampiran', []), 'fpd_lampiran');
@@ -136,8 +144,9 @@ class FpdApiController extends Controller
         if($request->approve !== null) {
             if($request->approve === "1" && (int)$fpd->status < 8) 
             {
-                if((((int)$fpd->status === 0 || (int)$fpd->status === 4) && auth()->user()->hasRole('leader')) || 
-                    ((int)$fpd->status === 1 && auth()->user()->hasRole('finance')))
+                if(($fpd->status === '0' && auth()->user()->hasRole('direktur')) || 
+                    ($fpd->status === '4' && auth()->user()->hasRole('leader')) ||                
+                    ($fpd->status === '1' && auth()->user()->hasRole('finance')))
                     {
                         $fpd->update(['status' => (string)((int)$fpd->status + 2)]);
                         $statusHistory0 = StatusHistory::create(
@@ -175,7 +184,14 @@ class FpdApiController extends Controller
         // Rename media        
         if($fpd->status >= 3) {
             foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
-                $file->file_name = $fpd->code_voucher.'-'.$index+1;
+                $file->file_name = $fpd->code_voucher.'-'.($index+1).substr($file->file_name, -4);
+                $file->save();
+            }
+        }
+
+        if($fpd->status >= 5) {
+            foreach($fpd->getMedia('fpd_bukti_transfer') as $index => $file) {
+                $file->file_name = $fpd->code_voucher_lrd.'-'.($index+1).substr($file->file_name, -4);
                 $file->save();
             }
         }
@@ -199,7 +215,7 @@ class FpdApiController extends Controller
         if($request->approve === "2") {
             $fpd->update(['status' => '8']);
             foreach($fpd->items as $item) {
-                $item->update(['real_amount' => $item->amount]);
+                FpdItem::where('id', $item->id)->first()->update(['real_amount' => $item->amount]);
             }
 
             $statusHistory = StatusHistory::create([

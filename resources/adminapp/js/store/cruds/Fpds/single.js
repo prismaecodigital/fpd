@@ -4,6 +4,7 @@ function initialState() {
         id: null,
         code: '',
         code_voucher: '',
+        code_voucher_lrd: '',
         transact_type: null,
         klasifikasi: null,
         bu_id: null,
@@ -14,12 +15,14 @@ function initialState() {
         processed_date: '',
         ket: '',
         lampiran: [],
+        bukti_transfer: [],
         created_at: '',
         updated_at: '',
         status_histories: [],
         approve: null,
         authUserId: null,
         total_amount: '',
+        total_real_amount: '',
         items: [
           {
             account_id : null,
@@ -122,6 +125,9 @@ function initialState() {
     setCodeVoucher({ commit }, value) {
       commit('setCodeVoucher', value)
     },
+    setCodeVoucherLrd({ commit }, value) {
+      commit('setCodeVoucherLrd', value)
+    },
     setTransactType({ commit }, value) {
       commit('setTransactType', value)
     },
@@ -154,6 +160,12 @@ function initialState() {
     },
     removeLampiranFile({ commit }, file) {
       commit('removeLampiranFile', file)
+    },
+    insertBuktiTransferFile({ commit }, file) {
+      commit('insertBuktiTransferFile', file)
+    },
+    removeBuktiTransferFile({ commit }, file) {
+      commit('removeBuktiTransferFile', file)
     },
     addItem({commit}) {
       commit('addItem')
@@ -190,11 +202,6 @@ function initialState() {
     },
     setApprove({ commit }, value) {
       commit('setApprove', value)
-    },
-    fetchCreateData({ commit }) {
-      axios.get(`${route}/create`).then(response => {
-        commit('setLists', response.data.meta)
-      })
     },
     fetchBuDept({commit, dispatch}, value) {
       axios.get('/budept', {
@@ -234,7 +241,14 @@ function initialState() {
       })
       .then(response => {
           commit('fetchDeptAccount', response.data)
-      })      
+      })
+    },
+    fetchCreateData({ state, commit }, idFromUrl) {
+      const params = { ...state.query, id: idFromUrl};
+      axios.get(`${route}/create`, { params }).then(response => {
+        commit('setLists', response.data.meta)
+        commit('setBu', parseInt(response.data.meta.bu_id))
+      })
     },
     fetchEditData({ commit, dispatch }, id) {
       axios.get(`${route}/${id}/edit`).then(response => {
@@ -260,7 +274,7 @@ function initialState() {
           'status_val'  : '',
           'status'      : 'Pengisian Form Pengajuan Dana (FPD)',
           'proses'      : 'selesai',
-          'tanggal'     : '',
+          'tanggal'     : moment(entry.created_at).format('DD MMMM YYYY'),
           'user'        : entry.user.name,
         },
         {
@@ -328,16 +342,25 @@ function initialState() {
         },
       ]
       if(entry.status != '99') {
-        entry.status_histories.forEach(function(val, index) {
-          state.timelineData.forEach(function(x, y) {
-            if(val.status == x.status_val) {
-              state.timelineData[y].tanggal = moment(val.created_at).format('DD MMMM YYYY, HH:mm')
-              state.timelineData[y].user = val.user.name
-              state.timelineData[y].proses = 'selesai'
+          for (let y = 1; y < state.timelineData.length; y++) {
+            if (entry.status_histories.hasOwnProperty(y)) {
+              if (parseInt(state.timelineData[y].status_val) + 1 === parseInt(entry.status_histories[y].status)) {
+                state.timelineData[y].tanggal = moment(entry.status_histories[y].created_at).format('DD MMMM YYYY, HH:mm');
+                state.timelineData[y].user = entry.status_histories[y].user.name;
+                state.timelineData[y].proses = 'selesai';
+              }
             }
-          })
-          state.timelineData[entry.status_histories.length].proses = 'proses'
-        })
+          }
+          if(entry.status !== '8') {
+            state.timelineData[entry.status_histories.length].tanggal = ''
+            state.timelineData[entry.status_histories.length].user = ''
+            state.timelineData[entry.status_histories.length].proses = 'proses'
+          }
+          if(entry.status === '8') {
+            state.timelineData[entry.status_histories.length].tanggal = ''
+            state.timelineData[entry.status_histories.length].user = ''
+            state.timelineData[entry.status_histories.length].proses = 'selesai'
+          }
       }
       if(entry.status == '99') {
         entry.status_histories.forEach(function(val, index) {
@@ -352,6 +375,9 @@ function initialState() {
     },
     setCodeVoucher(state, value) {
       state.entry.code_voucher = value
+    },
+    setCodeVoucherLrd(state, value) {
+      state.entry.code_voucher_lrd = value
     },
     setTransactType(state, value) {
       state.entry.transact_type = value
@@ -388,6 +414,14 @@ function initialState() {
         return item.id !== file.id
       })
     },
+    insertBuktiTransferFile(state, file) {
+      state.entry.bukti_transfer.push(file)
+    },
+    removeBuktiTransferFile(state, file) {
+      state.entry.bukti_transfer = state.entry.bukti_transfer.filter(item => {
+        return item.id !== file.id
+      })
+    },
     addItem(state) {
       state.entry.items.push({
         account_id : null,
@@ -412,8 +446,14 @@ function initialState() {
       state.entry.items[index].amount = val
     },
     setItemRealAmount(state, {index, val}) {
+      
+      if(val !== '') {
+        console.log('ok')
+        state.entry.total_real_amount = parseInt(state.entry.total_real_amount) - parseInt(state.entry.items[index].real_amount) + parseInt(val)
+      }
       state.entry.items[index].real_amount = val
-      console.log(state.entry.items[index].real_amount)
+      console.log(state.entry.total_real_amount)
+      
     },
     setItemKet(state, {index, val}) {
       state.entry.items[index].ket = val

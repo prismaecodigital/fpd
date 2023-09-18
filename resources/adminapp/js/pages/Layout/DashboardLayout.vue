@@ -93,8 +93,20 @@ export default {
           children: [
             {
               title: 'cruds.fpd.title',
+              icon: 'border_all',
+              path: { name: 'listFpd' },
+              gate: 'fpd_access'
+            },
+            {
+              title: 'FPD Proses',
               icon: 'loop',
-              path: { name: 'fpds.index' },
+              path: { name: 'listFpdProcess' },
+              gate: 'fpd_access'
+            },
+            {
+              title: 'Realisasi',
+              icon: 'checklist_rtl',
+              path: { name: 'listLrd' },
               gate: 'fpd_access'
             },
             {

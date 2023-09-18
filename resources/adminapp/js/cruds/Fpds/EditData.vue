@@ -135,8 +135,7 @@
                       :options="lists.dept"
                       :reduce="entry => entry.id"
                       @input="updateDept"
-                      @search.focus="focusField('dept')"
-                      @search.blur="clearFocus"
+                      
                       disabled
                     >
                     <template #search="{attributes, events}">
@@ -148,6 +147,37 @@
                         />
                       </template>
                     </v-select>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.ket,
+                      'is-focused': activeField == 'ket'
+                    }"
+                  >
+                    <label class="">{{
+                      $t('cruds.fpd.fields.ket')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.ket"
+                      @input="updateKet"
+                      @focus="focusField('ket')"
+                      @blur="clearFocus"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label>{{ $t('cruds.fpd.fields.lampiran') }}</label>
+                    <attachment
+                      :route="getRoute('fpds')"
+                      :collection-name="'fpd_lampiran'"
+                      :media="entry.lampiran"
+                      :max-file-size="10"
+                      @file-uploaded="insertLampiranFile"
+                      @file-removed="removeLampiranFile"
+                      :max-files="10"
+                    />
                   </div>
                   
                 </div>
@@ -171,6 +201,25 @@
                       @blur="clearFocus"
                     />
                   </div>
+                  <div v-if="$can('finance') && entry.status > 4"
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.code_voucher_lrd,
+                      'is-focused': activeField == 'code_voucher_lrd'
+                    }"
+                  >
+                    <label class="">{{
+                      $t('cruds.fpd.fields.code_voucher_lrd')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.code_voucher_lrd"
+                      @input="updateCodeVoucherLrd"
+                      @focus="focusField('code_voucher_lrd')"
+                      @blur="clearFocus"
+                    />
+                  </div>
                   <div
                     class="form-group bmd-form-group"
                     :class="{
@@ -188,9 +237,6 @@
                       :options="lists.transact_type"
                       :reduce="entry => entry.value"
                       @input="updateTransactType"
-                      @search.focus="focusField('transact_type')"
-                      @search.blur="clearFocus"
-                      disabled
                     >
                     <template #search="{attributes, events}">
                         <input
@@ -219,20 +265,20 @@
                       :options="lists.klasifikasi"
                       :reduce="entry => entry.value"
                       @input="updateKlasifikasi"
-                      @search.focus="focusField('klasifikasi')"
-                      @search.blur="clearFocus"
+                      
                       disabled
                     />
                   </div>
-                  <div class="form-group">
-                    <label>{{ $t('cruds.fpd.fields.lampiran') }}</label>
+
+                  <div v-if="entry.status >= 5" class="form-group">
+                    <label>{{ $t('cruds.fpd.fields.bukti_transfer') }}</label>
                     <attachment
                       :route="getRoute('fpds')"
-                      :collection-name="'fpd_lampiran'"
-                      :media="entry.lampiran"
+                      :collection-name="'fpd_bukti_transfer'"
+                      :media="entry.bukti_transfer"
                       :max-file-size="10"
-                      @file-uploaded="insertLampiranFile"
-                      @file-removed="removeLampiranFile"
+                      @file-uploaded="insertBuktiTransferFile"
+                      @file-removed="removeBuktiTransferFile"
                       :max-files="10"
                     />
                   </div>
@@ -254,8 +300,9 @@
                 <thead>
                   <th></th>
                   <th>Nama Account / COA</th>
-                  <th>Amount</th>
+                  <th>Amount (Nominal) </th>
                   <th v-if="entry.status >= 4">Realisasi</th>
+                  <th v-if="entry.status > 4">Selisih</th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -285,10 +332,13 @@
                     </v-select>
                     </td>
                     <td>
-                        <input class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                        Rp. <input disabled class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
                     <td v-if="entry.status >= 4">
-                        <input required class="form-control wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)"/>
+                        Rp. <input required class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)"/>
+                    </td>
+                    <td v-if="entry.status > 4">
+                        <input disabled class="inputRp wrapText required" type="number" :value="parseInt(item.real_amount) - parseInt(item.amount)" required/>
                     </td>
                     <td>
                     <v-select
@@ -338,6 +388,9 @@
                     <td v-if="entry.status >= 4">
                         <input class="form-control wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)" required/>
                     </td>
+                    <td v-if="entry.status > 4">
+                        <input disabled class="form-control wrapText required" type="number" :value="parseInt(item.real_amount) - parseInt(item.amount)" required/>
+                    </td>
                     <td>
                     <v-select disabled
                       name="site"
@@ -362,9 +415,14 @@
             </div>
             <div v-if="entry.status < 8 && $can(entry.status)" class="card-body">
               <div class="row">
-                <div v-if="entry.status != 4 && entry.status != 3" class="col-lg-2">
+                <div v-if="entry.status != 4 && entry.status != 3 && entry.status != 6" class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="approveData()">
                     Approve
+                  </button>                  
+                </div>
+                <div v-if="entry.status === '6'" class="col-lg-2">
+                  <button type='button' class="btn btn-primary" @click.prevent="approveData()">
+                    Paid
                   </button>                  
                 </div>
                 <div v-if="entry.status === '3'" class="col-lg-2">
@@ -388,7 +446,7 @@
                   </button>
                 </div>
               </div>
-          </div>
+            </div>
           </div>
         </div>
       </div>
@@ -438,6 +496,7 @@ export default {
       'updateData',
       'resetState',
       'setCodeVoucher',
+      'setCodeVoucherLrd',
       'setTransactType',
       'setKlasifikasi',
       'setBu',
@@ -448,6 +507,8 @@ export default {
       'setKet',
       'insertLampiranFile',
       'removeLampiranFile',
+      'insertBuktiTransferFile',
+      'removeBuktiTransferFile',
       'addItem',
       'deleteItem',
       'setItems',
@@ -465,6 +526,9 @@ export default {
     ]),
     updateCodeVoucher(e) {
       this.setCodeVoucher(e.target.value)
+    },
+    updateCodeVoucherLrd(e) {
+      this.setCodeVoucherLrd(e.target.value)
     },
     updateTransactType(value) {
       this.setTransactType(value)
@@ -534,7 +598,11 @@ export default {
       this.setItemAmount({ index, val });
     },
     updateItemRealAmount(index, event, val) {
-      val = event.target.value
+      if(event.target.value !== '') {
+        val = event.target.value
+      } else {
+        val = 0
+      }
       this.setItemRealAmount({ index, val });
     },
     updateItemKet(index, event, val) {
@@ -618,7 +686,7 @@ export default {
     submitForm() {
       this.updateData()
         .then(() => {
-          this.$router.push({ name: 'fpds.index' })
+          this.$router.push({ name: 'fpds.index', query: { id: this.entry.bu_id } })
           this.$eventHub.$emit('update-success')
         })
         .catch(error => {

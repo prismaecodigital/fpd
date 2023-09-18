@@ -46,4 +46,9 @@ class Bu extends Model
     {
         return $this->hasMany(Account::class, 'bu_id');
     }
+
+    public function fpds()
+    {
+        return $this->hasMany(Fpd::class, 'bu_id');
+    }
 }

@@ -40,6 +40,7 @@ const GlobalComponents = {
     Vue.component('bootstrap-alert', BootstrapAlert)
     Vue.component('v-radio', VueRadio)
     Vue.component('v-select', vSelect)
+
   }
 }
 

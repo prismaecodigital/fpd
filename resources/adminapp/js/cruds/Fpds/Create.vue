@@ -62,6 +62,7 @@
                     >
                     </datetime-picker>
                   </div>
+                  
                   <div
                     class="form-group bmd-form-group"
                     :class="{
@@ -123,6 +124,25 @@
                         />
                       </template>
                     </v-select>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.ket,
+                      'is-focused': activeField == 'ket'
+                    }"
+                  >
+                    <label class="">{{
+                      $t('cruds.fpd.fields.ket')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.ket"
+                      @input="updateKet"
+                      @focus="focusField('ket')"
+                      @blur="clearFocus"
+                    />
                   </div>
                   
                 </div>
@@ -317,13 +337,14 @@ export default {
           to: new Date(new Date() - (24 * 60 * 60 * 1000))
         }
       },
+      query: { sort: 'id', order: 'asc', limit: 100, s: '' }
     }
   },
   computed: {
     ...mapGetters('FpdsSingle', ['entry', 'loading', 'lists'])
   },
   mounted() {
-    this.fetchCreateData()
+    this.fetchCreateData(this.idFromURL)
   },
   beforeDestroy() {
     this.resetState()
@@ -437,7 +458,7 @@ export default {
     submitForm() {
       this.storeData()
         .then(() => {
-          this.$router.push({ name: 'fpds.index' })
+          this.$router.push({ name: 'fpds.index', query: { id: this.entry.bu_id } })
           this.$eventHub.$emit('create-success')
         })
         .catch(error => {

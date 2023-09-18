@@ -22,7 +22,9 @@ class Fpd extends Model implements HasMedia
         'status_label',
         'klasifikasi_label',
         'lampiran',
-        'total_amount'
+        'total_amount',
+        'total_real_amount',
+        'bukti_transfer'
     ];
 
     protected $dates = [
@@ -35,6 +37,7 @@ class Fpd extends Model implements HasMedia
     protected $orderable = [
         'id',
         'code_voucher',
+        'code_voucher_lrd',
         'code',
         'bu.name',
         'dept.name',
@@ -46,12 +49,15 @@ class Fpd extends Model implements HasMedia
     protected $filterable = [
         'id',
         'code_voucher',
+        'code_voucher_lrd',
         'code',
         'bu.name',
         'dept.name',
         'user.name',
         'status',
         'req_date',
+        'processed_date',
+        'ket',
     ];
 
     public const TRANSACT_TYPE_SELECT = [
@@ -131,6 +137,7 @@ class Fpd extends Model implements HasMedia
 
     protected $fillable = [
         'code_voucher',
+        'code_voucher_lrd',
         'code',
         'transact_type',
         'klasifikasi',
@@ -186,6 +193,12 @@ class Fpd extends Model implements HasMedia
         return number_format($totalAmount, 0, ',', '.');
     }
 
+    public function getTotalRealAmountAttribute()
+    {
+        $totalRealAmount = $this->items->sum('real_amount');
+        return number_format($totalRealAmount, 0, ',', '.');
+    }
+
     public function statusHistories()
     {
         return $this->hasMany(StatusHistory::class, 'fpd_id')->with('user');
@@ -224,6 +237,15 @@ class Fpd extends Model implements HasMedia
     public function getLampiranAttribute()
     {
         return $this->getMedia('fpd_lampiran')->map(function ($item) {
+            $media        = $item->toArray();
+            $media['url'] = $item->getUrl();
+
+            return $media;
+        });
+    }
+    public function getBuktiTransferAttribute()
+    {
+        return $this->getMedia('bukti_transfer')->map(function ($item) {
             $media        = $item->toArray();
             $media['url'] = $item->getUrl();
 

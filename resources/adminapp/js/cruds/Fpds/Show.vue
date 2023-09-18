@@ -104,6 +104,14 @@
                       </tr>                      
                       <tr>
                         <td class="text-primary">
+                          Total
+                        </td>
+                        <td>
+                          Rp. {{ entry.total_amount ?? '-' }}
+                        </td>
+                      </tr>                      
+                      <tr>
+                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.status') }}
                         </td>
                         <td>
@@ -123,6 +131,18 @@
                           </datatable-attachments>
                         </td>
                       </tr>
+                      <tr>
+                        <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.bukti_transfer') }}
+                        </td>
+                        <td>
+                          <datatable-attachments
+                            :row="entry"
+                            :field="'bukti_transfer'"
+                          >
+                          </datatable-attachments>
+                        </td>
+                      </tr>
                     </tbody>
                   </div>
                 </div>
@@ -134,7 +154,7 @@
             <table class="table table-bordered" name="inputItem">
               <thead>
                   <th>Account</th>
-                  <th>Amount</th>
+                  <th>Nominal</th>
                   <th v-if="parseInt(entry.status) > 4">Realisasi Amount</th>
                   <th>Site</th>
                   <th>Notes</th>
@@ -145,7 +165,7 @@
                       {{item.account.name}}
                   </td>
                   <td>
-                      {{item.amount}}
+                      {{formatCurrency(item.amount)}}
                   </td>
                   <td v-if="parseInt(entry.status) > 4">
                       {{item.real_amount}}
@@ -215,7 +235,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('FpdsSingle', ['fetchShowData', 'resetState'])
+    ...mapActions('FpdsSingle', ['fetchShowData', 'resetState']),
+    formatCurrency(value) {
+      let val = (value/1).toFixed(2).replace('.', ',')
+      return 'Rp. ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    }
   }
 }
 </script>

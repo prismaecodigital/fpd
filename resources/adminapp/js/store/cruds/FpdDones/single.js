@@ -4,6 +4,7 @@ function initialState() {
         id: null,
         code: '',
         code_voucher: '',
+        code_voucher_lrd: '',
         transact_type: null,
         klasifikasi: null,
         bu_id: null,
@@ -121,6 +122,9 @@ function initialState() {
     },
     setCodeVoucher({ commit }, value) {
       commit('setCodeVoucher', value)
+    },
+    setCodeVoucherLrd({ commit }, value) {
+      commit('setCodeVoucherLrd', value)
     },
     setTransactType({ commit }, value) {
       commit('setTransactType', value)
@@ -328,14 +332,24 @@ function initialState() {
         },
       ]
       if(entry.status != '99') {
-        entry.status_histories.forEach(function(val, index) {
-          if(val.status == state.timelineData[index+1].status_val) {
-            state.timelineData[index].tanggal = moment(val.created_at).format('DD MMMM YYYY, HH:mm')
-            state.timelineData[index].user = val.user.name
-            state.timelineData[index].proses = 'selesai'
+        for (let y = 1; y < state.timelineData.length; y++) {
+          if (entry.status_histories.hasOwnProperty(y)) {
+            if (parseInt(state.timelineData[y].status_val) + 1 === parseInt(entry.status_histories[y].status)) {
+              state.timelineData[y].tanggal = moment(entry.status_histories[y].created_at).format('DD MMMM YYYY, HH:mm');
+              state.timelineData[y].user = entry.status_histories[y].user.name;
+              state.timelineData[y].proses = 'selesai';
+            }
           }
+        }
+        if(entry.status !== '8') {
+          state.timelineData[entry.status_histories.length].tanggal = ''
+          state.timelineData[entry.status_histories.length].user = ''
           state.timelineData[entry.status_histories.length].proses = 'proses'
-        })
+        }
+        if(entry.status === '8') {
+          state.timelineData[state.timelineData.length-1].user = entry.status_histories[entry.status_histories.length-1].user.name
+          state.timelineData[state.timelineData.length-1].proses = 'selesai'
+        }
       }
       if(entry.status == '99') {
         entry.status_histories.forEach(function(val, index) {
@@ -353,6 +367,9 @@ function initialState() {
     },
     setCodeVoucher(state, value) {
       state.entry.code_voucher = value
+    },
+    setCodeVoucherLrd(state, value) {
+      state.entry.code_voucher_lrd = value
     },
     setTransactType(state, value) {
       state.entry.transact_type = value

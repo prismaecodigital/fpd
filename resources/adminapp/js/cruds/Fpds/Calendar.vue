@@ -36,7 +36,7 @@
                   :options="config"
               >
                   <template #eventContent="{ event }">
-                  <span v-if="parseInt(event.extendedProps.status) === 0" class="labelCalendar labelCalendar1">{{ event.extendedProps.code }}</span>
+                  <span v-if="parseInt(event.extendedProps.status) === 0" class="labelCalendar labelCalendar0">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 1" class="labelCalendar labelCalendar1">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 2" class="labelCalendar labelCalendar2">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 3" class="labelCalendar labelCalendar3">{{ event.extendedProps.code }}</span>

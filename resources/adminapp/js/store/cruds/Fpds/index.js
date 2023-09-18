@@ -7,6 +7,7 @@ const set = key => (state, val) => {
       data: [],
       total: 0,
       query: {},
+      bu: '',
       loading: false
     }
   }
@@ -16,7 +17,8 @@ const set = key => (state, val) => {
   const getters = {
     data: state => state.data,
     total: state => state.total,
-    loading: state => state.loading
+    loading: state => state.loading,
+    bu: state => state.bu
   }
   
   const actions = {
@@ -26,6 +28,7 @@ const set = key => (state, val) => {
         .get(route, { params: state.query })
         .then(response => {
           commit('setData', response.data.data)
+          commit('setBu', response.data.data[0].bu.code)
           commit('setTotal', response.data.total)
         })
         .catch(error => {
@@ -72,6 +75,7 @@ const set = key => (state, val) => {
   
   const mutations = {
     setData: set('data'),
+    setBu: set('bu'),
     setCalendarData(state, data) {
       state.data = data;
       // You can also set the events based on 'data' here

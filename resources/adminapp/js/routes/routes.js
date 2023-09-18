@@ -155,25 +155,25 @@ const routes = [
             path: 'sites',
             name: 'sites.index',
             component: () => import('@cruds/Sites/Index.vue'),
-            meta: { title: 'cruds.dept.title' }
+            meta: { title: 'cruds.site.title' }
           },
           {
             path: 'sites/create',
             name: 'sites.create',
             component: () => import('@cruds/Sites/Create.vue'),
-            meta: { title: 'cruds.dept.title' }
+            meta: { title: 'cruds.site.title' }
           },
           {
             path: 'sites/:id',
             name: 'sites.show',
             component: () => import('@cruds/Sites/Show.vue'),
-            meta: { title: 'cruds.dept.title' }
+            meta: { title: 'cruds.site.title' }
           },
           {
             path: 'sites/:id/edit',
             name: 'sites.edit',
             component: () => import('@cruds/Sites/Edit.vue'),
-            meta: { title: 'cruds.dept.title' }
+            meta: { title: 'cruds.site.title' }
           },
           {
             path: 'accounts/list',
@@ -210,6 +210,12 @@ const routes = [
       },
       {
         path: 'fpds',
+        name: 'listFpd',
+        component: () => import('@cruds/Fpds/List.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'fpds/list',
         name: 'fpds.index',
         component: () => import('@cruds/Fpds/Index.vue'),
         meta: { title: 'cruds.fpd.title' }
@@ -238,18 +244,84 @@ const routes = [
         component: () => import('@cruds/Fpds/EditData.vue'),
         meta: { title: 'cruds.fpd.title' }
       },
+
+      // Fpd Process
       {
-        path: 'profile/edit',
-        name: 'profile.password.edit',
-        component: () => import('@cruds/Profile/Edit.vue'),
-        meta: { title: 'Profile' }
+        path: 'fpd-processes',
+        name: 'listFpdProcess',
+        component: () => import('@cruds/FpdProcesses/List.vue'),
+        meta: { title: 'cruds.fpd.title' }
       },
       {
-        path: 'calendar',
-        name: 'fpds.calendar',
-        component: () => import('@cruds/Fpds/Calendar.vue'),
-        meta: { title: 'Calendar' }
+        path: 'fpd-processes/list',
+        name: 'fpd-processes.index',
+        component: () => import('@cruds/FpdProcesses/Index.vue'),
+        meta: { title: 'cruds.fpd.title' }
       },
+      {
+        path: 'fpd-processes/create',
+        name: 'fpd-processes.create',
+        component: () => import('@cruds/FpdProcesses/Create.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'fpd-processes/:id',
+        name: 'fpd-processes.show',
+        component: () => import('@cruds/FpdProcesses/Show.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'fpd-processes/:id/edit',
+        name: 'fpd-processes.edit',
+        component: () => import('@cruds/FpdProcesses/Edit.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'fpd-processes/:id/editData',
+        name: 'fpd-processes.editData',
+        component: () => import('@cruds/FpdProcesses/EditData.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+
+      // LRD
+      {
+        path: 'lrds',
+        name: 'listLrd',
+        component: () => import('@cruds/Lrds/List.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'lrds/list',
+        name: 'lrds.index',
+        component: () => import('@cruds/Lrds/Index.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'lrds/create',
+        name: 'lrds.create',
+        component: () => import('@cruds/Lrds/Create.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'lrds/:id',
+        name: 'lrds.show',
+        component: () => import('@cruds/Lrds/Show.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'lrds/:id/edit',
+        name: 'lrds.edit',
+        component: () => import('@cruds/Lrds/Edit.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+      {
+        path: 'lrds/:id/editData',
+        name: 'lrds.editData',
+        component: () => import('@cruds/Lrds/EditData.vue'),
+        meta: { title: 'cruds.fpd.title' }
+      },
+
+      // Fpd Dones
       {
         path: 'fpd-dones',
         name: 'fpd-dones.index',
@@ -262,6 +334,22 @@ const routes = [
         component: () => import('@cruds/FpdDones/Show.vue'),
         meta: { title: 'Done' }
       },
+
+      // Profile
+      {
+        path: 'profile/edit',
+        name: 'profile.password.edit',
+        component: () => import('@cruds/Profile/Edit.vue'),
+        meta: { title: 'Profile' }
+      },
+      {
+        path: 'calendar',
+        name: 'fpds.calendar',
+        component: () => import('@cruds/Fpds/Calendar.vue'),
+        meta: { title: 'Calendar' }
+      },
+
+
     ]
   }
 ]

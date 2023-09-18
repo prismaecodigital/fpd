@@ -12,6 +12,7 @@ class CreateFpdsTable extends Migration
             $table->bigIncrements('id');
             $table->string('code')->nullable();
             $table->string('code_voucher')->nullable();
+            $table->string('code_voucher_lrd')->nullable();
             $table->string('transact_type');
             $table->string('klasifikasi')->nullable();
             $table->foreignId('bu_id')->nullable()->references('id')->on('bus')->onDelete('set null');

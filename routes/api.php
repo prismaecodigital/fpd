@@ -41,12 +41,23 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::get('listBu', 'AccountApiController@list')->name('listBu');
     Route::resource('accounts', 'AccountApiController');
 
-    // Fpd
+    // All Fpd
+    Route::get('listFpd','FpdApiController@list')->name('listFpd');
     Route::post('fpds/media', 'FpdApiController@storeMedia')->name('fpds.storeMedia');
     Route::get('calendar', 'FpdApiController@calendar')->name('fpds.calendar');
     Route::resource('fpds', 'FpdApiController');
     Route::resource('fpd-items','FpdItemApiController')->except(['create','edit']);
     Route::resource('status-histories','StatusHistoryApiController')->except(['create','edit']);
+
+    // Fpd Process
+    Route::get('listFpdProcess','FpdProcessApiController@list')->name('listFpdProcess');
+    Route::post('fpd-processes/media', 'FpdProcessApiController@storeMedia')->name('fpd-processes.storeMedia');
+    Route::resource('fpd-processes', 'FpdProcessApiController')->parameters(['fpd-processes' => 'fpd']);
+
+    // Lrd
+    Route::get('listLrd','LrdApiController@list')->name('listLrd');
+    Route::post('lrds/media', 'LrdApiController@storeMedia')->name('lrds.storeMedia');
+    Route::resource('lrds', 'LrdApiController')->parameters(['lrds' => 'fpd']);
 
     // Fpd Done
     Route::resource('fpd-dones', 'FpdDoneApiController')->parameters(['fpd-dones' => 'fpd'])->only(['index','show']);

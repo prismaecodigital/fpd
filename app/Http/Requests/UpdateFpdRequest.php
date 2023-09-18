@@ -7,6 +7,7 @@ use Gate;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Response;
 use Illuminate\Support\Arr;
+use App\Rules\ValidateBuktiTransfer;
 
 class UpdateFpdRequest extends FormRequest
 {
@@ -20,6 +21,9 @@ class UpdateFpdRequest extends FormRequest
         return [
             'code_voucher' => [
                 'required_if:status,3'
+            ],
+            'code_voucher_lrd' => [
+                'required_if:status,6'
             ],
             'transact_type' => [
                 'required',
@@ -72,6 +76,14 @@ class UpdateFpdRequest extends FormRequest
                 'required_if:status,4'
             ],
             'lampiran.*.id' => [
+                'integer',
+                'exists:media,id',
+            ],
+            'bukti_transfer' => [
+                'array',
+                new ValidateBuktiTransfer(),
+            ],
+            'bukti_transfer.*.id' => [
                 'integer',
                 'exists:media,id',
             ],

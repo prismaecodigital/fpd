@@ -27,7 +27,7 @@
                                                 <i class="material-icons">person</i>
                                             </span>
                                         </div>
-                                        <input name="username" type="text" class="form-control" placeholder="username" value="{{ old('username') }}" required autocomplete="username" autofocus>
+                                        <input name="username" type="text" class="form-control" placeholder="Username" value="{{ old('username') }}" required autocomplete="username" autofocus>
                                     </div>
                                     @error('username')
                                         <div class="error" for="username">

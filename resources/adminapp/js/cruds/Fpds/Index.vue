@@ -8,8 +8,7 @@
               <i class="material-icons">assignment</i>
             </div>
             <h4 class="card-title">
-              {{ $t('global.table') }}
-              <strong>{{ $t('cruds.fpd.title') }}</strong>
+              <strong>{{ $t('cruds.fpd.title') }} {{ bu }}</strong>
             </h4>
           </div>
           <div class="card-body">
@@ -81,6 +80,8 @@ export default {
     HeaderSettings
   },
   data() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFromURL = urlParams.get('id');
     return {
       columns: [
         {
@@ -145,7 +146,7 @@ export default {
           colStyle: 'width: 150px;'
         }
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '' },
+      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: idFromURL },
       xprops: {
         module: 'FpdsIndex',
         route: 'fpds',
@@ -157,7 +158,7 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('FpdsIndex', ['data', 'total', 'loading'])
+    ...mapGetters('FpdsIndex', ['data', 'total', 'loading', 'bu'])
   },
   watch: {
     query: {

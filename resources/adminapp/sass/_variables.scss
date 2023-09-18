@@ -302,31 +302,32 @@ td.day.old, td.day.new {
 }
 
 .labelCalendar0 {
-    background-color: #1809c1;
+    background-color: rgb(255, 37, 37);
 }
 .labelCalendar1 {
-    background-color: #958ee4;
+    background-color: orange;
 }
 .labelCalendar2 {
-    background-color: #98ab1c;
+    background-color: yellow;
+    color: black;
 }
 .labelCalendar3 {
-    background-color: #c9d563;
+    background-color: rgb(21, 255, 21);
 }
 .labelCalendar4 {
-    background-color: #9beb9d;
+    background-color: rgb(19, 98, 167);
 }
 .labelCalendar5 {
-    background-color: #3fbd43;
+    background-color: rgb(154, 11, 255);
 }
 .labelCalendar6 {
-    background-color: #007b00;
+    background-color: rgb(255, 7, 255);
 }
 .labelCalendar78 {
-    background-color: #0d3d00;
+    background-color: rgb(175, 22, 160);
 }
 .labelCalendar99 {
-    background-color: #e37171;
+    background-color: #d60202;
 }
 
 .select-all:hover {
@@ -345,6 +346,10 @@ td.day.old, td.day.new {
 .collapse .nav {
     padding-left: 15px;
     transition: all 0.5s;
+}
+
+.inputRp {
+    border: none;
 }
 
 @media (max-width: 768px) {

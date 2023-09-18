@@ -61,6 +61,7 @@
                       @focus="focusField('req_date')"
                       @blur="clearFocus"
                       required
+                      disabled
                     >
                     </datetime-picker>
                   </div>
@@ -103,8 +104,7 @@
                       :options="lists.bu"
                       :reduce="entry => entry.id"
                       @input="updateBu"
-                      @search.focus="focusField('bu')"
-                      @search.blur="clearFocus"
+                      disabled
                     >
                       <template #search="{attributes, events}">
                         <input
@@ -134,8 +134,7 @@
                       :options="lists.dept"
                       :reduce="entry => entry.id"
                       @input="updateDept"
-                      @search.focus="focusField('dept')"
-                      @search.blur="clearFocus"
+                      disabled
                     >
                     <template #search="{attributes, events}">
                         <input
@@ -146,6 +145,26 @@
                         />
                       </template>
                     </v-select>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.ket,
+                      'is-focused': activeField == 'ket'
+                    }"
+                  >
+                    <label class="">{{
+                      $t('cruds.fpd.fields.ket')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.ket"
+                      @input="updateKet"
+                      @focus="focusField('ket')"
+                      @blur="clearFocus"
+                      disabled
+                    />
                   </div>
                   
                 </div>
@@ -169,6 +188,25 @@
                       @blur="clearFocus"
                     />
                   </div>
+                  <div v-if="$can('finance') && entry.status > 4"
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.code_voucher_lrd,
+                      'is-focused': activeField == 'code_voucher_lrd'
+                    }"
+                  >
+                    <label class="">{{
+                      $t('cruds.fpd.fields.code_voucher_lrd')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.code_voucher_lrd"
+                      @input="updateCodeVoucherLrd"
+                      @focus="focusField('code_voucher_lrd')"
+                      @blur="clearFocus"
+                    />
+                  </div>
                   <div
                     class="form-group bmd-form-group"
                     :class="{
@@ -186,8 +224,7 @@
                       :options="lists.transact_type"
                       :reduce="entry => entry.value"
                       @input="updateTransactType"
-                      @search.focus="focusField('transact_type')"
-                      @search.blur="clearFocus"
+                      
                     >
                     <template #search="{attributes, events}">
                         <input
@@ -216,8 +253,6 @@
                       :options="lists.klasifikasi"
                       :reduce="entry => entry.value"
                       @input="updateKlasifikasi"
-                      @search.focus="focusField('klasifikasi')"
-                      @search.blur="clearFocus"
                     />
                   </div>
                   <div class="form-group">
@@ -249,7 +284,8 @@
                 <thead>
                   <th></th>
                   <th>Nama Account / COA</th>
-                  <th>Amount</th>
+                  <th>Amount (Nominal)</th>
+                  <th v-if="entry.status > 4">Nominal Realisasi</th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -279,7 +315,10 @@
                     </v-select>
                     </td>
                     <td>
-                        <input class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                        Rp.<input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                    </td>
+                    <td v-if="parseInt(entry.status) > 4">
+                        Rp.<input class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateImteRealAmount(k, $event)"/>
                     </td>
                     <td>
                     <v-select
@@ -359,6 +398,7 @@ export default {
       'updateData',
       'resetState',
       'setCodeVoucher',
+      'setCodeVoucherLrd',
       'setTransactType',
       'setKlasifikasi',
       'setBu',
@@ -374,6 +414,7 @@ export default {
       'setItems',
       'setItemAccount',
       'setItemAmount',
+      'setItemRealAmount',
       'setItemSite',
       'setItemKet',
       'fetchEditData',
@@ -384,6 +425,9 @@ export default {
     ]),
     updateCodeVoucher(e) {
       this.setCodeVoucher(e.target.value)
+    },
+    updateCodeVoucherLrd(e) {
+      this.setCodeVoucherLrd(e.target.value)
     },
     updateTransactType(value) {
       this.setTransactType(value)
@@ -452,6 +496,10 @@ export default {
       val = event.target.value
       this.setItemAmount({ index, val });
     },
+    updateItemRealAmount(index, event, val) {
+      val = event.target.value
+      this.setItemRealAmount({ index, val });
+    },
     updateItemKet(index, event, val) {
       val = event.target.value
       this.setItemKet({index, val})
@@ -465,7 +513,7 @@ export default {
     submitForm() {
       this.updateData()
         .then(() => {
-          this.$router.push({ name: 'fpds.index' })
+          this.$router.push({ name: 'fpds.index', query: { id: this.entry.bu_id } })
           this.$eventHub.$emit('update-success')
         })
         .catch(error => {
