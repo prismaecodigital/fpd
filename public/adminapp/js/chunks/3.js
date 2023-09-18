@@ -168,7 +168,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\na[data-v-28a596d8] {\n  font-size: 13px;\n  font-weight: 500;\n  color: #202124;\n}\na[data-v-28a596d8]:hover {\n  color: #9c27b0;\n  text-decoration: underline;\n}\n", ""]);
+exports.push([module.i, "\na[data-v-28a596d8] {\r\n  font-size: 13px;\r\n  font-weight: 500;\r\n  color: #202124;\n}\na[data-v-28a596d8]:hover {\r\n  color: #9c27b0;\r\n  text-decoration: underline;\n}\r\n", ""]);
 
 // exports
 
@@ -187,7 +187,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.badge[data-v-477f0514] {\n  font-size: 0.875rem;\n  font-weight: 500;\n  text-transform: none;\n}\n", ""]);
+exports.push([module.i, "\n.badge[data-v-477f0514] {\r\n  font-size: 0.875rem;\r\n  font-weight: 500;\r\n  text-transform: none;\n}\r\n", ""]);
 
 // exports
 

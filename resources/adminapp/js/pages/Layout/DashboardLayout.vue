@@ -91,12 +91,12 @@ export default {
           path: { name: 'fpd' },
           gate: 'fpd_access',
           children: [
-            {
-              title: 'cruds.fpd.title',
-              icon: 'border_all',
-              path: { name: 'listFpd' },
-              gate: 'fpd_access'
-            },
+            // {
+            //   title: 'cruds.fpd.title',
+            //   icon: 'border_all',
+            //   path: { name: 'listFpd' },
+            //   gate: 'fpd_access'
+            // },
             {
               title: 'FPD Proses',
               icon: 'loop',

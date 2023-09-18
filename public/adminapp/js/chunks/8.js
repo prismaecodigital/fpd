@@ -107,14 +107,14 @@ __webpack_require__.r(__webpack_exports__);
           name: 'fpd'
         },
         gate: 'fpd_access',
-        children: [{
-          title: 'cruds.fpd.title',
-          icon: 'border_all',
-          path: {
-            name: 'listFpd'
-          },
-          gate: 'fpd_access'
-        }, {
+        children: [
+        // {
+        //   title: 'cruds.fpd.title',
+        //   icon: 'border_all',
+        //   path: { name: 'listFpd' },
+        //   gate: 'fpd_access'
+        // },
+        {
           title: 'FPD Proses',
           icon: 'loop',
           path: {
@@ -358,7 +358,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, "\n.fade-enter-active[data-v-3b48bf40],\n.fade-leave-active[data-v-3b48bf40] {\n  transition: opacity 0.1s;\n}\n.fade-enter[data-v-3b48bf40],\n.fade-leave-to[data-v-3b48bf40] {\n  opacity: 0;\n}\n", ""]);
+exports.push([module.i, "\n.fade-enter-active[data-v-3b48bf40],\r\n.fade-leave-active[data-v-3b48bf40] {\r\n  transition: opacity 0.1s;\n}\n.fade-enter[data-v-3b48bf40],\r\n.fade-leave-to[data-v-3b48bf40] {\r\n  opacity: 0;\n}\r\n", ""]);
 
 // exports
 
