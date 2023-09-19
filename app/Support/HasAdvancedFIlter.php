@@ -13,8 +13,7 @@ trait HasAdvancedFilter
             'order_direction' => request('order', 'desc'),
             'limit'           => request('limit', 10),
             's'               => request('s', null),
-        ])
-            ;
+        ]);
     }
 
     public function processQuery($query, $data)
