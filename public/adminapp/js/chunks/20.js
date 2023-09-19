@@ -149,7 +149,7 @@ var render = function render() {
   return _c("div", {
     staticClass: "dt-action-container"
   }, [_vm.$can("account_access") ? _c("router-link", {
-    staticClass: "btn btn-round btn-success",
+    staticClass: "btn btn-lg btn-space btn-round btn-success",
     attrs: {
       to: {
         name: _vm.xprops.route + ".index",
@@ -158,7 +158,7 @@ var render = function render() {
         }
       }
     }
-  }, [_vm._v("\n    Account\n  ")]) : _vm._e()], 1);
+  }, [_vm._v("\n    COA\n  ")]) : _vm._e()], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;

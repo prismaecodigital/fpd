@@ -86,7 +86,7 @@ export default {
           ]
         },
         {
-          title: 'FPD',
+          title: 'Dana',
           icon: 'dynamic_form',
           path: { name: 'fpd' },
           gate: 'fpd_access',
@@ -98,7 +98,7 @@ export default {
             //   gate: 'fpd_access'
             // },
             {
-              title: 'FPD Proses',
+              title: 'Dana Proses',
               icon: 'loop',
               path: { name: 'listFpdProcess' },
               gate: 'fpd_access'

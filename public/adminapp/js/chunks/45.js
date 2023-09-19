@@ -102,7 +102,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   beforeDestroy: function beforeDestroy() {
     this.resetState();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('LrdsIndex', ['data', 'total', 'loading'])),
+  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('LrdsIndex', ['data', 'total', 'loading', 'bu'])),
   watch: {
     query: {
       handler: function handler(query) {
@@ -143,7 +143,7 @@ var render = function render() {
     staticClass: "card-header card-header-primary card-header-icon"
   }, [_vm._m(0), _vm._v(" "), _c("h4", {
     staticClass: "card-title"
-  }, [_vm._v("\n            " + _vm._s(_vm.$t("global.table")) + "\n            "), _c("strong", [_vm._v(_vm._s(_vm.$t("cruds.fpd.title")))])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n            List "), _c("strong", [_vm._v(" Realisasi Dana " + _vm._s(_vm.bu))])])]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("button", {
     staticClass: "btn btn-default",

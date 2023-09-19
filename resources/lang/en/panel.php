@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'DANA (FPD)',
+    'site_title' => 'DANA',
 ];

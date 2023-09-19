@@ -1,11 +1,11 @@
 <template>
   <div class="dt-action-container">
     <router-link
-      class="btn btn-round btn-success"
+      class="btn btn-lg btn-space btn-round btn-success"
       v-if="$can('account_access')"
       :to="{ name: xprops.route + '.index', query: { id: row.id } }"
     >
-      Account
+      COA
     </router-link>
   </div>
 </template>

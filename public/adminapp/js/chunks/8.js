@@ -101,7 +101,7 @@ __webpack_require__.r(__webpack_exports__);
           gate: 'bu_dept_site_access'
         }]
       }, {
-        title: 'FPD',
+        title: 'Dana',
         icon: 'dynamic_form',
         path: {
           name: 'fpd'
@@ -115,7 +115,7 @@ __webpack_require__.r(__webpack_exports__);
         //   gate: 'fpd_access'
         // },
         {
-          title: 'FPD Proses',
+          title: 'Dana Proses',
           icon: 'loop',
           path: {
             name: 'listFpdProcess'

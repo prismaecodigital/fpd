@@ -8,8 +8,7 @@
               <i class="material-icons">assignment</i>
             </div>
             <h4 class="card-title">
-              {{ $t('global.table') }}
-              <strong>{{ $t('cruds.fpd.title') }}</strong>
+              List <strong> Realisasi Dana {{bu}}</strong>
             </h4>
           </div>
           <div class="card-body">
@@ -152,7 +151,7 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('LrdsIndex', ['data', 'total', 'loading'])
+    ...mapGetters('LrdsIndex', ['data', 'total', 'loading', 'bu'])
   },
   watch: {
     query: {

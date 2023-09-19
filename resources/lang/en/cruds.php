@@ -206,8 +206,8 @@ return [
         ],
     ],
     'fpd' => [
-        'title'          => 'FPD',
-        'title_singular' => 'FPD',
+        'title'          => 'Dana (FPD)',
+        'title_singular' => 'Dana (FPD)',
         'calendar'              => 'Calendar',
         'fields'         => [
             'calendar'              => 'Calendar',

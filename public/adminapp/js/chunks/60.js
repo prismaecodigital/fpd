@@ -45,9 +45,13 @@ var render = function render() {
     staticClass: "card-header card-header-success card-header-icon"
   }, [_vm._m(0), _vm._v(" "), _c("h4", {
     staticClass: "card-title"
-  }, [_vm._v("\n              " + _vm._s(_vm.$t("global.dashboard")) + "\n            ")])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n              " + _vm._s(_vm.$t("global.dashboard")) + "\n            ")])]), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
     staticClass: "card-body"
-  }, [_vm._v("\n            " + _vm._s(_vm.$t("global.youAreLoggedIn")) + "\n          ")])])])])])]);
+  }, [_vm._v("\n            " + _vm._s(_vm.$t("global.youAreLoggedIn")) + "\n          ")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_vm._v("\n            Jika Anda menemui kendala dalam penggunaan aplikasi, hubungi Ibu Dian Finance Prisma\n          ")]), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_vm._v("\n            Jika Anda menemui error, tekan Ctrl+F5. Jika masih error, hubungi Digitalisasi Prisma\n          ")])])])])])]);
 };
 var staticRenderFns = [function () {
   var _vm = this,
@@ -57,6 +61,17 @@ var staticRenderFns = [function () {
   }, [_c("i", {
     staticClass: "material-icons"
   }, [_vm._v("language")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "card-body"
+  }, [_c("a", {
+    attrs: {
+      href: "https://drive.google.com/drive/folders/1VWyftVKzPYCqIZJs8RGBedUcQbr32rTn?usp=drive_link",
+      target: "_blank"
+    }
+  }, [_vm._v("Link Panduan Penggunaan")])]);
 }];
 render._withStripped = true;
 

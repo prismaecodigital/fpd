@@ -8,8 +8,8 @@
               <i class="material-icons">assignment</i>
             </div>
             <h4 class="card-title">
-              {{ $t('global.table') }}
-              <strong>{{ $t('cruds.fpd.title') }}</strong>
+              
+              List <strong> Pengajuan Dana {{bu}}</strong>
             </h4>
           </div>
           <div class="card-body">
@@ -152,7 +152,7 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('FpdProcessesIndex', ['data', 'total', 'loading'])
+    ...mapGetters('FpdProcessesIndex', ['data', 'total', 'loading','bu'])
   },
   watch: {
     query: {

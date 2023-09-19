@@ -8,7 +8,7 @@
               <i class="material-icons">assignment</i>
             </div>
             <h4 class="card-title">
-              <strong>List LRD</strong>
+              <strong>Pilih BU</strong>
             </h4>
           </div>
           <div class="card-body">

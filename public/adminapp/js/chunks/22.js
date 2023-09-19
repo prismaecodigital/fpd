@@ -120,7 +120,7 @@ var render = function render() {
   return _c("div", {
     staticClass: "dt-action-container"
   }, [_vm.$can("fpd_access") ? _c("router-link", {
-    staticClass: "btn btn-lg btn-round btn-success",
+    staticClass: "btn btn-lg btn-round btn-success btn-space",
     attrs: {
       to: {
         name: _vm.xprops.route + ".index",
@@ -129,7 +129,7 @@ var render = function render() {
         }
       }
     }
-  }, [_vm._v("\n    FPD\n  ")]) : _vm._e()], 1);
+  }, [_vm._v("\n    LIHAT\n  ")]) : _vm._e()], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;
@@ -227,7 +227,7 @@ var staticRenderFns = [function () {
     staticClass: "material-icons"
   }, [_vm._v("assignment")])]), _vm._v(" "), _c("h4", {
     staticClass: "card-title"
-  }, [_c("strong", [_vm._v("List FPD Proses")])])]);
+  }, [_c("strong", [_vm._v("Pilih BU")])])]);
 }];
 render._withStripped = true;
 

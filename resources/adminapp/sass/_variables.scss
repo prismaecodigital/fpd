@@ -356,6 +356,10 @@ td.day.old, td.day.new {
     color: #000;
 }
 
+.btn-space {
+    padding: 5px 20px !important;
+}
+
 @media (max-width: 768px) {
     table > thead > tr > th, table > tbody > tr > td, table > tbody > tr > td > div > span,
     table > tbody > tr > td > div > a {

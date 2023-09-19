@@ -17,6 +17,7 @@ const set = key => (state, val) => {
   const getters = {
     data: state => state.data,
     total: state => state.total,
+    bu: state => state.bu,
     loading: state => state.loading
   }
   

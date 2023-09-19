@@ -120,7 +120,7 @@ var render = function render() {
   return _c("div", {
     staticClass: "dt-action-container"
   }, [_vm.$can("fpd_access") ? _c("router-link", {
-    staticClass: "btn btn-lg btn-round btn-success",
+    staticClass: "btn btn-lg btn-round btn-success btn-space",
     attrs: {
       to: {
         name: _vm.xprops.route + ".index",
@@ -129,7 +129,7 @@ var render = function render() {
         }
       }
     }
-  }, [_vm._v("\n    FPD\n  ")]) : _vm._e()], 1);
+  }, [_vm._v("\n    LIHAT\n  ")]) : _vm._e()], 1);
 };
 var staticRenderFns = [];
 render._withStripped = true;
