@@ -352,6 +352,10 @@ td.day.old, td.day.new {
     border: none;
 }
 
+.bmd-form-group label, label {
+    color: #000;
+}
+
 @media (max-width: 768px) {
     table > thead > tr > th, table > tbody > tr > td, table > tbody > tr > td > div > span,
     table > tbody > tr > td > div > a {

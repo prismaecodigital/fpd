@@ -39,6 +39,7 @@ class Fpd extends Model implements HasMedia
         'code_voucher',
         'code_voucher_lrd',
         'code',
+        'name',
         'bu.name',
         'dept.name',
         'user.name',
@@ -51,6 +52,7 @@ class Fpd extends Model implements HasMedia
         'code_voucher',
         'code_voucher_lrd',
         'code',
+        'name',
         'bu.name',
         'dept.name',
         'user.name',
@@ -139,6 +141,7 @@ class Fpd extends Model implements HasMedia
         'code_voucher',
         'code_voucher_lrd',
         'code',
+        'name',
         'transact_type',
         'klasifikasi',
         'bu_id',
@@ -245,7 +248,7 @@ class Fpd extends Model implements HasMedia
     }
     public function getBuktiTransferAttribute()
     {
-        return $this->getMedia('bukti_transfer')->map(function ($item) {
+        return $this->getMedia('fpd_bukti_transfer')->map(function ($item) {
             $media        = $item->toArray();
             $media['url'] = $item->getUrl();
 

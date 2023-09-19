@@ -53,6 +53,14 @@
                       </tr>
                       <tr>
                         <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.name') }}
+                        </td>
+                        <td>
+                          {{ entry.name }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.bu') }}
                         </td>
                         <td>
@@ -96,10 +104,27 @@
                       </tr>
                       <tr>
                         <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.klasifikasi') }}
+                        </td>
+                        <td>
+                          <datatable-enum :row="entry" field="klasifikasi">
+                          </datatable-enum>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.code_voucher') }}
                         </td>
                         <td>
                           {{ entry.code_voucher ?? '-' }}
+                        </td>
+                      </tr>                      
+                      <tr v-if="entry.code_voucher_lrd">
+                        <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.code_voucher_lrd') }}
+                        </td>
+                        <td>
+                          {{ entry.code_voucher_lrd ?? '-' }}
                         </td>
                       </tr>                      
                       <tr>

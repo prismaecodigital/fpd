@@ -39,20 +39,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     var idFromURL = urlParams.get('id');
     return {
       columns: [{
-        title: 'cruds.fpd.fields.code',
-        field: 'code',
+        title: 'cruds.fpd.fields.name',
+        field: 'name',
         thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
         sortable: true
       }, {
         title: 'cruds.fpd.fields.code_voucher',
         field: 'code_voucher',
         thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
-        sortable: true
-      }, {
-        title: 'cruds.fpd.fields.bu',
-        field: 'bu.code',
-        thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
-        tdComp: _components_Datatables_DatatableSingle__WEBPACK_IMPORTED_MODULE_5__["default"],
         sortable: true
       }, {
         title: 'cruds.fpd.fields.dept',
@@ -151,16 +145,7 @@ var render = function render() {
     staticClass: "card-title"
   }, [_vm._v("\n            " + _vm._s(_vm.$t("global.table")) + "\n            "), _c("strong", [_vm._v(_vm._s(_vm.$t("cruds.fpd.title")))])])]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
-  }, [_vm.$can(_vm.xprops.permission_prefix + "create") ? _c("router-link", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      to: {
-        name: _vm.xprops.route + ".create"
-      }
-    }
-  }, [_c("i", {
-    staticClass: "material-icons"
-  }, [_vm._v("\n              add\n            ")]), _vm._v("\n            " + _vm._s(_vm.$t("global.add")) + "\n          ")]) : _vm._e(), _vm._v(" "), _c("button", {
+  }, [_c("button", {
     staticClass: "btn btn-default",
     "class": {
       disabled: _vm.loading
@@ -177,7 +162,7 @@ var render = function render() {
     "class": {
       "fa-spin": _vm.loading
     }
-  }, [_vm._v("\n              refresh\n            ")]), _vm._v("\n            " + _vm._s(_vm.$t("global.refresh")) + "\n          ")])], 1), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n              refresh\n            ")]), _vm._v("\n            " + _vm._s(_vm.$t("global.refresh")) + "\n          ")])]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "row"

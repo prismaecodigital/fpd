@@ -69,7 +69,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     }
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('LrdsSingle', ['updateData', 'resetState', 'setCodeVoucher', 'setCodeVoucherLrd', 'setTransactType', 'setKlasifikasi', 'setBu', 'setDept', 'setStatus', 'setReqDate', 'setProcessedDate', 'setKet', 'insertLampiranFile', 'removeLampiranFile', 'insertBuktiTransferFile', 'removeBuktiTransferFile', 'addItem', 'deleteItem', 'setItems', 'setItemAccount', 'setItemAmount', 'setItemRealAmount', 'setItemSite', 'setItemKet', 'setApprove', 'fetchEditData', 'fetchBuDept', 'fetchBuSite', 'fetchBuAccount', 'fetchDeptAccount'])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('LrdsSingle', ['updateData', 'resetState', 'setCodeVoucher', 'setCodeVoucherLrd', 'setTransactType', 'setKlasifikasi', 'setBu', 'setDept', 'setStatus', 'setReqDate', 'setProcessedDate', 'setKet', 'setName', 'insertLampiranFile', 'removeLampiranFile', 'insertBuktiTransferFile', 'removeBuktiTransferFile', 'addItem', 'deleteItem', 'setItems', 'setItemAccount', 'setItemAmount', 'setItemRealAmount', 'setItemSite', 'setItemKet', 'setApprove', 'fetchEditData', 'fetchBuDept', 'fetchBuSite', 'fetchBuAccount', 'fetchDeptAccount'])), {}, {
     updateCodeVoucher: function updateCodeVoucher(e) {
       this.setCodeVoucher(e.target.value);
     },
@@ -125,6 +125,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     updateKet: function updateKet(e) {
       this.setKet(e.target.value);
+    },
+    updateName: function updateName(e) {
+      this.setName(e.target.value);
     },
     addNewRow: function addNewRow() {
       this.addItem();
@@ -350,6 +353,10 @@ var render = function render() {
     staticClass: "row"
   }, [_c("div", {
     staticClass: "col"
+  })]) : _vm._e(), _vm._v(" "), _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-6"
   }, [_c("div", {
     staticClass: "form-group bmd-form-group",
     "class": {
@@ -371,11 +378,7 @@ var render = function render() {
       },
       blur: _vm.clearFocus
     }
-  })])])]) : _vm._e(), _vm._v(" "), _c("div", {
-    staticClass: "row"
-  }, [_c("div", {
-    staticClass: "col-md-6"
-  }, [_c("div", {
+  })]), _vm._v(" "), _c("div", {
     staticClass: "form-group bmd-form-group",
     "class": {
       "is-filled": _vm.entry.req_date,
@@ -499,27 +502,6 @@ var render = function render() {
       }
     }])
   })], 1), _vm._v(" "), _c("div", {
-    staticClass: "form-group bmd-form-group",
-    "class": {
-      "is-filled": _vm.entry.ket,
-      "is-focused": _vm.activeField == "ket"
-    }
-  }, [_c("label", {}, [_vm._v(_vm._s(_vm.$t("cruds.fpd.fields.ket")))]), _vm._v(" "), _c("input", {
-    staticClass: "form-control",
-    attrs: {
-      type: "text"
-    },
-    domProps: {
-      value: _vm.entry.ket
-    },
-    on: {
-      input: _vm.updateKet,
-      focus: function focus($event) {
-        return _vm.focusField("ket");
-      },
-      blur: _vm.clearFocus
-    }
-  })]), _vm._v(" "), _c("div", {
     staticClass: "form-group"
   }, [_c("label", [_vm._v(_vm._s(_vm.$t("cruds.fpd.fields.lampiran")))]), _vm._v(" "), _c("attachment", {
     attrs: {
@@ -535,7 +517,28 @@ var render = function render() {
     }
   })], 1)]), _vm._v(" "), _c("div", {
     staticClass: "col-md-6"
-  }, [_vm.$can("finance") ? _c("div", {
+  }, [_c("div", {
+    staticClass: "form-group bmd-form-group",
+    "class": {
+      "is-filled": _vm.entry.name,
+      "is-focused": _vm.activeField == "name"
+    }
+  }, [_c("label", {}, [_vm._v(_vm._s(_vm.$t("cruds.fpd.fields.name")))]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "text"
+    },
+    domProps: {
+      value: _vm.entry.name
+    },
+    on: {
+      input: _vm.updateName,
+      focus: function focus($event) {
+        return _vm.focusField("name");
+      },
+      blur: _vm.clearFocus
+    }
+  })]), _vm._v(" "), _vm.$can("finance") ? _c("div", {
     staticClass: "form-group bmd-form-group",
     "class": {
       "is-filled": _vm.entry.code_voucher,
@@ -633,9 +636,7 @@ var render = function render() {
     on: {
       input: _vm.updateKlasifikasi
     }
-  })], 1), _vm._v(" "), _vm.entry.status >= 5 ? _c("div", {
-    staticClass: "form-group"
-  }, [_c("label", [_vm._v(_vm._s(_vm.$t("cruds.fpd.fields.bukti_transfer")))]), _vm._v(" "), _c("attachment", {
+  })], 1), _vm._v(" "), _c("div", [_c("label", [_vm._v(_vm._s(_vm.$t("cruds.fpd.fields.bukti_transfer")))]), _vm._v(" "), _c("attachment", {
     attrs: {
       route: _vm.getRoute("lrds"),
       "collection-name": "fpd_bukti_transfer",
@@ -647,7 +648,7 @@ var render = function render() {
       "file-uploaded": _vm.insertBuktiTransferFile,
       "file-removed": _vm.removeBuktiTransferFile
     }
-  })], 1) : _vm._e()])])], 1), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
+  })], 1)])])], 1), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("bootstrap-alert"), _vm._v(" "), _c("table", {
     staticClass: "table table-bordered",
@@ -910,20 +911,7 @@ var render = function render() {
         return _vm.approveData();
       }
     }
-  }, [_vm._v("\n                  Approve\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status === "6" ? _c("div", {
-    staticClass: "col-lg-2"
-  }, [_c("button", {
-    staticClass: "btn btn-primary",
-    attrs: {
-      type: "button"
-    },
-    on: {
-      click: function click($event) {
-        $event.preventDefault();
-        return _vm.approveData();
-      }
-    }
-  }, [_vm._v("\n                  Paid\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status === "3" ? _c("div", {
+  }, [_vm._v("\n                  Approve\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status === "3" ? _c("div", {
     staticClass: "col-lg-2"
   }, [_c("button", {
     staticClass: "btn btn-primary",
@@ -936,7 +924,7 @@ var render = function render() {
         return _vm.needRealisasi();
       }
     }
-  }, [_vm._v("\n                  Approve\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status != 4 ? _c("div", {
+  }, [_vm._v("\n                  Paid\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status != 4 ? _c("div", {
     staticClass: "col-lg-2"
   }, [_c("button", {
     staticClass: "btn btn-danger",

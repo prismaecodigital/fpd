@@ -5,6 +5,7 @@ function initialState() {
         code: '',
         code_voucher: '',
         code_voucher_lrd: '',
+        name: '',
         transact_type: null,
         klasifikasi: null,
         bu_id: null,
@@ -154,6 +155,9 @@ function initialState() {
     },
     setKet({ commit }, value) {
       commit('setKet', value)
+    },
+    setName({ commit }, value) {
+      commit('setName', value)
     },
     insertLampiranFile({ commit }, file) {
       commit('insertLampiranFile', file)
@@ -405,6 +409,9 @@ function initialState() {
     },
     setKet(state, value) {
       state.entry.ket = value
+    },
+    setName(state, value) {
+      state.entry.name = value
     },
     insertLampiranFile(state, file) {
       state.entry.lampiran.push(file)

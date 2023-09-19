@@ -19,6 +19,10 @@ class UpdateFpdRequest extends FormRequest
     public function rules()
     {
         return [
+            'name' => [
+                'string',
+                'nullable',
+            ],
             'code_voucher' => [
                 'required_if:status,3'
             ],

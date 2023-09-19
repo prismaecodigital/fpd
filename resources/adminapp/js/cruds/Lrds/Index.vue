@@ -13,7 +13,7 @@
             </h4>
           </div>
           <div class="card-body">
-            <router-link
+            <!-- <router-link
               class="btn btn-primary"
               v-if="$can(xprops.permission_prefix + 'create')"
               :to="{ name: xprops.route + '.create' }"
@@ -22,7 +22,7 @@
                 add
               </i>
               {{ $t('global.add') }}
-            </router-link>
+            </router-link> -->
             <button
               type="button"
               class="btn btn-default"
@@ -86,8 +86,8 @@ export default {
     return {
       columns: [
         {
-          title: 'cruds.fpd.fields.code',
-          field: 'code',
+          title: 'cruds.fpd.fields.name',
+          field: 'name',
           thComp: TranslatedHeader,
           sortable: true
         },
@@ -95,13 +95,6 @@ export default {
           title: 'cruds.fpd.fields.code_voucher',
           field: 'code_voucher',
           thComp: TranslatedHeader,
-          sortable: true
-        },
-        {
-          title: 'cruds.fpd.fields.bu',
-          field: 'bu.code',
-          thComp: TranslatedHeader,
-          tdComp: DatatableSingle,
           sortable: true
         },
         {

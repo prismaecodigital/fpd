@@ -151,19 +151,19 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
-                      'is-filled': entry.ket,
-                      'is-focused': activeField == 'ket'
+                      'is-filled': entry.name,
+                      'is-focused': activeField == 'name'
                     }"
                   >
                     <label class="">{{
-                      $t('cruds.fpd.fields.ket')
+                      $t('cruds.fpd.fields.name')
                     }}</label>
                     <input
                       class="form-control"
                       type="text"
-                      :value="entry.ket"
-                      @input="updateKet"
-                      @focus="focusField('ket')"
+                      :value="entry.name"
+                      @input="updateName"
+                      @focus="focusField('name')"
                       @blur="clearFocus"
                     />
                   </div>
@@ -420,14 +420,9 @@
                     Approve
                   </button>                  
                 </div>
-                <div v-if="entry.status === '6'" class="col-lg-2">
-                  <button type='button' class="btn btn-primary" @click.prevent="approveData()">
-                    Paid
-                  </button>                  
-                </div>
                 <div v-if="entry.status === '3'" class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="needRealisasi()">
-                    Approve
+                    Paid
                   </button>                  
                 </div>
                 <div v-if="entry.status != 4" class="col-lg-2">
@@ -505,6 +500,7 @@ export default {
       'setReqDate',
       'setProcessedDate',
       'setKet',
+      'setName',
       'insertLampiranFile',
       'removeLampiranFile',
       'insertBuktiTransferFile',
@@ -570,6 +566,10 @@ export default {
     updateKet(e) {
       this.setKet(e.target.value)
     },
+    updateName(e) {
+      this.setName(e.target.value)
+    },
+    
     addNewRow() {
         this.addItem()
     },

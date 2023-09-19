@@ -18,6 +18,11 @@
               <bootstrap-alert />
               <div class="row" v-if="entry.code !== ''">
                 <div class="col">
+                  
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
                   <div
                     class="form-group bmd-form-group"
                     :class="{
@@ -37,10 +42,6 @@
                       disabled
                     />
                   </div>
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
                   <div
                     class="form-group bmd-form-group"
                     :class="{
@@ -148,25 +149,7 @@
                       </template>
                     </v-select>
                   </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.ket,
-                      'is-focused': activeField == 'ket'
-                    }"
-                  >
-                    <label class="">{{
-                      $t('cruds.fpd.fields.ket')
-                    }}</label>
-                    <input
-                      class="form-control"
-                      type="text"
-                      :value="entry.ket"
-                      @input="updateKet"
-                      @focus="focusField('ket')"
-                      @blur="clearFocus"
-                    />
-                  </div>
+                  
                   <div class="form-group">
                     <label>{{ $t('cruds.fpd.fields.lampiran') }}</label>
                     <attachment
@@ -182,6 +165,25 @@
                   
                 </div>
                 <div class="col-md-6">
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.name,
+                      'is-focused': activeField == 'name'
+                    }"
+                  >
+                    <label class="">{{
+                      $t('cruds.fpd.fields.name')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.name"
+                      @input="updateName"
+                      @focus="focusField('name')"
+                      @blur="clearFocus"
+                    />
+                  </div>
                   <div v-if="$can('finance')"
                     class="form-group bmd-form-group"
                     :class="{
@@ -332,7 +334,7 @@
                     </v-select>
                     </td>
                     <td>
-                        Rp. <input disabled class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                        Rp. <input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
                     <td v-if="entry.status >= 4">
                         Rp. <input required class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)"/>
@@ -383,7 +385,7 @@
                     </v-select>
                     </td>
                     <td>
-                        <input disabled class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                        <input class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
                     <td v-if="entry.status >= 4">
                         <input class="form-control wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)" required/>
@@ -420,14 +422,9 @@
                     Approve
                   </button>                  
                 </div>
-                <div v-if="entry.status === '6'" class="col-lg-2">
-                  <button type='button' class="btn btn-primary" @click.prevent="approveData()">
-                    Paid
-                  </button>                  
-                </div>
                 <div v-if="entry.status === '3'" class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="needRealisasi()">
-                    Approve
+                    Paid
                   </button>                  
                 </div>
                 <div v-if="entry.status != 4" class="col-lg-2">
@@ -505,6 +502,7 @@ export default {
       'setReqDate',
       'setProcessedDate',
       'setKet',
+      'setName',
       'insertLampiranFile',
       'removeLampiranFile',
       'insertBuktiTransferFile',
@@ -569,6 +567,9 @@ export default {
     },
     updateKet(e) {
       this.setKet(e.target.value)
+    },
+    updateName(e) {
+      this.setName(e.target.value)
     },
     addNewRow() {
         this.addItem()

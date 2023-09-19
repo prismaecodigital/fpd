@@ -221,7 +221,7 @@ var render = function render() {
         }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 6 ? _c("span", {
           staticClass: "labelCalendar labelCalendar6"
         }, [_vm._v(_vm._s(event.extendedProps.code))]) : parseInt(event.extendedProps.status) === 7 ? _c("span", {
-          staticClass: "labelCalendar labelCalendar7"
+          staticClass: "labelCalendar labelCalendar78"
         }, [_vm._v(_vm._s(event.extendedProps.code))]) : _c("span", {
           staticClass: "labelCalendar labelCalendar99"
         }, [_vm._v(_vm._s(event.extendedProps.code))])];

@@ -154,14 +154,14 @@
                     }"
                   >
                     <label class="">{{
-                      $t('cruds.fpd.fields.ket')
+                      $t('cruds.fpd.fields.name')
                     }}</label>
                     <input
                       class="form-control"
                       type="text"
-                      :value="entry.ket"
-                      @input="updateKet"
-                      @focus="focusField('ket')"
+                      :value="entry.name"
+                      @input="updateName"
+                      @focus="focusField('name')"
                       @blur="clearFocus"
                       disabled
                     />
@@ -407,6 +407,7 @@ export default {
       'setReqDate',
       'setProcessedDate',
       'setKet',
+      'setName',
       'insertLampiranFile',
       'removeLampiranFile',
       'addItem',
@@ -469,6 +470,9 @@ export default {
     },
     updateKet(e) {
       this.setKet(e.target.value)
+    },
+    updateName(e) {
+      this.setName(e.target.value)
     },
     addNewRow() {
         this.addItem()

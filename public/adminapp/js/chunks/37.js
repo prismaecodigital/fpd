@@ -39,20 +39,14 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     var idFromURL = urlParams.get('id');
     return {
       columns: [{
-        title: 'cruds.fpd.fields.code',
-        field: 'code',
+        title: 'cruds.fpd.fields.name',
+        field: 'name',
         thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
         sortable: true
       }, {
         title: 'cruds.fpd.fields.code_voucher',
         field: 'code_voucher',
         thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
-        sortable: true
-      }, {
-        title: 'cruds.fpd.fields.bu',
-        field: 'bu.code',
-        thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
-        tdComp: _components_Datatables_DatatableSingle__WEBPACK_IMPORTED_MODULE_5__["default"],
         sortable: true
       }, {
         title: 'cruds.fpd.fields.dept',

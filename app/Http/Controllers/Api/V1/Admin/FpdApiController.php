@@ -139,6 +139,12 @@ class FpdApiController extends Controller
             ->where('model_id', 0)
             ->update(['model_id' => $fpd->id]);
         }
+        if($media = $request->input('bukti_transfer', [])) {
+            $fpd->updateMedia($request->input('bukti_transfer', []), 'fpd_bukti_transfer');
+            Media::whereIn('id', data_get($media, '*.id'))
+            ->where('model_id', 0)
+            ->update(['model_id' => $fpd->id]);
+        }
 
         // Update Status
         if($request->approve !== null) {
@@ -187,9 +193,6 @@ class FpdApiController extends Controller
                 $file->file_name = $fpd->code_voucher.'-'.($index+1).substr($file->file_name, -4);
                 $file->save();
             }
-        }
-
-        if($fpd->status >= 5) {
             foreach($fpd->getMedia('fpd_bukti_transfer') as $index => $file) {
                 $file->file_name = $fpd->code_voucher_lrd.'-'.($index+1).substr($file->file_name, -4);
                 $file->save();
@@ -214,8 +217,10 @@ class FpdApiController extends Controller
         // Added if request tidak memerlukan realisasi
         if($request->approve === "2") {
             $fpd->update(['status' => '8']);
-            foreach($fpd->items as $item) {
-                FpdItem::where('id', $item->id)->first()->update(['real_amount' => $item->amount]);
+            $new_fpd = Fpd::where('id',$fpd->id)->first();
+            foreach($new_fpd->items as $item) {
+                $itemx = FpdItem::where('id', $item->id)->first();
+                $itemx->update(['real_amount' => $item->amount]);
             }
 
             $statusHistory = StatusHistory::create([
@@ -291,16 +296,18 @@ class FpdApiController extends Controller
     {
         // dd($request->all());
         if(empty($request->bu)) {
-            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 8)->whereIn('bu_id', auth()->user()->bus->pluck('id'))->get();
+            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', '8')->whereIn('bu_id', auth()->user()->bus->pluck('id'))
+                    ->whereIn('dept_id', auth()->user()->depts->pluck('id'))->get();
         }
         else {
-            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 8)->where('bu_id', $request->bu)->get();
+            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', '8')->where('bu_id', $request->bu)
+            ->whereIn('dept_id', auth()->user()->depts->pluck('id'))->get();
         }
 
         return response([
             'data' => new FpdResource($fpds),
             'meta' => [
-                'bu'            => Bu::get(['id', 'name']),
+                'bu'            => Bu::whereIn('id', auth()->user()->bus->pluck('id'))->get(['id', 'name'])->prepend('Semua'),
             ],
         ]);
     }

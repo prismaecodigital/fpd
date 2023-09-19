@@ -47,7 +47,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     }
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('FpdProcessesSingle', ['updateData', 'resetState', 'setCodeVoucher', 'setCodeVoucherLrd', 'setTransactType', 'setKlasifikasi', 'setBu', 'setDept', 'setStatus', 'setReqDate', 'setProcessedDate', 'setKet', 'insertLampiranFile', 'removeLampiranFile', 'addItem', 'deleteItem', 'setItems', 'setItemAccount', 'setItemAmount', 'setItemRealAmount', 'setItemSite', 'setItemKet', 'fetchEditData', 'fetchBuDept', 'fetchBuSite', 'fetchBuAccount', 'fetchDeptAccount'])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('FpdProcessesSingle', ['updateData', 'resetState', 'setCodeVoucher', 'setCodeVoucherLrd', 'setTransactType', 'setKlasifikasi', 'setBu', 'setDept', 'setStatus', 'setReqDate', 'setProcessedDate', 'setKet', 'setName', 'insertLampiranFile', 'removeLampiranFile', 'addItem', 'deleteItem', 'setItems', 'setItemAccount', 'setItemAmount', 'setItemRealAmount', 'setItemSite', 'setItemKet', 'fetchEditData', 'fetchBuDept', 'fetchBuSite', 'fetchBuAccount', 'fetchDeptAccount'])), {}, {
     updateCodeVoucher: function updateCodeVoucher(e) {
       this.setCodeVoucher(e.target.value);
     },
@@ -104,6 +104,9 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     },
     updateKet: function updateKet(e) {
       this.setKet(e.target.value);
+    },
+    updateName: function updateName(e) {
+      this.setName(e.target.value);
     },
     addNewRow: function addNewRow() {
       this.addItem();
@@ -373,19 +376,19 @@ var render = function render() {
       "is-filled": _vm.entry.ket,
       "is-focused": _vm.activeField == "ket"
     }
-  }, [_c("label", {}, [_vm._v(_vm._s(_vm.$t("cruds.fpd.fields.ket")))]), _vm._v(" "), _c("input", {
+  }, [_c("label", {}, [_vm._v(_vm._s(_vm.$t("cruds.fpd.fields.name")))]), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
       type: "text",
       disabled: ""
     },
     domProps: {
-      value: _vm.entry.ket
+      value: _vm.entry.name
     },
     on: {
-      input: _vm.updateKet,
+      input: _vm.updateName,
       focus: function focus($event) {
-        return _vm.focusField("ket");
+        return _vm.focusField("name");
       },
       blur: _vm.clearFocus
     }
