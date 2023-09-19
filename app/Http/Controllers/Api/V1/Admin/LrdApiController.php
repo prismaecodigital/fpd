@@ -43,6 +43,7 @@ class LrdApiController extends Controller
         $bu = Bu::findOrFail($request->bu_id);
 
         $data = $request->only([
+            'name',
             'req_date',
             'processed_date',
             'bu_id',

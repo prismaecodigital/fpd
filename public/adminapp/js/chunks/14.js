@@ -126,8 +126,8 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     updateKet: function updateKet(e) {
       this.setKet(e.target.value);
     },
-    updateName: function updateName(value) {
-      this.setName(value);
+    updateName: function updateName(e) {
+      this.setName(e.target.value);
     },
     addNewRow: function addNewRow() {
       this.addItem();

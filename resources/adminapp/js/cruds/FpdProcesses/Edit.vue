@@ -471,8 +471,8 @@ export default {
     updateKet(e) {
       this.setKet(e.target.value)
     },
-    updateName(value) {
-      this.setName(value)
+    updateName(e) {
+      this.setName(e.target.value)
     },
     addNewRow() {
         this.addItem()
