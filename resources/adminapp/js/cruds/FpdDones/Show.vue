@@ -121,6 +121,14 @@
                       </tr>                      
                       <tr>
                         <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.code_voucher_lrd') }}
+                        </td>
+                        <td>
+                          {{ entry.code_voucher_lrd ?? '-' }}
+                        </td>
+                      </tr>                      
+                      <tr>
+                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.status') }}
                         </td>
                         <td>

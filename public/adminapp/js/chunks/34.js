@@ -70,7 +70,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
 var render = function render() {
-  var _vm$entry$processed_d, _vm$entry$code_vouche;
+  var _vm$entry$processed_d, _vm$entry$code_vouche, _vm$entry$code_vouche2;
   var _vm = this,
     _c = _vm._self._c;
   return _c("div", {
@@ -149,6 +149,8 @@ var render = function render() {
   })], 1)]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "text-primary"
   }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.code_voucher")) + "\n                      ")]), _vm._v(" "), _c("td", [_vm._v("\n                        " + _vm._s((_vm$entry$code_vouche = _vm.entry.code_voucher) !== null && _vm$entry$code_vouche !== void 0 ? _vm$entry$code_vouche : "-") + "\n                      ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-primary"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.code_voucher_lrd")) + "\n                      ")]), _vm._v(" "), _c("td", [_vm._v("\n                        " + _vm._s((_vm$entry$code_vouche2 = _vm.entry.code_voucher_lrd) !== null && _vm$entry$code_vouche2 !== void 0 ? _vm$entry$code_vouche2 : "-") + "\n                      ")])]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "text-primary"
   }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.status")) + "\n                      ")]), _vm._v(" "), _c("td", [_c("datatable-enum", {
     attrs: {

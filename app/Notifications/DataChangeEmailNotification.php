@@ -32,24 +32,24 @@ class DataChangeEmailNotification extends Notification implements ShouldQueue
     {
         if ($this->data['ket'] == '') {
             return (new MailMessage)
-            ->subject('DANA Notification')
+            ->subject('Notifikasi Pengajuan Dana')
             ->greeting('Hello, ')
-            ->line('DANA nomor ' . $this->data['code'] . ' telah ' . $this->data['action'] . ' oleh ' . $this->data['user'] . ' dan saat ini ' . $this->data['status'])
+            ->line('Pengajuan Dana dengan nomor ' . $this->data['code'] . ' telah ' . $this->data['action'] . ' oleh ' . $this->data['user'] . ' dan saat ini ' . $this->data['status'])
             ->line('Silahkan diproses lebih lanjut.')
-            ->action(config('app.name'), (config('app.url').'/admin/fpds/'.$this->data['id']))
+            ->action(config('app.name'), (config('app.url').'admin/fpds/'.$this->data['id']))
             ->line('Thank you')
-            ->line(config('app.name') . ' Team')
+            ->line('Digitalisasi Team')
             ->salutation(' ');
         }
         if ($this->data['ket'] != '') {
             return (new MailMessage)
-            ->subject('DANA Notification')
+            ->subject('Notifikasi Pengajuan Dana')
             ->greeting('Hello, ')
-            ->line('DANA nomor ' . $this->data['code'] . ' telah ' . $this->data['action'] . ' oleh ' . $this->data['user'] . ' dengan alasan ' . $this->data['ket'])
+            ->line('Pengajuan Dana nomor ' . $this->data['code'] . ' telah ' . $this->data['action'] . ' oleh ' . $this->data['user'] . ' dengan alasan ' . $this->data['ket'])
             ->line('')
-            ->action(config('app.name'), (config('app.url').'/admin/fpds/'.$this->data['id']))
+            ->action(config('app.name'), (config('app.url').'admin/fpds/'.$this->data['id']))
             ->line('Thank you')
-            ->line(config('app.name') . ' Team')
+            ->line('Digitalisasi Team')
             ->salutation(' ');
         }
     }
