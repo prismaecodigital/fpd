@@ -427,7 +427,7 @@
                     Paid
                   </button>                  
                 </div>
-                <div v-if="entry.status != 4" class="col-lg-2">
+                <div v-if="entry.status != 4 && entry.status != 7" class="col-lg-2">
                   <button type='button' class="btn btn-danger" @click.prevent="rejectData()">
                     Reject
                   </button>
@@ -437,7 +437,7 @@
                     Lanjutkan Proses
                   </button>
                 </div>
-                <div v-if="$can('finance')" class="col-lg-1">
+                <div v-if="$can('finance' && entry.status < 4)" class="col-lg-1">
                   <button type='button' class="btn btn-default" @click.prevent="submitForm()">
                     Simpan
                   </button>

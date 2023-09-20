@@ -924,7 +924,7 @@ var render = function render() {
         return _vm.needRealisasi();
       }
     }
-  }, [_vm._v("\n                  Paid\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status != 4 ? _c("div", {
+  }, [_vm._v("\n                  Paid\n                ")])]) : _vm._e(), _vm._v(" "), _vm.entry.status != 4 && _vm.entry.status != 7 ? _c("div", {
     staticClass: "col-lg-2"
   }, [_c("button", {
     staticClass: "btn btn-danger",
@@ -950,7 +950,7 @@ var render = function render() {
         return _vm.approveData();
       }
     }
-  }, [_vm._v("\n                  Lanjutkan Proses\n                ")])]) : _vm._e(), _vm._v(" "), _vm.$can("finance") ? _c("div", {
+  }, [_vm._v("\n                  Lanjutkan Proses\n                ")])]) : _vm._e(), _vm._v(" "), _vm.$can( true && _vm.entry.status < 4) ? _c("div", {
     staticClass: "col-lg-1"
   }, [_c("button", {
     staticClass: "btn btn-default",
