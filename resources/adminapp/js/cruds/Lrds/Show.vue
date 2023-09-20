@@ -185,7 +185,7 @@
                       {{formatCurrency(item.amount)}}
                   </td>
                   <td v-if="parseInt(entry.status) > 4">
-                      {{item.real_amount}}
+                      {{formatCurrency(item.real_amount)}}
                   </td>
                   <td>
                       {{item.site ? item.site.name : '-'}}

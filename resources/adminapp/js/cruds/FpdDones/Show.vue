@@ -45,6 +45,14 @@
                       </tr>
                       <tr>
                         <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.name') }}
+                        </td>
+                        <td>
+                          {{ entry.name }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.created_at') }}
                         </td>
                         <td>
@@ -96,6 +104,15 @@
                       </tr>
                       <tr>
                         <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.klasifikasi') }}
+                        </td>
+                        <td>
+                          <datatable-enum :row="entry" field="klasifikasi">
+                          </datatable-enum>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.code_voucher') }}
                         </td>
                         <td>
@@ -123,6 +140,18 @@
                           </datatable-attachments>
                         </td>
                       </tr>
+                      <tr v-if="entry.bukti_transfer !== ''">
+                        <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.bukti_transfer') }}
+                        </td>
+                        <td>
+                          <datatable-attachments
+                            :row="entry"
+                            :field="'bukti_transfer'"
+                          >
+                          </datatable-attachments>
+                        </td>
+                      </tr>
                     </tbody>
                   </div>
                 </div>
@@ -145,10 +174,10 @@
                       {{item.account.name}}
                   </td>
                   <td>
-                      {{item.amount}}
+                      {{formatCurrency(item.amount)}}
                   </td>
                   <td v-if="parseInt(entry.status) > 4">
-                      {{item.real_amount}}
+                      {{formatCurrency(item.real_amount)}}
                   </td>
                   <td>
                       {{item.site ? item.site.name : '-'}}
@@ -221,7 +250,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions('FpdDonesSingle', ['fetchShowData', 'resetState'])
+    ...mapActions('FpdDonesSingle', ['fetchShowData', 'resetState']),
+    formatCurrency(value) {
+      let val = (value/1).toFixed(2).replace('.', ',')
+      return 'Rp. ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
+    }
   }
 }
 </script>

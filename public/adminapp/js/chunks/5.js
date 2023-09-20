@@ -171,7 +171,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "material-icons"
-  }, [_vm._v("edit")])]) : _vm._e(), _vm._v(" "), _vm.$can(_vm.xprops.permission_prefix + "edit") && _vm.$can(_vm.row.status) ? _c("router-link", {
+  }, [_vm._v("edit")])]) : _vm._e(), _vm._v(" "), _vm.$can(_vm.row.status) ? _c("router-link", {
     staticClass: "btn btn-round btn-xs btn-primary",
     attrs: {
       to: {

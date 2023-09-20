@@ -18,7 +18,7 @@
 
     <router-link
       class="btn btn-round btn-xs btn-primary"
-      v-if="$can(xprops.permission_prefix + 'edit') && $can(row.status)"
+      v-if="$can(row.status)"
       :to="{ name: xprops.route + '.editData', params: { id: row.id } }"
     >
       Process

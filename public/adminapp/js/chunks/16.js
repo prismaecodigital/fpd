@@ -898,7 +898,7 @@ var render = function render() {
     staticClass: "card-body"
   }, [_c("div", {
     staticClass: "row"
-  }, [_vm.entry.status != 4 && _vm.entry.status != 3 && _vm.entry.status != 6 ? _c("div", {
+  }, [_vm.entry.status != 4 && _vm.entry.status != 3 ? _c("div", {
     staticClass: "col-lg-2"
   }, [_c("button", {
     staticClass: "btn btn-primary",

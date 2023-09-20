@@ -48,7 +48,12 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     }
   },
-  methods: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('FpdDonesSingle', ['fetchShowData', 'resetState']))
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('FpdDonesSingle', ['fetchShowData', 'resetState'])), {}, {
+    formatCurrency: function formatCurrency(value) {
+      var val = (value / 1).toFixed(2).replace('.', ',');
+      return 'Rp. ' + val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    }
+  })
 });
 
 /***/ }),
@@ -107,6 +112,8 @@ var render = function render() {
     }
   })], 1)]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "text-primary"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.name")) + "\n                      ")]), _vm._v(" "), _c("td", [_vm._v("\n                        " + _vm._s(_vm.entry.name) + "\n                      ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-primary"
   }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.created_at")) + "\n                      ")]), _vm._v(" "), _c("td", [_vm._v("\n                        " + _vm._s(_vm.entry.created_at) + "\n                      ")])]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "text-primary"
   }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.bu")) + "\n                      ")]), _vm._v(" "), _c("td", [_c("datatable-single", {
@@ -134,6 +141,13 @@ var render = function render() {
     }
   })], 1)]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "text-primary"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.klasifikasi")) + "\n                      ")]), _vm._v(" "), _c("td", [_c("datatable-enum", {
+    attrs: {
+      row: _vm.entry,
+      field: "klasifikasi"
+    }
+  })], 1)]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-primary"
   }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.code_voucher")) + "\n                      ")]), _vm._v(" "), _c("td", [_vm._v("\n                        " + _vm._s((_vm$entry$code_vouche = _vm.entry.code_voucher) !== null && _vm$entry$code_vouche !== void 0 ? _vm$entry$code_vouche : "-") + "\n                      ")])]), _vm._v(" "), _c("tr", [_c("td", {
     staticClass: "text-primary"
   }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.status")) + "\n                      ")]), _vm._v(" "), _c("td", [_c("datatable-enum", {
@@ -148,7 +162,14 @@ var render = function render() {
       row: _vm.entry,
       field: "lampiran"
     }
-  })], 1)])])])])])])]), _vm._v(" "), _c("div", {
+  })], 1)]), _vm._v(" "), _vm.entry.bukti_transfer !== "" ? _c("tr", [_c("td", {
+    staticClass: "text-primary"
+  }, [_vm._v("\n                        " + _vm._s(_vm.$t("cruds.fpd.fields.bukti_transfer")) + "\n                      ")]), _vm._v(" "), _c("td", [_c("datatable-attachments", {
+    attrs: {
+      row: _vm.entry,
+      field: "bukti_transfer"
+    }
+  })], 1)]) : _vm._e()])])])])])]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_c("bootstrap-alert"), _vm._v(" "), _c("table", {
     staticClass: "table table-bordered",
@@ -158,7 +179,7 @@ var render = function render() {
   }, [_c("thead", [_c("th", [_vm._v("Account")]), _vm._v(" "), _c("th", [_vm._v("Amount")]), _vm._v(" "), parseInt(_vm.entry.status) > 4 ? _c("th", [_vm._v("Realisasi Amount")]) : _vm._e(), _vm._v(" "), _c("th", [_vm._v("Site")]), _vm._v(" "), _c("th", [_vm._v("Notes")])]), _vm._v(" "), _c("tbody", _vm._l(_vm.entry.items, function (item, k) {
     return _c("tr", {
       key: k
-    }, [_c("td", [_vm._v("\n                    " + _vm._s(item.account.name) + "\n                ")]), _vm._v(" "), _c("td", [_vm._v("\n                    " + _vm._s(item.amount) + "\n                ")]), _vm._v(" "), parseInt(_vm.entry.status) > 4 ? _c("td", [_vm._v("\n                    " + _vm._s(item.real_amount) + "\n                ")]) : _vm._e(), _vm._v(" "), _c("td", [_vm._v("\n                    " + _vm._s(item.site ? item.site.name : "-") + "\n                ")]), _vm._v(" "), _c("td", [_vm._v("\n                    " + _vm._s(item.ket) + "\n                ")])]);
+    }, [_c("td", [_vm._v("\n                    " + _vm._s(item.account.name) + "\n                ")]), _vm._v(" "), _c("td", [_vm._v("\n                    " + _vm._s(_vm.formatCurrency(item.amount)) + "\n                ")]), _vm._v(" "), parseInt(_vm.entry.status) > 4 ? _c("td", [_vm._v("\n                    " + _vm._s(_vm.formatCurrency(item.real_amount)) + "\n                ")]) : _vm._e(), _vm._v(" "), _c("td", [_vm._v("\n                    " + _vm._s(item.site ? item.site.name : "-") + "\n                ")]), _vm._v(" "), _c("td", [_vm._v("\n                    " + _vm._s(item.ket) + "\n                ")])]);
   }), 0)])], 1), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_vm._m(1), _vm._v(" "), _vm._l(_vm.timelineData, function (item, index) {

@@ -417,7 +417,7 @@
             </div>
             <div v-if="entry.status < 8 && $can(entry.status)" class="card-body">
               <div class="row">
-                <div v-if="entry.status != 4 && entry.status != 3 && entry.status != 6" class="col-lg-2">
+                <div v-if="entry.status != 4 && entry.status != 3 " class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="approveData()">
                     Approve
                   </button>                  
