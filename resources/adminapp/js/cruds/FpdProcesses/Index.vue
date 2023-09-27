@@ -86,18 +86,6 @@ export default {
     return {
       columns: [
         {
-          title: 'cruds.fpd.fields.name',
-          field: 'name',
-          thComp: TranslatedHeader,
-          sortable: true
-        },
-        {
-          title: 'cruds.fpd.fields.code_voucher',
-          field: 'code_voucher',
-          thComp: TranslatedHeader,
-          sortable: true
-        },
-        {
           title: 'cruds.fpd.fields.dept',
           field: 'dept.code',
           thComp: TranslatedHeader,
@@ -127,6 +115,18 @@ export default {
         {
           title: 'cruds.fpd.fields.amount',
           field: 'total_amount',
+          thComp: TranslatedHeader,
+          sortable: true
+        },
+        {
+          title: 'cruds.fpd.fields.name',
+          field: 'name',
+          thComp: TranslatedHeader,
+          sortable: true
+        },
+        {
+          title: 'cruds.fpd.fields.code_voucher',
+          field: 'code_voucher',
           thComp: TranslatedHeader,
           sortable: true
         },

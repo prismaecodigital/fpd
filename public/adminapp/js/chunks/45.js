@@ -39,16 +39,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     var idFromURL = urlParams.get('id');
     return {
       columns: [{
-        title: 'cruds.fpd.fields.name',
-        field: 'name',
-        thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
-        sortable: true
-      }, {
-        title: 'cruds.fpd.fields.code_voucher',
-        field: 'code_voucher',
-        thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
-        sortable: true
-      }, {
         title: 'cruds.fpd.fields.dept',
         field: 'dept.code',
         thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -74,6 +64,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }, {
         title: 'cruds.fpd.fields.amount',
         field: 'total_amount',
+        thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
+        sortable: true
+      }, {
+        title: 'cruds.fpd.fields.name',
+        field: 'name',
+        thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
+        sortable: true
+      }, {
+        title: 'cruds.fpd.fields.code_voucher',
+        field: 'code_voucher',
         thComp: _components_Datatables_TranslatedHeader__WEBPACK_IMPORTED_MODULE_2__["default"],
         sortable: true
       }, {

@@ -159,7 +159,7 @@ var render = function render() {
     }
   }, [_c("i", {
     staticClass: "material-icons"
-  }, [_vm._v("remove_red_eye")])]) : _vm._e(), _vm._v(" "), _vm.$can("admin") || _vm.row.status === 0 || _vm.row.status === 1 && _vm.$can(parseInt(_vm.row.status) - 1) ? _c("router-link", {
+  }, [_vm._v("remove_red_eye")])]) : _vm._e(), _vm._v(" "), _vm.$can("admin") || _vm.row.status == 0 || _vm.row.status === 1 && _vm.$can(parseInt(_vm.row.status) - 1) ? _c("router-link", {
     staticClass: "btn btn-round btn-success",
     attrs: {
       to: {

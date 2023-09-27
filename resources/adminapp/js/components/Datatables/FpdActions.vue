@@ -10,7 +10,7 @@
 
     <router-link
       class="btn btn-round btn-success"
-      v-if="($can('admin')) || row.status === 0 || (row.status === 1 && $can(parseInt(row.status)-1))"
+      v-if="($can('admin')) || row.status == 0 || (row.status === 1 && $can(parseInt(row.status)-1))"
       :to="{ name: xprops.route + '.edit', params: { id: row.id } }"
     >
       <i class="material-icons">edit</i>

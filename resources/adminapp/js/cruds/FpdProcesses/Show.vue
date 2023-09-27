@@ -17,8 +17,7 @@
               <div class="col-lg-3">
                 <back-button></back-button>
               </div>
-            </div>
-            
+            </div>            
           </div>
           <div class="card-body">
             <div class="row">
