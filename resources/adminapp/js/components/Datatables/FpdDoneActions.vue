@@ -8,15 +8,6 @@
       <i class="material-icons">remove_red_eye</i>
     </router-link>
 
-    <a
-      href="#"
-      class="btn btn-round btn-danger"
-      v-if="$can(xprops.permission_prefix + 'delete')"
-      @click.prevent="destroyData(row.id)"
-      type="button"
-    >
-      <i class="material-icons">delete</i>
-    </a>
   </div>
 </template>
 
