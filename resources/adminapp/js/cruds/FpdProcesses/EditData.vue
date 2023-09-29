@@ -372,7 +372,6 @@
                       :options="lists.accounts"
                       :reduce="account => account.id"
                       @input="updateItemAccount(k, $event)"
-                      disabled
                     >
                       <template #search="{attributes, events}">
                         <input

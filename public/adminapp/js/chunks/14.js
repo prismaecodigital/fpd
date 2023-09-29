@@ -793,8 +793,7 @@ var render = function render() {
         options: _vm.lists.accounts,
         reduce: function reduce(account) {
           return account.id;
-        },
-        disabled: ""
+        }
       },
       on: {
         input: function input($event) {

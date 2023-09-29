@@ -281,16 +281,43 @@ class FpdApiController extends Controller
         return response()->json($media, Response::HTTP_CREATED);
     }
 
-    protected function generateCode($deptCode, $buCode, $createdAt)
+    // protected function generateCode($deptCode, $buCode, $createdAt)
+    // {
+    //     $count = Fpd::whereYear('created_at', $createdAt)
+    //         ->whereMonth('created_at', $createdAt)
+    //         ->count();
+    
+    //     $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+    //     $dateCode = substr($createdAt, 2, 2) . substr($createdAt, 5, 2);
+    
+    //     return $buCode . $deptCode . $dateCode . $number;
+    // }
+
+    protected function generateCode($deptCode, $buId, $createdAt)
     {
-        $count = Fpd::whereYear('created_at', $createdAt)
-            ->whereMonth('created_at', $createdAt)
-            ->count();
-    
-        $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+        $bu = Bu::where('id', $buId)->first();
+        $buCode = $bu->code;
         $dateCode = substr($createdAt, 2, 2) . substr($createdAt, 5, 2);
-    
-        return $buCode . $deptCode . $dateCode . $number;
+        
+        $fpd = Fpd::whereYear('created_at', $createdAt)
+            ->whereMonth('created_at', $createdAt)
+            ->where('bu_id', $buId);
+        $count = $fpd->count();
+        $last = $fpd->last();
+        $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+        
+        if(empty($last)) {
+            $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+            $new_code = $buCode . $deptCode . $dateCode . $number;
+            return $new_code;
+        }
+        
+        $code = $last->code;
+        $num = intval(substr($code, -3));
+        $number = str_pad($num + 1, 3, "0", STR_PAD_LEFT);
+        $new_code = $buCode . $deptCode . $dateCode . $number;
+        
+        return $new_code;
     }
 
     public function calendar(Request $request)
