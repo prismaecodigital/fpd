@@ -17,7 +17,7 @@ class StatusHistoryActionObserver
         $status = Fpd::STATUS_SELECT[$statusVal]['label'];
 
         if($status !== 'Tidak Disetujui') {
-            $users = User::whereNot('id',$statusHistory->user_id)->whereHas('roles', function ($q) use($statusHistory) {
+            $users = User::where('notifable', true)->whereNot('id',$statusHistory->user_id)->whereHas('roles', function ($q) use($statusHistory) {
                 return $q->whereHas('permissions', function ($q) use($statusHistory) {
                     return $q->where('title', $statusHistory->status);
                 });

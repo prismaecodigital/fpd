@@ -203,7 +203,7 @@
                       @blur="clearFocus"
                     />
                   </div>
-                  <div v-if="$can('finance') && entry.status > 4"
+                  <div v-if="$can('finance') && entry.status > 5"
                     class="form-group bmd-form-group"
                     :class="{
                       'is-filled': entry.code_voucher_lrd,
@@ -272,7 +272,7 @@
                     />
                   </div>
 
-                  <div v-if="entry.status >= 5" class="form-group">
+                  <div v-if="entry.status >= 6" class="form-group">
                     <label>{{ $t('cruds.fpd.fields.bukti_transfer') }}</label>
                     <attachment
                       :route="getRoute('fpd-processes')"
@@ -303,8 +303,8 @@
                   <th></th>
                   <th>Nama Account / COA</th>
                   <th>Amount (Nominal) </th>
-                  <th v-if="entry.status >= 4">Realisasi</th>
-                  <th v-if="entry.status > 4">Selisih</th>
+                  <th v-if="entry.status >= 5">Realisasi</th>
+                  <th v-if="entry.status > 5">Selisih</th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -336,10 +336,10 @@
                     <td>
                         Rp. <input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
-                    <td v-if="entry.status >= 4">
+                    <td v-if="entry.status >= 5">
                         Rp. <input required class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)"/>
                     </td>
-                    <td v-if="entry.status > 4">
+                    <td v-if="entry.status > 5">
                         <input disabled class="inputRp wrapText required" type="number" :value="parseInt(item.real_amount) - parseInt(item.amount)" required/>
                     </td>
                     <td>
@@ -386,10 +386,10 @@
                     <td>
                         <input class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
-                    <td v-if="entry.status >= 4">
+                    <td v-if="entry.status >= 5">
                         <input class="form-control wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)" required/>
                     </td>
-                    <td v-if="entry.status > 4">
+                    <td v-if="entry.status > 5">
                         <input disabled class="form-control wrapText required" type="number" :value="parseInt(item.real_amount) - parseInt(item.amount)" required/>
                     </td>
                     <td>
@@ -414,24 +414,24 @@
                   Tambah Item
               </button>
             </div>
-            <div v-if="entry.status < 8 && $can(entry.status)" class="card-body">
+            <div v-if="entry.status < 9 && $can(entry.status)" class="card-body">
               <div class="row">
-                <div v-if="entry.status != 4 && entry.status != 3 && entry.status != 6" class="col-lg-2">
+                <div v-if="entry.status != 5 && entry.status != 4 && entry.status != 7" class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="approveData()">
                     Approve
                   </button>                  
                 </div>
-                <div v-if="entry.status === '3'" class="col-lg-2">
+                <div v-if="entry.status === '4'" class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="needRealisasi()">
                     Paid
                   </button>                  
                 </div>
-                <div v-if="entry.status != 4" class="col-lg-2">
+                <div v-if="entry.status != 5" class="col-lg-2">
                   <button type='button' class="btn btn-danger" @click.prevent="rejectData()">
                     Reject
                   </button>
                 </div>
-                <div v-if="entry.status === '4' && $can('4')" class="col-lg-2">
+                <div v-if="entry.status === '5' && $can('5')" class="col-lg-2">
                   <button type='button' class="btn btn-success" @click.prevent="approveData()">
                     Lanjutkan Proses
                   </button>

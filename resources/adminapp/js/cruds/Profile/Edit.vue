@@ -171,6 +171,20 @@
                       @search.blur="clearFocus"
                     />
                   </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.notifable,
+                      'is-focused': activeField == 'notifable'
+                    }"
+                  >
+                  <input
+                      type="checkbox"
+                      :checked="entry.notifable" @change="updateNotifable"
+                    />
+                    <label class="">Ijinkan Notifikasi</label>
+                    
+                  </div>
                 </div>
               </div>
             </div>
@@ -226,10 +240,13 @@ export default {
       'setUsername',
       'setEmail',
       'setPassword',
-      'setRoles', 'setBu', 'setDept'
+      'setRoles', 'setBu', 'setDept', 'setNotifable'
     ]),
     updateName(e) {
       this.setName(e.target.value)
+    },
+    updateNotifable() {
+      this.setNotifable()
     },
     updateUsername(e) {
       this.setUsername(e.target.value)
@@ -246,7 +263,7 @@ export default {
     submitForm() {
       this.updateData()
         .then(() => {
-          this.$router.push({ name: 'profile.password.edit' })
+          this.$router.push({ name: 'dashboard' })
           this.$eventHub.$emit('update-success')
         })
         .catch(error => {

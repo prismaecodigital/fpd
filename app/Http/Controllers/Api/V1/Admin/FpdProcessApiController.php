@@ -33,7 +33,7 @@ class FpdProcessApiController extends Controller
     {        
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdProcessResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '4')->paginate(request('limit', 10)));
+        return new FpdProcessResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '5')->paginate(request('limit', 10)));
     }
 
     public function store(StoreFpdRequest $request)
@@ -148,10 +148,10 @@ class FpdProcessApiController extends Controller
 
         // Update Status
         if($request->approve !== null) {
-            if($request->approve === "1" && (int)$fpd->status < 8) 
+            if($request->approve === "1" && (int)$fpd->status < 9) 
             {
                 if(($fpd->status === '0' && auth()->user()->hasRole('direktur')) || 
-                    ($fpd->status === '4' && auth()->user()->hasRole('leader')) ||                
+                    ($fpd->status === '5' && auth()->user()->hasRole('leader')) ||                
                     ($fpd->status === '1' && auth()->user()->hasRole('finance')))
                     {
                         $fpd->update(['status' => (string)((int)$fpd->status + 2)]);
@@ -181,20 +181,25 @@ class FpdProcessApiController extends Controller
                     );
                 }
             }
-            if($request->approve === "0" && (int)$fpd->status < 8) 
+            if($request->approve === "0" && (int)$fpd->status < 9) 
             {
                 $fpd->update(['status' => '99']);
             }
         }
 
         // Rename media        
-        if($fpd->status >= 3) {
-            foreach($fpd->getMedia('fpd_lampiran') as $index => $file) {
-                $file->file_name = $fpd->code_voucher.'-'.($index+1).substr($file->file_name, -4);
+        if($fpd->status >= 5) {
+            foreach ($fpd->getMedia('fpd_lampiran') as $index => $file) {
+                $extension = $file->extension; // Get the file extension
+                $newFileName = $fpd->code_voucher . '-' . ($index + 1) . '.' . $extension;
+                $file->file_name = $newFileName;
                 $file->save();
             }
-            foreach($fpd->getMedia('fpd_bukti_transfer') as $index => $file) {
-                $file->file_name = $fpd->code_voucher_lrd.'-'.($index+1).substr($file->file_name, -4);
+        
+            foreach ($fpd->getMedia('fpd_bukti_transfer') as $index => $file) {
+                $extension = $file->extension; // Get the file extension
+                $newFileName = $fpd->code_voucher_lrd . '-' . ($index + 1) . '.' . $extension;
+                $file->file_name = $newFileName;
                 $file->save();
             }
         }
@@ -216,7 +221,7 @@ class FpdProcessApiController extends Controller
 
         // Added if request tidak memerlukan realisasi
         if($request->approve === "2") {
-            $fpd->update(['status' => '8']);
+            $fpd->update(['status' => '9']);
             $new_fpd = Fpd::where('id',$fpd->id)->first();
             foreach($new_fpd->items as $item) {
                 $itemx = FpdItem::where('id', $item->id)->first();
@@ -296,10 +301,10 @@ class FpdProcessApiController extends Controller
     {
         // dd($request->all());
         if(empty($request->bu)) {
-            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 8)->whereIn('bu_id', auth()->user()->bus->pluck('id'))->get();
+            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 9)->whereIn('bu_id', auth()->user()->bus->pluck('id'))->get();
         }
         else {
-            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 8)->where('bu_id', $request->bu)->get();
+            $fpds = Fpd::with(['bu','dept','user','items'])->where('status', '<', 9)->where('bu_id', $request->bu)->get();
         }
 
         return response([

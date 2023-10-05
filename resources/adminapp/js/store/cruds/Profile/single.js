@@ -11,9 +11,10 @@ function initialState() {
       remember_token: '',
       bus: [],
       depts: [],
+      notifable: 1,
       created_at: '',
       updated_at: '',
-      deleted_at: ''
+      deleted_at: '',
     },
     lists: {
       roles: [],
@@ -119,6 +120,9 @@ const actions = {
   setBu({ commit }, value) {
     commit('setBu', value)
   },
+  setNotifable( {commit}) {
+    commit('setNotifable')
+  },
   setDept({ commit }, value) {
     commit('setDept', value)
   },
@@ -169,6 +173,10 @@ const mutations = {
   },
   setBu(state, value) {
     state.entry.bus = value
+  },
+  setNotifable(state) {
+    state.entry.notifable = !state.entry.notifable
+    console.log(state.entry.notifable)
   },
   setDept(state, value) {
     state.entry.depts = value

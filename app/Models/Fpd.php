@@ -83,32 +83,36 @@ class Fpd extends Model implements HasMedia
             'value' => '1',
         ],
         [
-            'label' => 'Menunggu Penjadwalan Finance',
+            'label' => 'Mengetahui Finance Manager',
             'value' => '2',
         ],
         [
-            'label' => 'Menunggu Proses Finance',
+            'label' => 'Menunggu Penjadwalan Finance',
             'value' => '3',
         ],
         [
-            'label' => 'Confirm, Menunggu Realisasi',
+            'label' => 'Menunggu Proses Finance',
             'value' => '4',
         ],
         [
-            'label' => 'Realisasi, Menunggu Persetujuan Leader',
+            'label' => 'Confirm, Menunggu Realisasi',
             'value' => '5',
         ],
         [
-            'label' => 'Realisasi, Menunggu Proses Finance',
+            'label' => 'Realisasi, Menunggu Persetujuan Leader',
             'value' => '6',
         ],
         [
-            'label' => 'Konfirmasi Selisih oleh User',
+            'label' => 'Realisasi, Menunggu Proses Finance',
             'value' => '7',
         ],
         [
-            'label' => 'Selesai',
+            'label' => 'Konfirmasi Selisih oleh User',
             'value' => '8',
+        ],
+        [
+            'label' => 'Selesai',
+            'value' => '9',
         ],
         [
             'label' => 'Tidak Disetujui',

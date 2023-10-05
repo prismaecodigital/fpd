@@ -188,7 +188,7 @@
                       @blur="clearFocus"
                     />
                   </div>
-                  <div v-if="$can('finance') && entry.status > 4"
+                  <div v-if="$can('finance') && entry.status > 5"
                     class="form-group bmd-form-group"
                     :class="{
                       'is-filled': entry.code_voucher_lrd,
@@ -285,7 +285,7 @@
                   <th></th>
                   <th>Nama Account / COA</th>
                   <th>Amount (Nominal)</th>
-                  <th v-if="entry.status > 4">Nominal Realisasi</th>
+                  <th v-if="entry.status > 5">Nominal Realisasi</th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -317,7 +317,7 @@
                     <td>
                         Rp.<input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
-                    <td v-if="parseInt(entry.status) > 4">
+                    <td v-if="parseInt(entry.status) > 5">
                         Rp.<input class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateImteRealAmount(k, $event)"/>
                     </td>
                     <td>

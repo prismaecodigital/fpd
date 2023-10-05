@@ -25,7 +25,7 @@ class FpdDoneApiController extends Controller
     {
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new FpdDoneResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '>=', '8')->paginate(request('limit', 10)));
+        return new FpdDoneResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '>=', '9')->paginate(request('limit', 10)));
     }
 
     public function show(Fpd $fpd)
