@@ -262,6 +262,16 @@ class FpdProcessApiController extends Controller
     {
         abort_if(Gate::denies('fpd_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        // Delete associated media items in the 'fpd_lampiran' collection
+        $fpd->getMedia('fpd_lampiran')->each(function ($media) {
+            $media->delete();
+        });
+
+        // Delete associated media items in the 'fpd_bukti_transfer' collection
+        $fpd->getMedia('fpd_bukti_transfer')->each(function ($media) {
+            $media->delete();
+        });
+
         $fpd->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
