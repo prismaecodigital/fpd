@@ -32,6 +32,8 @@ class AuthGates
             });
         }
 
+        app()->instance('permissionsArray', $permissionsArray);
+
         return $next($request);
     }
 }

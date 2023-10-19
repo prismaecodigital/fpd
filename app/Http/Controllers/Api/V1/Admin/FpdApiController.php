@@ -60,7 +60,7 @@ class FpdApiController extends Controller
         else {
             $data['status'] = '0';
         }
-        $data['code'] = $this->generateCode($dept->code, $bu->code, $data['created_at']);
+        $data['code'] = $this->generateCode($dept->code, $bu->id, $data['created_at']);
     
         $fpd = Fpd::create($data);
 

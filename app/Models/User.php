@@ -86,7 +86,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class);
+        return $this->belongsToMany(Role::class, 'bu_user_role', 'user_id', 'role_id')->withPivot('bu_id');
     }
 
     public function hasRole($roleName)
@@ -96,7 +96,7 @@ class User extends Authenticatable
 
     public function bus()
     {
-        return $this->belongsToMany(Bu::class);
+        return $this->belongsToMany(Bu::class, 'bu_role_user', 'user_id', 'bu_id')->withPivot('role_id');
     }
 
     public function depts()

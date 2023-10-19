@@ -24,10 +24,10 @@ class UpdateFpdRequest extends FormRequest
                 'nullable',
             ],
             'code_voucher' => [
-                'required_if:status,3'
+                'required_if:status,4'
             ],
             'code_voucher_lrd' => [
-                'required_if:status,6'
+                'required_if:status,7'
             ],
             'transact_type' => [
                 'required',
@@ -70,14 +70,14 @@ class UpdateFpdRequest extends FormRequest
                 'required',
             ],
             'items.*.real_amount' => [
-                'required_if:status,4', // Make 'real_amount' required if 'status' is 4 for each item
+                'required_if:status,5', // Make 'real_amount' required if 'status' is 4 for each item
             ],
             'processed_date' => [
-                'required_if:status,2',
+                'required_if:status,3',
             ],
             'lampiran' => [
                 'array',
-                'required_if:status,4'
+                'required_if:status,5'
             ],
             'lampiran.*.id' => [
                 'integer',

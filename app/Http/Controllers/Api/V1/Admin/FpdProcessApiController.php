@@ -22,7 +22,7 @@ use Carbon\Carbon;
 class FpdProcessApiController extends Controller
 {
     public function list()
-    {
+    {        
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new BuResource(Bu::has('fpds')->advancedFilter()->whereIn('bu_id', auth()->user()->bus->pluck('id'))->paginate(request('limit', 10)));
@@ -30,7 +30,10 @@ class FpdProcessApiController extends Controller
     }
 
     public function index(Request $request)
-    {        
+    {
+        $permissionsArray = app('permissionsArray');
+        $bu = Bu::where('id', $request->id)->first()->code;
+        $permissionsArray[$bu][auth()->user()->id] = auth()->user()->roles->first()->id;
         abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new FpdProcessResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '5')->paginate(request('limit', 10)));
@@ -61,7 +64,7 @@ class FpdProcessApiController extends Controller
         else {
             $data['status'] = '0';
         }
-        $data['code'] = $this->generateCode($dept->code, $bu->code, $data['created_at']);
+        $data['code'] = $this->generateCode($dept->code, $bu->id, $data['created_at']);
     
         $fpd = Fpd::create($data);
 
@@ -295,16 +298,31 @@ class FpdProcessApiController extends Controller
         return response()->json($media, Response::HTTP_CREATED);
     }
 
-    protected function generateCode($deptCode, $buCode, $createdAt)
+    protected function generateCode($deptCode, $buId, $createdAt)
     {
-        $count = Fpd::whereYear('created_at', $createdAt)
-            ->whereMonth('created_at', $createdAt)
-            ->count();
-    
-        $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+        $bu = Bu::where('id', $buId)->first();
+        $buCode = $bu->code;
         $dateCode = substr($createdAt, 2, 2) . substr($createdAt, 5, 2);
-    
-        return $buCode . $deptCode . $dateCode . $number;
+        
+        $fpd = Fpd::whereYear('created_at', $createdAt)
+            ->whereMonth('created_at', $createdAt)
+            ->where('bu_id', $buId);
+        $count = $fpd->count();
+        $last = $fpd->orderBy('id','desc')->first();
+        $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+        
+        if(empty($last)) {
+            $number = str_pad($count + 1, 3, "0", STR_PAD_LEFT);
+            $new_code = $buCode . $deptCode . $dateCode . $number;
+            return $new_code;
+        }
+        
+        $code = $last->code;
+        $num = intval(substr($code, -3));
+        $number = str_pad($num + 1, 3, "0", STR_PAD_LEFT);
+        $new_code = $buCode . $deptCode . $dateCode . $number;
+        
+        return $new_code;
     }
 
     public function calendar(Request $request)

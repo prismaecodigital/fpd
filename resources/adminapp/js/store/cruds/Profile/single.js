@@ -11,7 +11,7 @@ function initialState() {
       remember_token: '',
       bus: [],
       depts: [],
-      notifable: 1,
+      notifable: true,
       created_at: '',
       updated_at: '',
       deleted_at: '',

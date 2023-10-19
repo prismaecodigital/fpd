@@ -51,4 +51,11 @@ class Bu extends Model
     {
         return $this->hasMany(Fpd::class, 'bu_id');
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'bu_role_user', 'bu_id', 'user_id')
+            ->withPivot('role_id'); // Include the role_id from the pivot table
+    }
+
 }

@@ -76,7 +76,7 @@ class UsersApiController extends Controller
             'meta' => [
                 'roles' => Role::whereNot('title','admin')->get(['id', 'title']),
                 'bus' => Bu::get(['id', 'name']),
-                'depts' => Dept::get(['id', 'name']),
+                'depts' => Dept::whereIn('bu_id',auth()->user()->bus->pluck('id'))->get(['id', 'name']),
             ],
         ]);
     }
