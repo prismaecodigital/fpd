@@ -9,6 +9,7 @@ use App\Http\Resources\Admin\UserResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Bu;
+use App\Models\BuRoleUser;
 use App\Models\Dept;
 use Gate;
 use Illuminate\Http\Request;
@@ -26,9 +27,10 @@ class UsersApiController extends Controller
     public function store(StoreUserRequest $request)
     {
         $user = User::create($request->validated());
-        $user->roles()->sync($request->input('roles.*.id', []));
-        $user->bus()->sync($request->input('bus.*.id', []));
-        $user->depts()->sync($request->input('depts.*.id', []));
+        foreach($request->bu_roles as $index => $val) {
+            BuRoleUser::create(['bu_id' => $val['bu_id'], 'user_id' => $user->id, 'role_id' => $val['role_id']]);
+            $user->depts()->syncWithoutDetaching($val['depts']);
+        }
 
         return (new UserResource($user))
             ->response()
@@ -42,8 +44,8 @@ class UsersApiController extends Controller
         return response([
             'meta' => [
                 'roles' => Role::whereNot('title','admin')->get(['id', 'title']),
-                'bus' => Bu::get(['id', 'name']),
-                'depts' => Dept::get(['id', 'name']),
+                'bus' => Bu::get(['id', 'code']),
+                'depts' => Dept::get(['id', 'code']),
             ],
         ]);
     }
@@ -58,9 +60,29 @@ class UsersApiController extends Controller
     public function update(UpdateUserRequest $request, User $user)
     {
         $user->update($request->validated());
-        $user->roles()->sync($request->input('roles.*.id', []));
-        $user->bus()->sync($request->input('bus.*.id', []));
-        $user->depts()->sync($request->input('depts.*.id', []));
+        $depts = [];
+        for ($i = 0; $i < count($request->bu_roles); $i++) {
+            $buId = $request->bu_roles[$i]['bu_id'];
+            $roleId = $request->bu_roles[$i]['role_id'];
+            $depts[] = $request->bu_roles[$i]['depts'];
+            $buRoles[$buId] = ['role_id' => $roleId, 'user_id' => $user->id];
+        }
+
+        $new_depts = [];
+
+        foreach ($depts as $item) {
+            foreach ($item as $subItem) {
+                if (is_array($subItem) && isset($subItem['id'])) {
+                    $new_depts[] = $subItem['id'];
+                } elseif (is_numeric($subItem)) {
+                    $new_depts[] = $subItem;
+                }
+            }
+        }
+
+
+        $user->bus()->sync($buRoles);
+        $user->depts()->sync($new_depts);
 
         return (new UserResource($user))
             ->response()
@@ -69,14 +91,27 @@ class UsersApiController extends Controller
 
     public function edit(User $user)
     {
+
+        // dd($user->buRoles->toArray());
         abort_if(Gate::denies('user_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $user_id = $user->id;
+        $userWithBuRoles = User::with([
+            'buRoles' => function ($query) use ($user_id) {
+                $query->with(['depts' => function ($subQuery) use ($user_id) {
+                    $subQuery->whereHas('users', function ($subSubQuery) use ($user_id) {
+                        $subSubQuery->where('user_id', $user_id);
+                    });
+                }, 'listDepts']);
+            },
+        ])->find($user_id);
+
         return response([
-            'data' => new UserResource($user->load(['roles','bus','depts'])),
+            'data' => new UserResource($userWithBuRoles),
             'meta' => [
                 'roles' => Role::whereNot('title','admin')->get(['id', 'title']),
-                'bus' => Bu::get(['id', 'name']),
-                'depts' => Dept::whereIn('bu_id',auth()->user()->bus->pluck('id'))->get(['id', 'name']),
+                'bus' => Bu::get(['id', 'code']),
+                'depts' => Dept::whereIn('bu_id',auth()->user()->bus->pluck('id'))->get(['id', 'code']),
             ],
         ]);
     }

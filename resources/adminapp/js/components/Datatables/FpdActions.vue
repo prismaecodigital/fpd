@@ -1,7 +1,7 @@
 <template>
   <div class="dt-action-container">
     <router-link
-      v-if="$can(xprops.permission_prefix + 'show')"
+      v-if="$can(row.bu.code + '-' + xprops.permission_prefix + 'show')"
       :to="{ name: xprops.route + '.show', params: { id: row.id } }"
       class="btn btn-round btn-default text-azure"
     >
@@ -10,7 +10,7 @@
 
     <router-link
       class="btn btn-round btn-success"
-      v-if="($can('admin')) || row.status == 0 || (row.status === 1 && $can(parseInt(row.status)-1))"
+      v-if="($can(row.bu.code + '-admin')) || row.status == 0 || (row.status === 1 && $can(row.bu.code + '-' + parseInt(row.status)-1))"
       :to="{ name: xprops.route + '.edit', params: { id: row.id } }"
     >
       <i class="material-icons">edit</i>
@@ -18,7 +18,7 @@
 
     <router-link
       class="btn btn-round btn-xs btn-primary"
-      v-if="$can(row.status)"
+      v-if="$can(row.bu.code + '-' + row.status)"
       :to="{ name: xprops.route + '.editData', params: { id: row.id } }"
     >
       Process

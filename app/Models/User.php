@@ -86,7 +86,7 @@ class User extends Authenticatable
 
     public function roles()
     {
-        return $this->belongsToMany(Role::class, 'bu_user_role', 'user_id', 'role_id')->withPivot('bu_id');
+        return $this->belongsToMany(Role::class, 'bu_role_user', 'user_id', 'role_id')->withPivot('bu_id');
     }
 
     public function hasRole($roleName)
@@ -102,6 +102,16 @@ class User extends Authenticatable
     public function depts()
     {
         return $this->belongsToMany(Dept::class);
+    }
+
+    public function buRoles()
+    {
+        return $this->hasMany(BuRoleUser::class, 'user_id')
+            ->with(['depts' => function ($query) {
+                $query->whereHas('users', function ($subQuery) {
+                    $subQuery->where('user_id', $this->id);
+                });
+            }]);
     }
     
 }

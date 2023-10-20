@@ -19,7 +19,7 @@
             <div class="card-body">
               <bootstrap-alert />
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div
                     class="form-group bmd-form-group"
                     :class="{
@@ -59,7 +59,9 @@
                       @blur="clearFocus"
                       required
                     />
-                  </div>
+                  </div>                  
+                </div>
+                <div class="col-md-6">
                   <div
                     class="form-group bmd-form-group"
                     :class="{
@@ -99,78 +101,68 @@
                       @blur="clearFocus"
                     />
                   </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.bus.length !== 0,
-                      'is-focused': activeField == 'bus'
-                    }"
-                  >
-                    <label class="">{{
-                      $t('cruds.user.fields.bu')
-                    }}</label>
-                    <v-select
+                </div>
+              </div>
+            </div>
+            <div class="card-body">
+              <bootstrap-alert />
+              <table class="table table-bordered" name="inputItem">
+                <thead>
+                  <th style="width: 40px"></th>
+                  <th style="width: 150px">BU</th>
+                  <th>Dept</th>
+                  <th style="width: 200px">Role</th>
+                </thead>
+                <tbody>
+                  <tr v-for="(buRole, k) in entry.bu_roles" :key="k">
+                    <td style="width: 40px" scope="row" class="trashIconContainer">
+                        <i class="fa fa-trash-o" @click="deleteRow(k)"></i>
+                    </td>
+                    <td style="width: 150px">
+                      <v-select
                       name="bus"
-                      label="name"
+                      label="code"
                       :key="'bus-field'"
-                      :value="entry.bus"
+                      :value="buRole.bu_id"
                       :options="lists.bus"
-                      :closeOnSelect="false"
-                      multiple
-                      @input="updateBu"
-                      @change="updateBu"
+                      :reduce="bu => bu.id"
+                      :closeOnSelect="true"
+                      @input="updateBu(k, $event)"
+                      @change="updateBu(k, $event)"
                     />
-                    <span class="select-all badge" @click="selectAllBu">Pilih Semua</span>
-                    <span class="select-all badge" @click="deselectAllBu">Batalkan pilihan</span>
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.depts.length !== 0,
-                      'is-focused': activeField == 'depts'
-                    }"
-                  >
-                    <label class="">{{
-                      $t('cruds.user.fields.dept')
-                    }}</label>
-                    <v-select
+                    </td>
+                    <td>
+                      <v-select
                       name="depts"
-                      label="name"
+                      label="code"
                       :key="'depts-field'"
-                      :value="entry.depts"
-                      :options="lists.depts"
-                      :closeOnSelect="false"
+                      :value="buRole.depts"
+                      :reduce="depts => depts.id"
+                      :options="buRole.list_depts"
+                      :closeOnSelect="true"
                       multiple
-                      @input="updateDept"
+                      @input="updateDept(k, $event)"
                     />
-                    <span class="select-all badge" @click="selectAllDept">Pilih Semua</span>
-                    <span class="select-all badge" @click="deselectAllDept">Batalkan pilihan</span>
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.roles.length !== 0,
-                      'is-focused': activeField == 'roles'
-                    }"
-                  >
-                    <label class="required">{{
-                      $t('cruds.user.fields.roles')
-                    }}</label>
-                    <v-select
+                    </td>
+                    <td style="width: 200px">
+                      <v-select
                       name="roles"
                       label="title"
                       :key="'roles-field'"
-                      :value="entry.roles"
+                      :value="buRole.role_id"
                       :options="lists.roles"
-                      :closeOnSelect="false"
-                      multiple
-                      @input="updateRoles"
-                      @search.focus="focusField('roles')"
-                      @search.blur="clearFocus"
+                      :reduce="role => role.id"
+                      :closeOnSelect="true"
+                      @input="updateRoles(k, $event)"
                     />
-                  </div>
-                </div>
-              </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <button type='button' class="btn btn-sm btn-info" @click="addNewRow">
+                  <i class="fa fa-plus-circle"></i>
+                  Tambah Item
+              </button>
             </div>
             <div class="card-footer">
               <vue-button-spinner
@@ -201,14 +193,6 @@ export default {
     }
   },
   computed: {
-    // filteredDepts() {
-    //     if (!this.selectedBu) {
-    //         return [];
-    //     }
-    //     return this.depts.filter(dept => {
-    //         return dept.bu_id === parseInt(this.selectedBu.id);
-    //     });
-    // },
     ...mapGetters('UsersSingle', ['entry', 'loading', 'lists'])
   },
   mounted() {
@@ -229,8 +213,30 @@ export default {
       'setBus',
       'setDepts',
       'fetchCreateData',
-      'setListDepts'
+      'setListDepts',
+      'fetchBuDept',
+      'addItem',
+      'deleteItem'
     ]),
+    addNewRow() {
+        this.addItem()
+    },
+    deleteRow(index) {
+      console.log(index)
+        this.$swal({
+        title: 'Hapus Item ini ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        showCloseButton: true,
+      }).then(result => {
+        if(result.isConfirmed) {
+          this.deleteItem(index)
+        }
+      })
+    },
     selectAllBu() {
       this.setBus('all');
     },
@@ -257,15 +263,17 @@ export default {
     updatePassword(e) {
       this.setPassword(e.target.value)
     },
-    updateRoles(value) {
-      this.setRoles(value)
+    updateRoles(index, value) {
+      this.setRoles({index, value})
     },
-    updateBu(value) {
-      this.setDepts([])
-      this.setBus(value)      
+    updateBu(index, value) {
+      this.setBus({index, value})
+      this.setListDepts({index, lists: []})
+      this.setDepts({index, value: []})
+      this.fetchBuDept({index, value})
     },
-    updateDept(value) {
-      this.setDepts(value)
+    updateDept(index, value) {
+      this.setDepts({index, value})
     },
     submitForm() {
       this.storeData()

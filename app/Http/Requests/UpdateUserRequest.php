@@ -32,21 +32,21 @@ class UpdateUserRequest extends FormRequest
             'password' => [
                 'nullable',
             ],
-            'roles' => [
+            'bu_roles' => [
                 'required',
                 'array',
             ],
-            'roles.*.id' => [
+            'bu_roles.*.role_id' => [
                 'integer',
-                'exists:roles,id',
-            ],
-            'bus' => [
                 'required',
-                'array',
             ],
-            'bus.*.id' => [
+            'bu_roles.*.bu_id' => [
                 'integer',
-                'exists:bus,id',
+                'required',
+            ],
+            'bu_roles.*.depts' => [
+                'array',
+                'required',
             ],
         ];
     }

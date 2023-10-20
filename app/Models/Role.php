@@ -45,6 +45,12 @@ class Role extends Model
         return $this->belongsToMany(Permission::class);
     }
 
+    public function bus()
+    {
+        return $this->belongsToMany(Bu::class, 'bu_role_user', 'role_id', 'bu_id')
+            ->withPivot('role_id'); // Include the bu_id (company) from the pivot table
+    }
+
     public function users()
     {
         return $this->belongsToMany(User::class, 'bu_role_user', 'role_id', 'user_id')

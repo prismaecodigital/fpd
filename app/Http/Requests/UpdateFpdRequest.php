@@ -13,7 +13,7 @@ class UpdateFpdRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('fpd_edit');
+        return true;
     }
 
     public function rules()

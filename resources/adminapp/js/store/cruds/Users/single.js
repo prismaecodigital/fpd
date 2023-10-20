@@ -11,6 +11,13 @@ function initialState() {
       remember_token: '',
       bus: [],
       depts: [],
+      bu_roles:
+      [{
+          bu_id : null,
+          role_id : null,
+          depts: [],
+          list_depts: []
+      }],
       created_at: '',
       updated_at: '',
       deleted_at: ''
@@ -111,35 +118,34 @@ const actions = {
   setPassword({ commit }, value) {
     commit('setPassword', value)
   },
-  setRoles({ commit }, value) {
-    commit('setRoles', value)
+  setRoles({ commit }, {index,value}) {
+    commit('setRoles', {index,value})
   },
-  setBus({ commit, state}, value) {
-    commit('setBus', value)
-    if(value === 'all') {
-      console.log('all')
-      var bus = state.lists.bus.map(item => item.id)
-    } else {
-      var bus = value.map(item => item.id)
-    }
-    console.log(bus)
-    if (bus[0] !== undefined && bus[0] !== null && bus[0] !== '') {
-      axios.get('/budept', {
-        params: {
-            bu: bus
-        }
-      })
-      .then(response => {
-        console.log(response.data)
-        commit('setListDepts', response.data)
-      })
-    }
+  addItem({ commit }) {
+    commit('addItem')
   },
-  setListDepts({commit}, lists) {
-    commit('setListDepts', lists)
+  deleteItem({ commit }) {
+    commit('deleteItem')
   },
-  setDepts({ commit }, value) {
-    commit('setDepts', value)
+  setBus({ commit }, {index, value}) {
+    commit('setBus', {index, value})
+  },
+  fetchBuDept({commit, dispatch}, {index, value}) {
+    axios.get('/budept-all', {
+      params: {
+          bu: value
+      }
+    })
+    .then(response => {
+      let lists = response.data
+        commit('setListDepts', {index, lists})
+    })
+  },
+  setListDepts({commit}, {index, lists}) {
+    commit('setListDepts', {index, lists})
+  },
+  setDepts({ commit }, {index, value}) {
+    commit('setDepts', {index, value})
   },
   setRememberToken({ commit }, value) {
     commit('setRememberToken', value)
@@ -193,27 +199,30 @@ const mutations = {
   setPassword(state, value) {
     state.entry.password = value
   },
-  setRoles(state, value) {
-    state.entry.roles = value
+  setRoles(state, {index,value}) {
+    state.entry.bu_roles[index].role_id = value
   },
-  setBus(state, value) {
+  addItem(state) {
+    state.entry.bu_roles.push({
+      bu_id : null,
+      role_id : null,
+      depts: [],
+      list_depts: [],
+    });
+  },
+  deleteItem(state, index) {
+    state.entry.bu_roles.splice(index, 1);
+  },
+  setBus(state, {index, value}) {
+      state.entry.bu_roles[index].bu_id = value
+      console.log(state.entry.bu_roles[index].bu_id)
+  },
+  setDepts(state, {index, value}) {
     if(value == 'all') {
-      state.entry.bus = state.lists.bus
-      console.log(state.entry.bus)
+      state.entry.bu_roles[index].depts = state.entry.bu_roles[index].list_depts
     }
     else {
-      state.entry.bus = value
-      console.log(state.entry.bus)
-    }
-  },
-  setDepts(state, value) {
-    if(value == 'all') {
-      state.entry.depts = state.lists.depts
-      console.log(state.entry.depts)
-    }
-    else {
-      state.entry.depts = value
-      console.log(state.entry.depts)
+      state.entry.bu_roles[index].depts = value
     }
   },
   setRememberToken(state, value) {
@@ -234,9 +243,9 @@ const mutations = {
   setLists(state, lists) {
     state.lists = lists
   },
-  setListDepts(state, lists) {
-    state.lists.depts = lists
-    console.log(state.lists.depts)
+  setListDepts(state, {index, lists}) {
+    state.entry.bu_roles[index].list_depts = lists
+    console.log(state.entry.bu_roles[index].list_depts)
   },
   setLoading(state, loading) {
     state.loading = loading

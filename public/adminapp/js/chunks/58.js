@@ -38,7 +38,30 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     }
   },
-  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('UsersSingle', ['fetchEditData', 'updateData', 'resetState', 'setName', 'setEmail', 'setPassword', 'setRoles', 'setBus', 'setDepts', 'setListDepts'])), {}, {
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('UsersSingle', ['fetchEditData', 'updateData', 'resetState', 'setName', 'setEmail', 'setUsername', 'setPassword', 'setRoles', 'setBus', 'setDepts', 'setListDepts', 'fetchBuDept', 'addItem', 'deleteItem'])), {}, {
+    addNewRow: function addNewRow() {
+      this.addItem();
+    },
+    deleteRow: function deleteRow(index) {
+      var _this = this;
+      console.log(index);
+      this.$swal({
+        title: 'Hapus Item ini ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        showCloseButton: true
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this.deleteItem(index);
+        }
+      });
+    },
+    updateUsername: function updateUsername(e) {
+      this.setUsername(e.target.value);
+    },
     updateName: function updateName(e) {
       this.setName(e.target.value);
     },
@@ -52,16 +75,16 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       this.setRoles(value);
     },
     submitForm: function submitForm() {
-      var _this = this;
+      var _this2 = this;
       this.updateData().then(function () {
-        _this.$router.push({
+        _this2.$router.push({
           name: 'users.index'
         });
-        _this.$eventHub.$emit('update-success');
+        _this2.$eventHub.$emit('update-success');
       })["catch"](function (error) {
-        _this.status = 'failed';
+        _this2.status = 'failed';
         _.delay(function () {
-          _this.status = '';
+          _this2.status = '';
         }, 3000);
       });
     },
@@ -85,12 +108,29 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     deselectAllDept: function deselectAllDept() {
       this.setDepts([]);
     },
-    updateBu: function updateBu(value) {
-      this.setDepts([]);
-      this.setBus(value);
+    updateBu: function updateBu(index, value) {
+      this.setBus({
+        index: index,
+        value: value
+      });
+      this.setListDepts({
+        index: index,
+        lists: []
+      });
+      this.setDepts({
+        index: index,
+        value: []
+      });
+      this.fetchBuDept({
+        index: index,
+        value: value
+      });
     },
-    updateDept: function updateDept(value) {
-      this.setDepts(value);
+    updateDept: function updateDept(index, value) {
+      this.setDepts({
+        index: index,
+        value: value
+      });
     }
   })
 });
@@ -137,7 +177,7 @@ var render = function render() {
   }, [_c("bootstrap-alert"), _vm._v(" "), _c("div", {
     staticClass: "row"
   }, [_c("div", {
-    staticClass: "col-md-12"
+    staticClass: "col-md-6"
   }, [_c("div", {
     staticClass: "form-group bmd-form-group",
     "class": {
@@ -165,6 +205,32 @@ var render = function render() {
   })]), _vm._v(" "), _c("div", {
     staticClass: "form-group bmd-form-group",
     "class": {
+      "is-filled": _vm.entry.username,
+      "is-focused": _vm.activeField == "username"
+    }
+  }, [_c("label", {
+    staticClass: "bmd-label-floating required"
+  }, [_vm._v(_vm._s(_vm.$t("cruds.user.fields.username")))]), _vm._v(" "), _c("input", {
+    staticClass: "form-control",
+    attrs: {
+      type: "text",
+      required: ""
+    },
+    domProps: {
+      value: _vm.entry.username
+    },
+    on: {
+      input: _vm.updateUsername,
+      focus: function focus($event) {
+        return _vm.focusField("username");
+      },
+      blur: _vm.clearFocus
+    }
+  })])]), _vm._v(" "), _c("div", {
+    staticClass: "col-md-6"
+  }, [_c("div", {
+    staticClass: "form-group bmd-form-group",
+    "class": {
       "is-filled": _vm.entry.email,
       "is-focused": _vm.activeField == "email"
     }
@@ -173,7 +239,7 @@ var render = function render() {
   }, [_vm._v(_vm._s(_vm.$t("cruds.user.fields.email")))]), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
-      type: "text",
+      type: "email",
       required: ""
     },
     domProps: {
@@ -193,7 +259,7 @@ var render = function render() {
       "is-focused": _vm.activeField == "password"
     }
   }, [_c("label", {
-    staticClass: "bmd-label-floating"
+    staticClass: "bmd-label-floating required"
   }, [_vm._v(_vm._s(_vm.$t("cruds.user.fields.password")))]), _vm._v(" "), _c("input", {
     staticClass: "form-control",
     attrs: {
@@ -209,100 +275,106 @@ var render = function render() {
       },
       blur: _vm.clearFocus
     }
-  })]), _vm._v(" "), _c("div", {
-    staticClass: "form-group bmd-form-group",
-    "class": {
-      "is-filled": _vm.entry.roles.length !== 0,
-      "is-focused": _vm.activeField == "roles"
-    }
-  }, [_c("label", {
-    staticClass: "required"
-  }, [_vm._v(_vm._s(_vm.$t("cruds.user.fields.roles")))]), _vm._v(" "), _c("v-select", {
-    key: "roles-field",
+  })])])]), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_c("bootstrap-alert"), _vm._v(" "), _c("table", {
+    staticClass: "table table-bordered",
     attrs: {
-      name: "roles",
-      label: "title",
-      value: _vm.entry.roles,
-      options: _vm.lists.roles,
-      closeOnSelect: false,
-      multiple: ""
+      name: "inputItem"
+    }
+  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.entry.bu_roles, function (buRole, k) {
+    return _c("tr", {
+      key: k
+    }, [_c("td", {
+      staticClass: "trashIconContainer",
+      staticStyle: {
+        width: "40px"
+      },
+      attrs: {
+        scope: "row"
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash-o",
+      on: {
+        click: function click($event) {
+          return _vm.deleteRow(k);
+        }
+      }
+    })]), _vm._v(" "), _c("td", {
+      staticStyle: {
+        width: "150px"
+      }
+    }, [_c("v-select", {
+      key: "bus-field",
+      attrs: {
+        name: "bus",
+        label: "code",
+        value: buRole.bu_id,
+        options: _vm.lists.bus,
+        reduce: function reduce(bu) {
+          return bu.id;
+        },
+        closeOnSelect: true
+      },
+      on: {
+        input: function input($event) {
+          return _vm.updateBu(k, $event);
+        },
+        change: function change($event) {
+          return _vm.updateBu(k, $event);
+        }
+      }
+    })], 1), _vm._v(" "), _c("td", [_c("v-select", {
+      key: "depts-field",
+      attrs: {
+        name: "depts",
+        label: "code",
+        value: buRole.depts,
+        reduce: function reduce(depts) {
+          return depts.id;
+        },
+        options: buRole.list_depts,
+        closeOnSelect: true,
+        multiple: ""
+      },
+      on: {
+        input: function input($event) {
+          return _vm.updateDept(k, $event);
+        }
+      }
+    })], 1), _vm._v(" "), _c("td", {
+      staticStyle: {
+        width: "200px"
+      }
+    }, [_c("v-select", {
+      key: "roles-field",
+      attrs: {
+        name: "roles",
+        label: "title",
+        value: buRole.role_id,
+        options: _vm.lists.roles,
+        reduce: function reduce(role) {
+          return role.id;
+        },
+        closeOnSelect: true
+      },
+      on: {
+        input: function input($event) {
+          return _vm.updateRoles(k, $event);
+        }
+      }
+    })], 1)]);
+  }), 0)]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-sm btn-info",
+    attrs: {
+      type: "button"
     },
     on: {
-      input: _vm.updateRoles,
-      search: [function ($event) {
-        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "focus", undefined, $event.key, undefined)) return null;
-        return _vm.focusField("roles");
-      }, function ($event) {
-        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "blur", undefined, $event.key, undefined)) return null;
-        return _vm.clearFocus.apply(null, arguments);
-      }]
+      click: _vm.addNewRow
     }
-  })], 1), _vm._v(" "), _c("div", {
-    staticClass: "form-group bmd-form-group",
-    "class": {
-      "is-filled": _vm.entry.bus.length !== 0,
-      "is-focused": _vm.activeField == "bus"
-    }
-  }, [_c("label", {}, [_vm._v(_vm._s(_vm.$t("cruds.user.fields.bu")))]), _vm._v(" "), _c("v-select", {
-    key: "bus-field",
-    attrs: {
-      name: "bus",
-      label: "name",
-      value: _vm.entry.bus,
-      options: _vm.lists.bus,
-      closeOnSelect: false,
-      multiple: ""
-    },
-    on: {
-      input: _vm.updateBu
-    }
-  }), _vm._v(" "), _c("span", {
-    staticClass: "select-all badge",
-    on: {
-      click: _vm.selectAllBu
-    }
-  }, [_vm._v("Pilih Semua")]), _vm._v(" "), _c("span", {
-    staticClass: "select-all badge",
-    on: {
-      click: _vm.deselectAllBu
-    }
-  }, [_vm._v("Batalkan pilihan")])], 1), _vm._v(" "), _c("div", {
-    staticClass: "form-group bmd-form-group",
-    "class": {
-      "is-filled": _vm.entry.depts.length !== 0,
-      "is-focused": _vm.activeField == "depts"
-    }
-  }, [_c("label", {}, [_vm._v(_vm._s(_vm.$t("cruds.user.fields.dept")))]), _vm._v(" "), _c("v-select", {
-    key: "depts-field",
-    attrs: {
-      name: "depts",
-      label: "name",
-      value: _vm.entry.depts,
-      options: _vm.lists.depts,
-      closeOnSelect: false,
-      multiple: ""
-    },
-    on: {
-      input: _vm.updateDept,
-      search: [function ($event) {
-        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "focus", undefined, $event.key, undefined)) return null;
-        return _vm.focusField("dept");
-      }, function ($event) {
-        if (!$event.type.indexOf("key") && _vm._k($event.keyCode, "blur", undefined, $event.key, undefined)) return null;
-        return _vm.clearFocus.apply(null, arguments);
-      }]
-    }
-  }), _vm._v(" "), _c("span", {
-    staticClass: "select-all badge",
-    on: {
-      click: _vm.selectAllDept
-    }
-  }, [_vm._v("Pilih Semua")]), _vm._v(" "), _c("span", {
-    staticClass: "select-all badge",
-    on: {
-      click: _vm.deselectAllDept
-    }
-  }, [_vm._v("Batalkan pilihan")])], 1)])])], 1), _vm._v(" "), _c("div", {
+  }, [_c("i", {
+    staticClass: "fa fa-plus-circle"
+  }), _vm._v("\n                        Tambah Item\n                    ")])], 1)], 1), _vm._v(" "), _c("div", {
     staticClass: "card-footer"
   }, [_c("vue-button-spinner", {
     staticClass: "btn-primary",
@@ -321,6 +393,22 @@ var staticRenderFns = [function () {
   }, [_c("i", {
     staticClass: "material-icons"
   }, [_vm._v("edit")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("th", {
+    staticStyle: {
+      width: "40px"
+    }
+  }), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "150px"
+    }
+  }, [_vm._v("BU")]), _vm._v(" "), _c("th", [_vm._v("Dept")]), _vm._v(" "), _c("th", {
+    staticStyle: {
+      width: "200px"
+    }
+  }, [_vm._v("Role")])]);
 }];
 render._withStripped = true;
 

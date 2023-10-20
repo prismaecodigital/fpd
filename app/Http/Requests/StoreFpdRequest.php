@@ -12,7 +12,7 @@ class StoreFpdRequest extends FormRequest
 {
     public function authorize()
     {
-        return Gate::allows('fpd_create');
+        return true;
     }
 
     public function rules()

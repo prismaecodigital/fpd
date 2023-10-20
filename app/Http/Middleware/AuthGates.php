@@ -4,6 +4,8 @@ namespace App\Http\Middleware;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Bu;
+use App\Models\BuRoleUser;
 use Closure;
 use Illuminate\Support\Facades\Gate;
 
@@ -17,18 +19,26 @@ class AuthGates
             return $next($request);
         }
 
-        $roles            = Role::with('permissions')->get();
+        $buroleusers            = BuRoleUser::where('user_id', $user->id)->with(['bu','user','role'])->get();
         $permissionsArray = [];
 
-        foreach ($roles as $role) {
-            foreach ($role->permissions as $permissions) {
-                $permissionsArray[$permissions->title][] = $role->id;
+        $array = ['fpd_access','fpd_create','fpd_edit','fpd_delete','fpd_show','leader','direktur','0','1','2','3','4','5','6','7','8','admin'];
+
+        foreach ($buroleusers as $buroleuser) {
+            foreach ($buroleuser->role->permissions as $permissions) {
+                if(in_array($permissions->title, $array)) {
+                    $permissionsArray[$buroleuser->bu->code.'-'.$permissions->title][] = $buroleuser->role_id.'-'.$buroleuser->bu_id;
+                }
+                else {
+                    $permissionsArray[$permissions->title][] = $buroleuser->role_id.'-'.$buroleuser->bu_id;
+                }
+                
             }
         }
 
         foreach ($permissionsArray as $title => $roles) {
             Gate::define($title, function (User $user) use ($roles) {
-                return count(array_intersect($user->roles->pluck('id')->toArray(), $roles)) > 0;
+                return true;
             });
         }
 

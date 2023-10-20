@@ -18,140 +18,153 @@
             </div>
             <div class="card-body">
               <bootstrap-alert />
-              <div class="row">
-                <div class="col-md-12">
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.name,
-                      'is-focused': activeField == 'name'
-                    }"
-                  >
-                    <label class="bmd-label-floating required">{{
-                      $t('cruds.user.fields.name')
-                    }}</label>
-                    <input
-                      class="form-control"
-                      type="text"
-                      :value="entry.name"
-                      @input="updateName"
-                      @focus="focusField('name')"
-                      @blur="clearFocus"
-                      required
-                    />
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.email,
-                      'is-focused': activeField == 'email'
-                    }"
-                  >
-                    <label class="bmd-label-floating required">{{
-                      $t('cruds.user.fields.email')
-                    }}</label>
-                    <input
-                      class="form-control"
-                      type="text"
-                      :value="entry.email"
-                      @input="updateEmail"
-                      @focus="focusField('email')"
-                      @blur="clearFocus"
-                      required
-                    />
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.password,
-                      'is-focused': activeField == 'password'
-                    }"
-                  >
-                    <label class="bmd-label-floating">{{
-                      $t('cruds.user.fields.password')
-                    }}</label>
-                    <input
-                      class="form-control"
-                      type="password"
-                      :value="entry.password"
-                      @input="updatePassword"
-                      @focus="focusField('password')"
-                      @blur="clearFocus"
-                    />
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.roles.length !== 0,
-                      'is-focused': activeField == 'roles'
-                    }"
-                  >
-                    <label class="required">{{
-                      $t('cruds.user.fields.roles')
-                    }}</label>
-                    <v-select
-                      name="roles"
-                      label="title"
-                      :key="'roles-field'"
-                      :value="entry.roles"
-                      :options="lists.roles"
-                      :closeOnSelect="false"
-                      multiple
-                      @input="updateRoles"
-                      @search.focus="focusField('roles')"
-                      @search.blur="clearFocus"
-                    />
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.bus.length !== 0,
-                      'is-focused': activeField == 'bus'
-                    }"
-                  >
-                    <label class="">{{
-                      $t('cruds.user.fields.bu')
-                    }}</label>
-                    <v-select
-                      name="bus"
-                      label="name"
-                      :key="'bus-field'"
-                      :value="entry.bus"
-                      :options="lists.bus"
-                      :closeOnSelect="false"
-                      multiple
-                      @input="updateBu"
-                    />
-                    <span class="select-all badge" @click="selectAllBu">Pilih Semua</span>
-                    <span class="select-all badge" @click="deselectAllBu">Batalkan pilihan</span>
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.depts.length !== 0,
-                      'is-focused': activeField == 'depts'
-                    }"
-                  >
-                    <label class="">{{
-                      $t('cruds.user.fields.dept')
-                    }}</label>
-                    <v-select
-                      name="depts"
-                      label="name"
-                      :key="'depts-field'"
-                      :value="entry.depts"
-                      :options="lists.depts"
-                      :closeOnSelect="false"
-                      multiple
-                      @input="updateDept"
-                      @search.focus="focusField('dept')"
-                      @search.blur="clearFocus"
-                    />
-                    <span class="select-all badge" @click="selectAllDept">Pilih Semua</span>
-                    <span class="select-all badge" @click="deselectAllDept">Batalkan pilihan</span>
-                  </div>
-                </div>
-              </div>
+
+                      <div class="row">
+                        <div class="col-md-6">
+                          <div
+                            class="form-group bmd-form-group"
+                            :class="{
+                              'is-filled': entry.name,
+                              'is-focused': activeField == 'name'
+                            }"
+                          >
+                            <label class="bmd-label-floating required">{{
+                              $t('cruds.user.fields.name')
+                            }}</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              :value="entry.name"
+                              @input="updateName"
+                              @focus="focusField('name')"
+                              @blur="clearFocus"
+                              required
+                            />
+                          </div>
+                          <div
+                            class="form-group bmd-form-group"
+                            :class="{
+                              'is-filled': entry.username,
+                              'is-focused': activeField == 'username'
+                            }"
+                          >
+                            <label class="bmd-label-floating required">{{
+                              $t('cruds.user.fields.username')
+                            }}</label>
+                            <input
+                              class="form-control"
+                              type="text"
+                              :value="entry.username"
+                              @input="updateUsername"
+                              @focus="focusField('username')"
+                              @blur="clearFocus"
+                              required
+                            />
+                          </div>                  
+                        </div>
+                        <div class="col-md-6">
+                          <div
+                            class="form-group bmd-form-group"
+                            :class="{
+                              'is-filled': entry.email,
+                              'is-focused': activeField == 'email'
+                            }"
+                          >
+                            <label class="bmd-label-floating required">{{
+                              $t('cruds.user.fields.email')
+                            }}</label>
+                            <input
+                              class="form-control"
+                              type="email"
+                              :value="entry.email"
+                              @input="updateEmail"
+                              @focus="focusField('email')"
+                              @blur="clearFocus"
+                              required
+                            />
+                          </div>
+                          <div
+                            class="form-group bmd-form-group"
+                            :class="{
+                              'is-filled': entry.password,
+                              'is-focused': activeField == 'password'
+                            }"
+                          >
+                            <label class="bmd-label-floating required">{{
+                              $t('cruds.user.fields.password')
+                            }}</label>
+                            <input
+                              class="form-control"
+                              type="password"
+                              :value="entry.password"
+                              @input="updatePassword"
+                              @focus="focusField('password')"
+                              @blur="clearFocus"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    <div class="card-body">
+                      <bootstrap-alert />
+                      <table class="table table-bordered" name="inputItem">
+                        <thead>
+                          <th style="width: 40px"></th>
+                          <th style="width: 150px">BU</th>
+                          <th>Dept</th>
+                          <th style="width: 200px">Role</th>
+                        </thead>
+                        <tbody>
+                          <tr v-for="(buRole, k) in entry.bu_roles" :key="k">
+                            <td style="width: 40px" scope="row" class="trashIconContainer">
+                                <i class="fa fa-trash-o" @click="deleteRow(k)"></i>
+                            </td>
+                            <td style="width: 150px">
+                              <v-select
+                              name="bus"
+                              label="code"
+                              :key="'bus-field'"
+                              :value="buRole.bu_id"
+                              :options="lists.bus"
+                              :reduce="bu => bu.id"
+                              :closeOnSelect="true"
+                              @input="updateBu(k, $event)"
+                              @change="updateBu(k, $event)"
+                            />
+                            </td>
+                            <td>
+                              <v-select
+                              name="depts"
+                              label="code"
+                              :key="'depts-field'"
+                              :value="buRole.depts"
+                              :reduce="depts => depts.id"
+                              :options="buRole.list_depts"
+                              :closeOnSelect="true"
+                              multiple
+                              @input="updateDept(k, $event)"
+                            />
+                            </td>
+                            <td style="width: 200px">
+                              <v-select
+                              name="roles"
+                              label="title"
+                              :key="'roles-field'"
+                              :value="buRole.role_id"
+                              :options="lists.roles"
+                              :reduce="role => role.id"
+                              :closeOnSelect="true"
+                              @input="updateRoles(k, $event)"
+                            />
+                            </td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <button type='button' class="btn btn-sm btn-info" @click="addNewRow">
+                          <i class="fa fa-plus-circle"></i>
+                          Tambah Item
+                      </button>
+                    </div>
+                  
             </div>
             <div class="card-footer">
               <vue-button-spinner
@@ -203,10 +216,34 @@ export default {
       'resetState',
       'setName',
       'setEmail',
+      'setUsername',
       'setPassword',
       'setRoles', 'setBus', 'setDepts',
-      'setListDepts'
+      'setListDepts',
+      'fetchBuDept','addItem','deleteItem'
     ]),
+    addNewRow() {
+        this.addItem()
+    },
+    deleteRow(index) {
+      console.log(index)
+        this.$swal({
+        title: 'Hapus Item ini ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        showCloseButton: true,
+      }).then(result => {
+        if(result.isConfirmed) {
+          this.deleteItem(index)
+        }
+      })
+    },
+    updateUsername(e) {
+      this.setUsername(e.target.value)
+    },
     updateName(e) {
       this.setName(e.target.value)
     },
@@ -252,12 +289,14 @@ export default {
     deselectAllDept() {
       this.setDepts([])
     },
-    updateBu(value) {
-      this.setDepts([])
-      this.setBus(value)
+    updateBu(index, value) {
+      this.setBus({index, value})
+      this.setListDepts({index, lists: []})
+      this.setDepts({index, value: []})
+      this.fetchBuDept({index, value})
     },
-    updateDept(value) {
-      this.setDepts(value)
+    updateDept(index, value) {
+      this.setDepts({index, value})
     },
   }
 }

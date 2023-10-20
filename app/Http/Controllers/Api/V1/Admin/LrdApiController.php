@@ -23,7 +23,6 @@ class LrdApiController extends Controller
 {
     public function list()
     {
-        abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new BuResource(Bu::has('fpds')->advancedFilter()->whereIn('bu_id', auth()->user()->bus->pluck('id'))->paginate(request('limit', 10)));
         
@@ -31,7 +30,6 @@ class LrdApiController extends Controller
 
     public function index(Request $request)
     {        
-        abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new LrdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->whereIn('status', [5,6,7,8])->paginate(request('limit', 10)));
     }
@@ -108,7 +106,6 @@ class LrdApiController extends Controller
 
     public function create()
     {
-        abort_if(Gate::denies('fpd_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'meta' => [
@@ -125,7 +122,6 @@ class LrdApiController extends Controller
 
     public function show(Fpd $fpd)
     {
-        abort_if(Gate::denies('fpd_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new LrdResource($fpd->load(['items', 'bu', 'dept', 'user', 'statusHistories']));
     }
@@ -242,7 +238,6 @@ class LrdApiController extends Controller
 
     public function edit(Fpd $fpd)
     {
-        abort_if(Gate::denies('fpd_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'data' => new LrdResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories'])),
@@ -260,7 +255,6 @@ class LrdApiController extends Controller
 
     public function destroy(Fpd $fpd)
     {
-        abort_if(Gate::denies('fpd_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // Delete associated media items in the 'fpd_lampiran' collection
         $fpd->getMedia('fpd_lampiran')->each(function ($media) {
@@ -279,7 +273,6 @@ class LrdApiController extends Controller
 
     public function storeMedia(Request $request)
     {
-        abort_if(Gate::none(['fpd_create', 'fpd_edit']), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         if ($request->has('size')) {
             $this->validate($request, [
