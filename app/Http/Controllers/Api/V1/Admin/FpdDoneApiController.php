@@ -35,8 +35,6 @@ class FpdDoneApiController extends Controller
 
     public function destroy(Fpd $fpd)
     {
-        abort_if(Gate::denies('fpd_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
-
         // Delete associated media items in the 'fpd_lampiran' collection
         $fpd->getMedia('fpd_lampiran')->each(function ($media) {
             $media->delete();

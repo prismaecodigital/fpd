@@ -60,7 +60,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('lrds', 'LrdApiController')->parameters(['lrds' => 'fpd']);
 
     // Fpd Done
-    Route::resource('fpd-dones', 'FpdDoneApiController')->parameters(['fpd-dones' => 'fpd'])->only(['index','show', 'delete']);
+    Route::resource('fpd-dones', 'FpdDoneApiController')->parameters(['fpd-dones' => 'fpd'])->only(['index','show', 'destroy']);
 
     // Change password
         Route::get('password/edit', 'ChangePasswordController@edit')->name('password.edit');

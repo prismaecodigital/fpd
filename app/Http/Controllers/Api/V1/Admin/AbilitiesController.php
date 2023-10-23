@@ -14,7 +14,7 @@ class AbilitiesController extends Controller
         $buroleusers            = BuRoleUser::where('user_id', auth()->user()->id)->with(['bu','user','role'])->get();
         $permissionsArray = [];
 
-        $array = ['fpd_create','fpd_edit','fpd_delete','fpd_show','leader','direktur','0','1','2','3','4','5','6','7','8','admin'];
+        $array = ['fpd_create','fpd_edit','fpd_show','leader','direktur','0','1','2','3','4','5','6','7','8','admin'];
 
         foreach ($buroleusers as $buroleuser) {
             foreach ($buroleuser->role->permissions as $permissions) {
