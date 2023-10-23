@@ -1,12 +1,20 @@
 <template>
   <div class="dt-action-container">
     <router-link
-      v-if="$can(xprops.permission_prefix + 'show')"
       :to="{ name: xprops.route + '.show', params: { id: row.id } }"
       class="btn btn-round btn-default text-azure"
     >
       <i class="material-icons">remove_red_eye</i>
     </router-link>
+    <a
+      href="#"
+      class="btn btn-round btn-danger"
+      v-if="$can('fpd_delete')"
+      @click.prevent="destroyData(row.id)"
+      type="button"
+    >
+      <i class="material-icons">delete</i>
+    </a>
 
   </div>
 </template>

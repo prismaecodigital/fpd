@@ -23,16 +23,33 @@ class FpdDoneApiController extends Controller
 {
     public function index()
     {
-        abort_if(Gate::denies('fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new FpdDoneResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '>=', '9')->paginate(request('limit', 10)));
     }
 
     public function show(Fpd $fpd)
     {
-        abort_if(Gate::denies('fpd_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new FpdDoneResource($fpd->load(['items', 'bu', 'dept', 'user', 'statusHistories']));
+    }
+
+    public function destroy(Fpd $fpd)
+    {
+        abort_if(Gate::denies('fpd_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        // Delete associated media items in the 'fpd_lampiran' collection
+        $fpd->getMedia('fpd_lampiran')->each(function ($media) {
+            $media->delete();
+        });
+
+        // Delete associated media items in the 'fpd_bukti_transfer' collection
+        $fpd->getMedia('fpd_bukti_transfer')->each(function ($media) {
+            $media->delete();
+        });
+
+        $fpd->delete();
+
+        return response(null, Response::HTTP_NO_CONTENT);
     }
 
 }
