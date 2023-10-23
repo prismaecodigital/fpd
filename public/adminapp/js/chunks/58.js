@@ -71,8 +71,11 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     updatePassword: function updatePassword(e) {
       this.setPassword(e.target.value);
     },
-    updateRoles: function updateRoles(value) {
-      this.setRoles(value);
+    updateRoles: function updateRoles(index, value) {
+      this.setRoles({
+        index: index,
+        value: value
+      });
     },
     submitForm: function submitForm() {
       var _this2 = this;

@@ -245,7 +245,17 @@ class Fpd extends Model implements HasMedia
     {
         return $this->getMedia('fpd_lampiran')->map(function ($item) {
             $media        = $item->toArray();
-            $media['url'] = $item->getUrl();
+            $url          = $item->getUrl();
+            
+            $parts = explode('/', $url);
+
+            // Find the index of 'storage' in the parts
+            $index = array_search('storage', $parts);
+            
+            // Extract the desired substring
+            $path = implode('/', array_slice($parts, $index + 1));
+            
+            $media['url'] = 'https://dana.onprisma.com/storage/private/'.$path;
 
             return $media;
         });
@@ -254,7 +264,17 @@ class Fpd extends Model implements HasMedia
     {
         return $this->getMedia('fpd_bukti_transfer')->map(function ($item) {
             $media        = $item->toArray();
-            $media['url'] = $item->getUrl();
+            $url          = $item->getUrl();
+            
+            $parts = explode('/', $url);
+
+            // Find the index of 'storage' in the parts
+            $index = array_search('storage', $parts);
+            
+            // Extract the desired substring
+            $path = implode('/', array_slice($parts, $index + 1));
+            
+            $media['url'] = 'https://dana.onprisma.com/storage/private/'.$path;
 
             return $media;
         });

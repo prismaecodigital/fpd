@@ -16,8 +16,17 @@ Route::group([
 Auth::routes();
 
 Route::middleware(['auth.storage'])->group(function () {
-    Route::get('storage/{path}', function ($path) {
-        // Handle the file retrieval logic here, using the $path variable.
-        readfile($path);
+    Route::get('storage/private/{path}', function ($path) {
+        $absolutePath = storage_path('app/private/' . $path);
+    
+        if (file_exists($absolutePath)) {
+            $headers = [
+                'Content-Type' => mime_content_type($absolutePath),
+            ];
+    
+            return response()->file($absolutePath, $headers);
+        } else {
+            abort(404); // File not found
+        }
     })->where('path', '.*');
 });

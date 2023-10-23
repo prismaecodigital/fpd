@@ -414,7 +414,7 @@
                   Tambah Item
               </button>
             </div>
-            <div v-if="entry.status < 9 && $can(entry.status)" class="card-body">
+            <div v-if="entry.status < 9 && $can(entry.bu.code + '-' + entry.status)" class="card-body">
               <div class="row">
                 <div v-if="entry.status != 5 && entry.status != 4 && entry.status != 7" class="col-lg-2">
                   <button type='button' class="btn btn-primary" @click.prevent="approveData()">
@@ -431,7 +431,7 @@
                     Reject
                   </button>
                 </div>
-                <div v-if="entry.status === '5' && $can('5')" class="col-lg-2">
+                <div v-if="entry.status === '5' && $can(entry.bu.code + '-' + '5')" class="col-lg-2">
                   <button type='button' class="btn btn-success" @click.prevent="approveData()">
                     Lanjutkan Proses
                   </button>

@@ -9,6 +9,7 @@ function initialState() {
         transact_type: null,
         klasifikasi: null,
         bu_id: null,
+        bu: null,
         dept_id: null,
         user_id: null,
         status: null,
