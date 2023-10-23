@@ -253,8 +253,8 @@ export default {
     updatePassword(e) {
       this.setPassword(e.target.value)
     },
-    updateRoles(value) {
-      this.setRoles(value)
+    updateRoles(index, value) {
+      this.setRoles({index, value})
     },
     submitForm() {
       this.updateData()

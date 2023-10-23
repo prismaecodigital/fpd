@@ -61,6 +61,9 @@ class UsersApiController extends Controller
     {
         $user->update($request->validated());
         $depts = [];
+        foreach($user->buRoles as $burole) {
+            $burole->delete();
+        }
         for ($i = 0; $i < count($request->bu_roles); $i++) {
             $buId = $request->bu_roles[$i]['bu_id'];
             $roleId = $request->bu_roles[$i]['role_id'];
