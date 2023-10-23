@@ -277,7 +277,7 @@ function initialState() {
           'status_val'  : '',
           'status'      : 'Pengisian Form Pengajuan Dana (FPD)',
           'proses'      : 'selesai',
-          'tanggal'     : moment(entry.created_at).format('DD MMMM YYYY'),
+          'tanggal'     : moment(entry.status_histories[0].created_at).format('DD MMMM YYYY, HH:mm'),
           'user'        : entry.user.name,
         },
         {

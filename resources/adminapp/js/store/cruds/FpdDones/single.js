@@ -264,8 +264,8 @@ function initialState() {
           'status_val'  : '',
           'status'      : 'Pengisian Form Pengajuan Dana (FPD)',
           'proses'      : 'selesai',
-          'tanggal'     : '',
-          'user'        : 'user',
+          'tanggal'     : moment(entry.status_histories[0].created_at).format('DD MMMM YYYY, HH:mm'),
+          'user'        : entry.user.name,
         },
         {
           'status_val'  : '0',
@@ -283,48 +283,55 @@ function initialState() {
         },
         {
           'status_val'  : '2',
-          'status'      : 'Menunggu Penjadwalan Finance',
+          'status'      : 'Mengetahui Finance Manager',
           'proses'      : '',
           'tanggal'     : '',
           'user'        : 'user'
         },
         {
           'status_val'  : '3',
-          'status'      : 'Menunggu Proses Finance',
+          'status'      : 'Menunggu Penjadwalan Finance',
           'proses'      : '',
           'tanggal'     : '',
           'user'        : 'user'
         },
         {
           'status_val'  : '4',
-          'status'      : 'Confirm, Menunggu Realisasi oleh User',
+          'status'      : 'Menunggu Proses Finance',
           'proses'      : '',
           'tanggal'     : '',
           'user'        : 'user'
         },
         {
           'status_val'  : '5',
-          'status'      : 'Realisasi, Menunggu Persetujuan Leader',
+          'status'      : 'Confirm, Menunggu Realisasi oleh User',
           'proses'      : '',
           'tanggal'     : '',
           'user'        : 'user'
         },
         {
           'status_val'  : '6',
-          'status'      : 'Realisasi, Menunggu Proses Finance',
+          'status'      : 'Realisasi, Menunggu Persetujuan Leader',
           'proses'      : '',
           'tanggal'     : '',
           'user'        : 'user'
         },
         {
           'status_val'  : '7',
-          'status'      : 'Konfirmasi Selisih oleh User',
+          'status'      : 'Realisasi, Menunggu Proses Finance',
           'proses'      : '',
           'tanggal'     : '',
           'user'        : 'user'
         },
         {
           'status_val'  : '8',
+          'status'      : 'Konfirmasi Selisih oleh User',
+          'proses'      : '',
+          'tanggal'     : '',
+          'user'        : 'user'
+        },
+        {
+          'status_val'  : '9',
           'status'      : 'Selesai',
           'proses'      : '',
           'tanggal'     : '',
