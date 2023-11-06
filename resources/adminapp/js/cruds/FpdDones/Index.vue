@@ -227,7 +227,7 @@ export default {
     submit(bvModalEvent) {
         this.saveJournal()
         .then(() => {
-          this.$router.push({ name: 'fpd-dones.index', query: {id: this.idFromURL} })
+          window.location.reload();
           this.$eventHub.$emit('create-success')
         })
         .catch(error => {
