@@ -60,6 +60,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('lrds', 'LrdApiController')->parameters(['lrds' => 'fpd']);
 
     // Fpd Done
+    Route::get('listFpdDone','FpdDoneApiController@list')->name('listFpdDone');
     Route::resource('fpd-dones', 'FpdDoneApiController')->parameters(['fpd-dones' => 'fpd'])->only(['index','show', 'destroy']);
 
     // Change password
@@ -67,6 +68,11 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
         Route::post('password', 'ChangePasswordController@update')->name('password.update');
         Route::post('profile', 'ChangePasswordController@updateProfile')->name('password.updateProfile');
         Route::post('profile/destroy', 'ChangePasswordController@destroy')->name('password.destroyProfile');
+
+    // Accurate
+    Route::get('accurate-token', 'IntegrationApiController@getAccurateToken')->name('accurate.token');
+    Route::get('save-journal','IntegrationApiController@saveJournalVoucher')->name('accurate.saveJournal');
+    Route::resource('integrations', 'IntegrationApiController'); 
 
 });
 

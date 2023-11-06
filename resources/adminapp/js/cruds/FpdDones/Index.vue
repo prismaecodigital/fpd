@@ -13,16 +13,6 @@
             </h4>
           </div>
           <div class="card-body">
-            <router-link
-              class="btn btn-primary"
-              v-if="$can(xprops.permission_prefix + 'create')"
-              :to="{ name: xprops.route + '.create' }"
-            >
-              <i class="material-icons">
-                add
-              </i>
-              {{ $t('global.add') }}
-            </router-link>
             <button
               type="button"
               class="btn btn-default"
@@ -35,6 +25,44 @@
               </i>
               {{ $t('global.refresh') }}
             </button>
+            <button v-if="$can('finance')" class="btn btn-success" @click="logCheckedValues">Buat Jurnal</button>
+          </div>
+          
+          <!-- Modal -->
+          <div class="card-body row">
+
+            <b-modal ref="modal-1" title="Buat Jurnal" @ok="submit">
+              <div class="modal-body row">
+                <div class="col-lg-3">Akun Debit</div>
+                <div class="col">Akun dari Dana (FPD)</div>
+                
+              </div>
+              <div class="modal-body row">
+                <div class="col-lg-3">Akun Kredit</div>
+                <div class="col">
+                    <v-select
+                      name="credit_account"
+                      label="name"
+                      :key="'account-field'"
+                      :value="params.credit_account"
+                      @input="updateCredit"
+                      :options="lists.accounts"
+                      :reduce="account => account.id"
+                    >
+                      <template #search="{attributes, events}">
+                        <input
+                          class="vs__search"
+                          :required="!params.credit_account"
+                          v-bind="attributes"
+                          v-on="events"
+                        />
+                      </template>
+                    </v-select>
+                </div>
+                
+              </div>
+            </b-modal>
+
           </div>
           <div class="card-body">
             <div class="row">
@@ -74,6 +102,8 @@ import HeaderSettings from '@components/Datatables/HeaderSettings'
 import GlobalSearch from '@components/Datatables/GlobalSearch'
 import DatatableSingle from '@components/Datatables/DatatableSingle'
 import DatatableEnum from '@components/Datatables/DatatableEnum'
+import DatatableCheckbox from '../../components/Datatables/DatatableCheckbox.vue'
+import BuDeptSingle from '../../components/Datatables/BuDeptSingle.vue'
 
 export default {
   components: {
@@ -81,8 +111,19 @@ export default {
     HeaderSettings
   },
   data() {
+    
+    const urlParams = new URLSearchParams(window.location.search);
+    const idFromURL = urlParams.get('id');
     return {
+      fpds: [],
       columns: [
+        {
+          title: '',
+          field: 'selected',
+          thComp: '',
+          tdComp: DatatableCheckbox,
+          sortable: false
+        },
         {
           title: 'cruds.fpd.fields.code',
           field: 'code',
@@ -96,17 +137,10 @@ export default {
           sortable: true
         },
         {
-          title: 'cruds.fpd.fields.bu',
-          field: 'bu.code',
-          thComp: TranslatedHeader,
-          tdComp: DatatableSingle,
-          sortable: true
-        },
-        {
           title: 'cruds.fpd.fields.dept',
-          field: 'dept.code',
+          field: 'bu.dept',
           thComp: TranslatedHeader,
-          tdComp: DatatableSingle,
+          tdComp: BuDeptSingle,
           sortable: true
         },
         {
@@ -136,6 +170,13 @@ export default {
           sortable: true
         },
         {
+          title: 'Jurnal',
+          field: 'journaled',
+          thComp: TranslatedHeader,
+          sortable: true,
+          tdComp: DatatableEnum
+        },
+        {
           title: 'global.actions',
           thComp: TranslatedHeader,
           tdComp: FpdDoneActions,
@@ -145,7 +186,7 @@ export default {
           colStyle: 'width: 150px;'
         }
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '' },
+      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: idFromURL },
       xprops: {
         module: 'FpdDonesIndex',
         route: 'fpd-dones',
@@ -157,7 +198,7 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('FpdDonesIndex', ['data', 'total', 'loading'])
+    ...mapGetters('FpdDonesIndex', ['data', 'total', 'loading', 'lists', 'params'])
   },
   watch: {
     query: {
@@ -169,7 +210,33 @@ export default {
     }
   },
   methods: {
-    ...mapActions('FpdDonesIndex', ['fetchIndexData', 'setQuery', 'resetState'])
+    ...mapActions('FpdDonesIndex', ['fetchIndexData', 'setQuery', 'resetState', 'setFpds','setCredit', 'saveJournal']),
+    logCheckedValues() {
+      this.fpds = this.data.filter(row => row.selected).map(row => row.id);
+      if(this.fpds.length > 0) {
+        this.setFpds(this.fpds)
+        this.$refs['modal-1'].show()
+      } else {
+        this.$eventHub.$emit('no-check')
+      }
+      
+    },
+    updateCredit(value) {
+      this.setCredit(value)
+    },
+    submit(bvModalEvent) {
+        this.saveJournal()
+        .then(() => {
+          this.$router.push({ name: 'fpd-dones.index', query: {id: this.idFromURL} })
+          this.$eventHub.$emit('create-success')
+        })
+        .catch(error => {
+          this.status = 'failed'
+          _.delay(() => {
+            this.status = ''
+          }, 3000)
+        })
+    },
   }
 }
 </script>

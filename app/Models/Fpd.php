@@ -20,11 +20,13 @@ class Fpd extends Model implements HasMedia
     protected $appends = [
         'transact_type_label',
         'status_label',
+        'journaled_label',
         'klasifikasi_label',
         'lampiran',
         'total_amount',
         'total_real_amount',
-        'bukti_transfer'
+        'bukti_transfer',
+        'processed_date_raw'
     ];
 
     protected $dates = [
@@ -44,6 +46,7 @@ class Fpd extends Model implements HasMedia
         'dept.name',
         'user.name',
         'status',
+        'journaled',
         'req_date',
     ];
 
@@ -70,6 +73,22 @@ class Fpd extends Model implements HasMedia
         [
             'label' => 'TRANSFER',
             'value' => 'TRANSFER',
+        ],
+    ];
+
+    public const JOURNALED_SELECT = [
+
+        [
+            'label' => 'Belum Dijurnal',
+            'value' => null,
+        ],
+        [
+            'label' => 'Belum Dijurnal',
+            'value' => 0,
+        ],
+        [
+            'label' => 'Sudah Dijurnal',
+            'value' => 1,
         ],
     ];
 
@@ -155,6 +174,7 @@ class Fpd extends Model implements HasMedia
         'req_date',
         'processed_date',
         'ket',
+        'journaled',
         'created_at',
         'updated_at',
     ];
@@ -216,6 +236,11 @@ class Fpd extends Model implements HasMedia
         return collect(static::STATUS_SELECT)->firstWhere('value', $this->status)['label'] ?? '';
     }
 
+    public function getJournaledLabelAttribute()
+    {
+        return collect(static::JOURNALED_SELECT)->firstWhere('value', $this->journaled)['label'] ?? '';
+    }
+
     public function getReqDateAttribute($value)
     {
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.date_format')) : null;
@@ -229,6 +254,11 @@ class Fpd extends Model implements HasMedia
     public function getProcessedDateAttribute($value)
     {
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.date_format')) : null;
+    }
+
+    public function getProcessedDateRawAttribute()
+    {
+        return $this->attributes['processed_date'];
     }
 
     public function setProcessedDateAttribute($value)

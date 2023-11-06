@@ -26,6 +26,7 @@
       <!-- Collapsable -->
       <div class="collapse navbar-collapse justify-content-end">
         <ul class="navbar-nav">
+          <v-accurate />
           <top-navbar-languages />
         </ul>
       </div>

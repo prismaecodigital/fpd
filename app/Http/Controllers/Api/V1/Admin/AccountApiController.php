@@ -115,7 +115,7 @@ class AccountApiController extends Controller
     public function deptaccount(Request $request)
     {
         $dept = $request->input('dept');
-        $accounts = Account::whereHas('depts', function ($query) use ($dept) {
+        $accounts = Account::whereNotNull('parent_id')->whereHas('depts', function ($query) use ($dept) {
             $query->where('dept_id', $dept);
         })->get();
 

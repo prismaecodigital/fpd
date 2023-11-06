@@ -7,6 +7,7 @@ use App\Http\Requests\StoreFpdRequest;
 use App\Http\Requests\UpdateFpdRequest;
 use App\Http\Resources\Admin\LrdResource;
 use App\Models\Bu;
+use App\Models\BuRoleUser;
 use App\Models\Dept;
 use App\Models\Site;
 use App\Models\Fpd;
@@ -39,6 +40,7 @@ class LrdApiController extends Controller
         // Generate Code and Store FPD
         $dept = Dept::findOrFail($request->dept_id);
         $bu = Bu::findOrFail($request->bu_id);
+        $userBuRole = BuRoleUser::where('user_id', auth()->user()->id)->where('bu_id', $bu->id)->first();
 
         $data = $request->only([
             'name',
@@ -53,7 +55,7 @@ class LrdApiController extends Controller
     
         $data['user_id'] = auth()->user()->id;
         $data['created_at'] = Carbon::now();
-        if(auth()->user()->hasRole('leader')) {
+        if($userBuRole->role->title === 'leader') {
             $data['status'] = '1';
         }
         else {
@@ -81,7 +83,7 @@ class LrdApiController extends Controller
         }
         
         // Store StatusHistory
-        if(auth()->user()->hasRole('leader')) {
+        if($userBuRole->role->title === 'leader') {
             $statusHistory = StatusHistory::create(
                 [
                     'fpd_id'    => $fpd->id,
@@ -128,6 +130,8 @@ class LrdApiController extends Controller
 
     public function update(UpdateFpdRequest $request, Fpd $fpd)
     {        // Update FPD
+        $bu = Bu::findOrFail($fpd->bu_id);
+        $userBuRole = BuRoleUser::where('user_id', auth()->user()->id)->where('bu_id', $bu->id)->first();
         $fpd->update($request->validated());
         if($media = $request->input('lampiran', [])) {
             $fpd->updateMedia($request->input('lampiran', []), 'fpd_lampiran');
@@ -146,9 +150,9 @@ class LrdApiController extends Controller
         if($request->approve !== null) {
             if($request->approve === "1" && (int)$fpd->status < 9) 
             {
-                if(($fpd->status === '0' && auth()->user()->hasRole('direktur')) || 
-                    ($fpd->status === '5' && auth()->user()->hasRole('leader')) ||                
-                    ($fpd->status === '1' && auth()->user()->hasRole('finance')))
+                if(($fpd->status === '0' && $userBuRole->role->title === 'leader') || 
+                    ($fpd->status === '5' && $userBuRole->role->title === 'direktur') ||                
+                    ($fpd->status === '1' &&$userBuRole->role->title === 'leader'))
                     {
                         $fpd->update(['status' => (string)((int)$fpd->status + 2)]);
                         $statusHistory0 = StatusHistory::create(
@@ -186,14 +190,14 @@ class LrdApiController extends Controller
         // Rename media        
         if($fpd->status >= 4) {
             foreach ($fpd->getMedia('fpd_lampiran') as $index => $file) {
-                $extension = $file->extension(); // Get the file extension
+                $extension = $file->extension; // Get the file extension
                 $newFileName = $fpd->code_voucher . '-' . ($index + 1) . '.' . $extension;
                 $file->file_name = $newFileName;
                 $file->save();
             }
         
             foreach ($fpd->getMedia('fpd_bukti_transfer') as $index => $file) {
-                $extension = $file->extension(); // Get the file extension
+                $extension = $file->extension; // Get the file extension
                 $newFileName = $fpd->code_voucher_lrd . '-' . ($index + 1) . '.' . $extension;
                 $file->file_name = $newFileName;
                 $file->save();

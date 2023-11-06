@@ -11,6 +11,7 @@ function initialState() {
         dept_id: null,
         user_id: null,
         status: null,
+        journaled: false,
         req_date: '',
         processed_date: '',
         ket: '',

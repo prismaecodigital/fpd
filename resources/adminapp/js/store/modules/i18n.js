@@ -2,6 +2,10 @@ import i18n from '../../i18n'
 
 function getDefaultState() {
   return {
+    accurate: {
+      access_token : '',
+      status        : ''
+    },
     languages: [],
     availableLocales: []
   }
@@ -10,6 +14,7 @@ function getDefaultState() {
 const getters = {
   locale: () => i18n.locale,
   languages: state => state.languages,
+  accurate: state => state.accurate,
   availableLocales: state => state.availableLocales
 }
 
@@ -36,10 +41,18 @@ const actions = {
     dispatch('fetchLocaleMessages', locale).then(() => {
       commit('setLocale', locale)
     })
-  }
+  },
+  fetchAccurateToken({ commit }) {
+    axios.get('accurate-token').then(response => {
+      commit('setAccurate', response.data.data)
+    })
+  },
 }
 
 const mutations = {
+  setAccurate(state, accurate) {
+    state.accurate = accurate
+  },
   setLanguages(state, languages) {
     state.languages = languages
   },

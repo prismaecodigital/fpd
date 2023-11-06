@@ -27,6 +27,10 @@ class UpdateDeptRequest extends FormRequest
                 'required',
                 'unique:depts,name,' . request()->route('dept')->id,
             ],
+            'bu_id' => [
+                'integer',
+                'required'
+            ]
         ];
     }
 }

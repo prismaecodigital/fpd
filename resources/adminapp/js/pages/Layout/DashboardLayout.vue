@@ -112,7 +112,7 @@ export default {
             {
               title: 'Selesai',
               icon: 'check_circle',
-              path: { name: 'fpd-dones.index' },
+              path: { name: 'listFpdDone' },
               gate: 'fpd_access'
             },
           ]

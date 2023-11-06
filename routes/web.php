@@ -1,6 +1,6 @@
 <?php
 
-Route::redirect('/', '/login');
+Route::redirect('/', '/login')->name('home');
 Route::redirect('/dashboard', '/admin/dashboard');
 
 Auth::routes(['register' => false]);
@@ -30,3 +30,10 @@ Route::middleware(['auth.storage'])->group(function () {
         }
     })->where('path', '.*');
 });
+Route::group(['prefix' => 'accurate', 'as' => 'accurate.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
+    Route::get('/get-token', 'AccurateController@getToken');
+    Route::get('/callback', 'AccurateController@callback');
+    Route::get('/gl-account/{bu_id}', 'AccurateController@glAccount');
+    Route::get('/journal-voucher/{bu_id}', 'AccurateController@journalVoucher');
+});
+

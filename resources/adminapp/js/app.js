@@ -53,8 +53,9 @@ Vue.filter('currency', function (value) {
    i18n,
    created() {
      this.fetchLanguages()
+     this.fetchAccurateToken()
    },
    methods: {
-     ...mapActions('I18NStore', ['fetchLanguages'])
+     ...mapActions('I18NStore', ['fetchLanguages', 'fetchAccurateToken'])
    },
  })

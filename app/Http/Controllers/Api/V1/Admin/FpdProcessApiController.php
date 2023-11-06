@@ -7,6 +7,7 @@ use App\Http\Requests\StoreFpdRequest;
 use App\Http\Requests\UpdateFpdRequest;
 use App\Http\Resources\Admin\FpdProcessResource;
 use App\Models\Bu;
+use App\Models\BuRoleUser;
 use App\Models\Dept;
 use App\Models\Site;
 use App\Models\Fpd;
@@ -42,6 +43,7 @@ class FpdProcessApiController extends Controller
         // Generate Code and Store FPD
         $dept = Dept::findOrFail($request->dept_id);
         $bu = Bu::findOrFail($request->bu_id);
+        $userBuRole = BuRoleUser::where('user_id', auth()->user()->id)->where('bu_id', $bu->id)->first();
 
         $data = $request->only([
             'name',
@@ -56,7 +58,7 @@ class FpdProcessApiController extends Controller
     
         $data['user_id'] = auth()->user()->id;
         $data['created_at'] = Carbon::now();
-        if(auth()->user()->hasRole('leader')) {
+        if($userBuRole->role->title === 'leader') {
             $data['status'] = '1';
         }
         else {
@@ -84,7 +86,7 @@ class FpdProcessApiController extends Controller
         }
         
         // Store StatusHistory
-        if(auth()->user()->hasRole('leader')) {
+        if($userBuRole->role->title === 'leader') {
             $statusHistory = StatusHistory::create(
                 [
                     'fpd_id'    => $fpd->id,
@@ -117,7 +119,7 @@ class FpdProcessApiController extends Controller
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
                 'klasifikasi'   => Fpd::KLASIFIKASI_SELECT,
-                'accounts'      => Account::get(['id','name']),
+                'accounts'      => Account::whereNotNull('parent_id')->get(['id','name']),
                 'site'          => Site::get(['id','name'])
             ],
         ]);
@@ -132,6 +134,8 @@ class FpdProcessApiController extends Controller
 
     public function update(UpdateFpdRequest $request, Fpd $fpd)
     {        // Update FPD
+        $bu = Bu::findOrFail($fpd->bu_id);
+        $userBuRole = BuRoleUser::where('user_id', auth()->user()->id)->where('bu_id', $bu->id)->first();
         $fpd->update($request->validated());
         if($media = $request->input('lampiran', [])) {
             $fpd->updateMedia($request->input('lampiran', []), 'fpd_lampiran');
@@ -150,9 +154,9 @@ class FpdProcessApiController extends Controller
         if($request->approve !== null) {
             if($request->approve === "1" && (int)$fpd->status < 9) 
             {
-                if(($fpd->status === '0' && auth()->user()->hasRole('direktur')) || 
-                    ($fpd->status === '5' && auth()->user()->hasRole('leader')) ||                
-                    ($fpd->status === '1' && auth()->user()->hasRole('finance')))
+                if(($fpd->status === '0' && $userBuRole->role->title === 'direktur') || 
+                    ($fpd->status === '5' && $userBuRole->role->title === 'leader') ||                
+                    ($fpd->status === '1' && $userBuRole->role->title === 'finance'))
                     {
                         $fpd->update(['status' => (string)((int)$fpd->status + 2)]);
                         $statusHistory0 = StatusHistory::create(
@@ -260,7 +264,6 @@ class FpdProcessApiController extends Controller
 
     public function destroy(Fpd $fpd)
     {
-        abort_if(Gate::denies('fpd_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         // Delete associated media items in the 'fpd_lampiran' collection
         $fpd->getMedia('fpd_lampiran')->each(function ($media) {

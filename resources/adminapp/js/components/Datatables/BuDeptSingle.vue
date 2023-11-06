@@ -1,7 +1,7 @@
 <template>
   <div>
     <span v-if="row[entry.key]" class="badge badge-pill badge-azure">
-      {{ row[entry.key][entry.field]['name'] }}  -  {{ row[entry.key]['name'] }} 
+      {{ row[entry.key]['code'] }}  -  {{ row[entry.field]['code'] }} 
     </span>
     <span v-else class="badge badge-pill badge-orange">
       Not Assigned

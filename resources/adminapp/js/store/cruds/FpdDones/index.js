@@ -5,8 +5,17 @@ const set = key => (state, val) => {
   function initialState() {
     return {
       data: [],
+      lists: {
+        accounts: [],
+      },
       total: 0,
       query: {},
+      session: '',
+      host: '',
+      params: {
+        fpds: [],
+        credit_account : ''
+      },
       loading: false
     }
   }
@@ -15,6 +24,8 @@ const set = key => (state, val) => {
   
   const getters = {
     data: state => state.data,
+    params: state => state.params,
+    lists: state => state.lists,
     total: state => state.total,
     loading: state => state.loading
   }
@@ -25,23 +36,10 @@ const set = key => (state, val) => {
       axios
         .get(route, { params: state.query })
         .then(response => {
-          commit('setData', response.data.data)
-          commit('setTotal', response.data.total)
-        })
-        .catch(error => {
-          message = error.response.data.message || error.message
-          // TODO error handling
-        })
-        .finally(() => {
-          commit('setLoading', false)
-        })
-    },
-    fetchCalendarData({ commit, state }) {
-      commit('setLoading', true)
-      axios
-        .get(route, { params: state.query })
-        .then(response => {
-          commit('setCalendarData', response.data.data)
+          commit('setData', response.data.data.data)
+          commit('setTotal', response.data.data.total)
+          commit('setParameters', response.data.meta)
+          commit('setLists', response.data.lists)
         })
         .catch(error => {
           message = error.response.data.message || error.message
@@ -65,24 +63,52 @@ const set = key => (state, val) => {
     setQuery({ commit }, value) {
       commit('setQuery', _.cloneDeep(value))
     },
+    setFpds({commit}, value) {
+      commit('setFpds', value)
+    },
+    setCredit({commit}, value) {
+      commit('setCredit', value)
+    },
     resetState({ commit }) {
       commit('resetState')
+    },
+    saveJournal({commit, state, dispatch}) {
+      commit('setLoading', true)
+      dispatch('Alert/resetState', null, { root: true })
+  
+      return new Promise((resolve, reject) => {
+        axios
+          .get('save-journal', { params: state.params })
+          .then(response => {
+            resolve(response)
+          })
+          .catch(error => {
+            let message = error.response.data.message || error.message
+            let errors = error.response.data.errors
+  
+            dispatch(
+              'Alert/setAlert',
+              { message: message, errors: errors, color: 'danger' },
+              { root: true }
+            )
+  
+            reject(error)
+          })
+          .finally(() => {
+            commit('setLoading', false)
+          })
+      })
     }
   }
   
   const mutations = {
     setData: set('data'),
-    setCalendarData(state, data) {
-      state.data = data;
-      // You can also set the events based on 'data' here
-      // For example:
-      state.data = data.map(item => ({
-        id: item.id,
-        bu: item.bu.name,
-        date: item.created_at,
-        req_date: item.req_date,
-      }));
-      console.log(state.data)
+    setLists(state, lists) {
+      state.lists = lists
+    },
+    setParameters(state, meta) {
+      state.session = meta.session
+      state.host = meta.host
     },
     setTotal: set('total'),
     setQuery(state, query) {
@@ -92,6 +118,12 @@ const set = key => (state, val) => {
     setLoading: set('loading'),
     resetState(state) {
       Object.assign(state, initialState())
+    },
+    setFpds(state, value) {
+      state.params.fpds = value
+    },
+    setCredit(state, value) {
+      state.params.credit_account = value
     }
   }
   

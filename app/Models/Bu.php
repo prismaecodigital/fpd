@@ -33,6 +33,10 @@ class Bu extends Model
     protected $fillable = [
         'code',
         'name',
+        'accurate_bu_id',
+        'accurate_session',
+        'accurate_host',
+        'accurate_session_expire',
         'created_at',
         'updated_at',
     ];

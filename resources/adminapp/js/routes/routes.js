@@ -18,6 +18,11 @@ const routes = [
         meta: { title: 'global.dashboard' }
       },
       {
+        path: 'accurate',
+        component: () => import('@pages/Dashboard.vue'),
+        name: 'accurate',
+      },
+      {
         path: 'user-management',
         name: 'user_management',
         component: View,
@@ -324,15 +329,21 @@ const routes = [
       // Fpd Dones
       {
         path: 'fpd-dones',
+        name: 'listFpdDone',
+        component: () => import('@cruds/FpdDones/List.vue'),
+        meta: { title: '' }
+      },
+      {
+        path: 'fpd-dones/list',
         name: 'fpd-dones.index',
         component: () => import('@cruds/FpdDones/Index.vue'),
-        meta: { title: 'Done' }
+        meta: { title: '' }
       },
       {
         path: 'fpd-dones/:id',
         name: 'fpd-dones.show',
         component: () => import('@cruds/FpdDones/Show.vue'),
-        meta: { title: 'Done' }
+        meta: { title: '' }
       },
 
       // Profile

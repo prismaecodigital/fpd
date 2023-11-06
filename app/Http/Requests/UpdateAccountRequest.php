@@ -33,7 +33,6 @@ class UpdateAccountRequest extends FormRequest
             ],
             'parent_id' => [
                 'integer',
-                'exists:bus,id',
                 'nullable',
             ],
             'dept' => [

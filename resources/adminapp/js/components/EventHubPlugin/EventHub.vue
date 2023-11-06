@@ -21,6 +21,8 @@ export default {
     this.$eventHub.$on('update-success', this.itemUpdated)
     this.$eventHub.$on('delete-success', this.itemDeleted)
     this.$eventHub.$on('approve-success', this.itemApproved)
+    this.$eventHub.$on('journal-failed', this.journalFailed)
+    this.$eventHub.$on('no-check', this.noCheck)
   },
   methods: {
     itemCreated() {
@@ -58,7 +60,25 @@ export default {
         },
         { ...this.notificationSettings, type: 'primary' }
       )
-    }
+    },
+    journalFailed() {
+      this.$jquery.notify(
+        {
+          icon: 'cross',
+          message: this.$i18n.t('Item ini sudah dijurnal')
+        },
+        { ...this.notificationSettings, type: 'primary' }
+      )
+    },
+    noCheck() {
+      this.$jquery.notify(
+        {
+          icon: 'cross',
+          message: this.$i18n.t('Tidak ada yang dipilih')
+        },
+        { ...this.notificationSettings, type: 'primary' }
+      )
+    },
   },
   watch: {
     $route: {

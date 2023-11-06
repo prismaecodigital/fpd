@@ -39,7 +39,7 @@ export default {
     return {}
   },
   computed: {
-    ...mapGetters('I18NStore', ['locale', 'languages'])
+  ...mapGetters('I18NStore', ['locale', 'languages'])
   },
   methods: {
     ...mapActions('I18NStore', ['setLocale'])

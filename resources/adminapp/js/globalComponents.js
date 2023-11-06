@@ -16,6 +16,7 @@ import Datepicker from 'vuejs-datepicker';
 import excel from 'vue-excel-export'
 import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
+import AccurateToken from '@components/AccurateToken.vue'
 
 const GlobalComponents = {
   install(Vue) {
@@ -40,6 +41,7 @@ const GlobalComponents = {
     Vue.component('bootstrap-alert', BootstrapAlert)
     Vue.component('v-radio', VueRadio)
     Vue.component('v-select', vSelect)
+    Vue.component('v-accurate', AccurateToken)
 
   }
 }
