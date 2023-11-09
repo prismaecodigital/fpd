@@ -60,6 +60,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('lrds', 'LrdApiController')->parameters(['lrds' => 'fpd']);
 
     // Fpd Done
+    Route::post('import-journal', 'FpdDoneApiController@importData')->name('importJournal');
     Route::get('listFpdDone','FpdDoneApiController@list')->name('listFpdDone');
     Route::resource('fpd-dones', 'FpdDoneApiController')->parameters(['fpd-dones' => 'fpd'])->only(['index','show', 'destroy']);
 

@@ -26,6 +26,7 @@ class Integration extends Model
     protected $dates = [
         'created_at',
         'updated_at',
+        'expire_date',
     ];
 
     protected $fillable = [
@@ -38,6 +39,7 @@ class Integration extends Model
         'scope',
         'created_at',
         'updated_at',
+        'expire_date',
     ];
 
     protected function serializeDate(DateTimeInterface $date)

@@ -77,7 +77,7 @@ class UpdateFpdRequest extends FormRequest
             ],
             'lampiran' => [
                 'array',
-                'required_if:status,5'
+                'nullable'
             ],
             'lampiran.*.id' => [
                 'integer',
@@ -85,7 +85,7 @@ class UpdateFpdRequest extends FormRequest
             ],
             'bukti_transfer' => [
                 'array',
-                new ValidateBuktiTransfer(),
+                'required_if:status,5'
             ],
             'bukti_transfer.*.id' => [
                 'integer',

@@ -74,13 +74,6 @@ export default {
     return {
       columns: [
         {
-          title: 'cruds.bu.fields.id',
-          field: 'id',
-          thComp: TranslatedHeader,
-          sortable: true,
-          colStyle: 'width: 100px;'
-        },
-        {
           title: 'cruds.bu.fields.name',
           field: 'name',
           thComp: TranslatedHeader,

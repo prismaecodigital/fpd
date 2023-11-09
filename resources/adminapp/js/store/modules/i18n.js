@@ -3,8 +3,8 @@ import i18n from '../../i18n'
 function getDefaultState() {
   return {
     accurate: {
-      access_token : '',
-      status        : ''
+      access_token  : '',
+      status        : '',
     },
     languages: [],
     availableLocales: []

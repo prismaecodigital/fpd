@@ -1,7 +1,7 @@
 <template>
   <li class="nav-item">
       <div v-if="$can('finance') || $can('admin')">
-          <div v-if="accurate.access_token !== null && accurate.access_token !== ''">
+          <div v-if="accurate.access_token !== null && accurate.access_token !== '' && accurate.status == 'available'">
               Connected Accurate
           </div>
           <div v-else>

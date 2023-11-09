@@ -75,8 +75,9 @@ class AccurateController extends Controller
         $refreshToken = $json->{"refresh_token"};
 
         $now = Carbon::now();
+        $expire_date = $now->addDays(14);
 
-        $this->integration->update(['access_token' => $accessToken, 'refresh_token' => $refreshToken, 'updated_at' => $now]);
+        $this->integration->update(['access_token' => $accessToken, 'refresh_token' => $refreshToken, 'expire_date' => $expire_date, 'status' => 'available']);
 
         return redirect()->route('home')->with('success','Sukses');
     }

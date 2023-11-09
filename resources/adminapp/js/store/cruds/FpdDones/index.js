@@ -16,6 +16,8 @@ const set = key => (state, val) => {
         fpds: [],
         credit_account : ''
       },
+      file: null,
+      importedData: [],
       loading: false
     }
   }
@@ -26,6 +28,8 @@ const set = key => (state, val) => {
     data: state => state.data,
     params: state => state.params,
     lists: state => state.lists,
+    file: state => state.file,
+    importedData: state => state.importedData,
     total: state => state.total,
     loading: state => state.loading
   }
@@ -69,6 +73,29 @@ const set = key => (state, val) => {
     setCredit({commit}, value) {
       commit('setCredit', value)
     },
+    setFile({commit}, value) {
+      commit('setFile', value)
+    },
+    importFile({commit, state, dispatch}) {
+      
+      const formData = new FormData();
+      formData.append('file', state.file)
+      formData.append('bu_id', state.data[0].bu_id)
+      axios.post('import-journal', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      })
+      .then(response => {
+        // Handle the response
+        commit('setImportedData', response.data.data)
+        console.log('File uploaded successfully', response.data);
+      })
+      .catch(error => {
+        // Handle errors
+        console.error('Error uploading file', error);
+      });
+    },
     resetState({ commit }) {
       commit('resetState')
     },
@@ -109,6 +136,14 @@ const set = key => (state, val) => {
     setParameters(state, meta) {
       state.session = meta.session
       state.host = meta.host
+    },
+    setFile(state, value) {
+      state.file = value
+      console.log(state.file)
+    },
+    setImportedData(state, value) {
+      state.importedData = value
+      console.log(state.importedData)
     },
     setTotal: set('total'),
     setQuery(state, query) {

@@ -60,7 +60,7 @@
 </style>
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import FpdBuActions from '@components/Datatables/FpdBuActions'
+import FpdDoneBuActionsVue from '@components/Datatables/FpdDoneBuActions'
 import TranslatedHeader from '@components/Datatables/TranslatedHeader'
 import HeaderSettings from '@components/Datatables/HeaderSettings'
 import GlobalSearch from '@components/Datatables/GlobalSearch'
@@ -74,13 +74,6 @@ export default {
     return {
       columns: [
         {
-          title: 'cruds.bu.fields.id',
-          field: 'id',
-          thComp: TranslatedHeader,
-          sortable: true,
-          colStyle: 'width: 100px;'
-        },
-        {
           title: 'cruds.bu.fields.name',
           field: 'name',
           thComp: TranslatedHeader,
@@ -93,9 +86,14 @@ export default {
           sortable: true
         },
         {
+          title: 'Accurate',
+          field: 'status',
+          sortable: true
+        },
+        {
           title: 'global.actions',
           thComp: TranslatedHeader,
-          tdComp: FpdBuActions,
+          tdComp: FpdDoneBuActionsVue,
           visible: true,
           thClass: 'text-center',
           tdClass: 'text-center td-actions',
