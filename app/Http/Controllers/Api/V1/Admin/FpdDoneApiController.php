@@ -84,6 +84,9 @@ class FpdDoneApiController extends Controller
                 'session' => $session,
                 'host' => $host,
             ],
+            'lists' => [
+                    'accounts'      => Account::where('bu_id', $bu->id)->whereNotNull('parent_id')->get(['id','name']),
+            ]
         ]);
 
     }
@@ -117,8 +120,68 @@ class FpdDoneApiController extends Controller
         $data = Excel::toCollection(new JournalImport, $file)->first();
 
         $bu = Bu::where('id', $request->bu_id)->first();
+
+        $rules = [];
+        $messages = [];
+
         if(Carbon::now() >= $bu->accurate_session_expire || empty($bu->accurate_bu_id) || $bu->accurate_bu_id == '') {
             return response()->json('tidak ada session BU didalam accurate');
+        }
+
+        // foreach ($data as $key => $item) {
+        //     $rules["data.$key.account_no"] = [
+        //         'required',
+        //         function ($attribute, $value, $fail) {
+        //             $account = Account::where('code', $value)->first();
+        //             if ($account->parent_id === null || empty($account->parent_id)) {
+        //                 $fail('Akun tidak ditemukan atau merupakan parent.');
+        //             }
+        //         },
+        //     ];
+
+        //     $rules["data.$key.trans_date"] = [
+        //         'required',
+        //         'integer',
+        //     ];
+
+        //     $rules["data.$key.account_type"] = [
+        //         'required',
+        //         'in:DEBIT,CREDIT',
+        //     ];
+
+        //     $messages["data.$key.account_no.required"] = 'Account number is required.';
+        //     $messages["data.$key.trans_date.required"] = 'Date is required.';
+        //     $messages["data.$key.trans_date.date_format"] = 'Invalid date format. Use dd/mm/yyyy.';
+        //     $messages["data.$key.account_type.required"] = 'Account type is required.';
+        //     $messages["data.$key.account_type.in"] = 'Account type must be DEBIT or CREDIT.';
+        // }
+
+        // $validator = Validator::make(['data' => $data], $rules, $messages);
+
+        $validation = [];
+        foreach ($data as $item) {
+            $account = Account::where('code',$item['account_no'])->first();
+            if(!empty($account)) {
+                if($account->parent_id  === null || $account->parent_id === '') {
+                    $validation['account'][] = $item['account_no'];
+                    $validation['account']['message'] = 'Akun tidak ditemukan atau merupakan parent';
+                }
+            }
+            if(empty($account)) {
+                $validation['account'][] = $item['account_no'];
+                $validation['account']['message'] = 'Akun tidak ditemukan atau merupakan parent';
+            }
+            if(!is_numeric($item['trans_date'])) {
+                $validation['date'][] = $item['trans_date'];
+                $validation['date']['message'] = 'Pastikan Format Tanggal dd/mm/yyyy';
+            }
+            if($item['account_type'] !== 'CREDIT' && $item['account_type'] !== 'DEBIT') {
+                $validation['account_type'][]  = $item['account_type'];
+                $validation['account_type']['message']  = 'Pastikan tipe akun adalah DEBIT atau CREDIT';
+            }
+        }
+        if(count($validation) > 0) {
+            dd($validation);
         }
 
         $result = [];
@@ -127,7 +190,7 @@ class FpdDoneApiController extends Controller
         $referenceDate = strtotime('1899-12-30');
     
         foreach ($data as $item) {
-            $trans_date = date('Y-m-d', $referenceDate + ($item['trans_date'] * 24 * 60 * 60));
+            $trans_date = date('d/m/Y', $referenceDate + ($item['trans_date'] * 24 * 60 * 60));
             $no_journal = $item['no_journal'];
             $ket       = $item['ket'];
     

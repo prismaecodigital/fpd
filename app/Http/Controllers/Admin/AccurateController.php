@@ -190,4 +190,53 @@ class AccurateController extends Controller
 
         dd($result);
     }
+
+    public function detailJournal(Request $request)
+    {
+        $accessToken = $this->integration->access_token;
+        if($accessToken == '' || $accessToken == null) {
+            dd('akses token tidak ada');
+        }
+        $bu = Bu::where('id', $request->bu_id)->first();
+        $accurate_bu_id = $bu->accurate_bu_id;
+        if($accurate_bu_id == '' || $accurate_bu_id == null) {
+            dd('accurate_bu_id tidak ada');
+        }
+        $session = $bu->accurate_session;
+        if($session == '' || $session == null) {
+            dd('session tidak ada');
+        }
+        $session_expire = $bu->accurate_session_expire;
+        $today = Carbon::now();
+        $host = $bu->accurate_host;
+        if($today >= $session_expire) {
+            dd('session expired');
+        }
+
+        // Header
+        $header = array(
+            "Authorization: Bearer $accessToken",
+            "X-SESSION-ID: $session"
+        );
+
+        // Content
+        $content = array(
+            "id" => $request->id,
+        );
+        $url = $host . "/accurate/api/journal-voucher/detail.do?" . http_build_query($content);
+                // Connect API
+        $opts = array("http" =>
+            array(
+                "method" => "GET",
+                "header" => $header,
+                "ignore_errors" => true,
+            )
+        );
+        $context  = stream_context_create($opts);
+        $result = file_get_contents($url, false, $context);
+        dd($result);
+        $result = json_decode($result)->{"d"};
+
+        dd($result);
+    }
 }

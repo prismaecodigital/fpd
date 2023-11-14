@@ -7,9 +7,11 @@ use Maatwebsite\Excel\Concerns\ToCollection;
 use App\Models\Journal;
 use App\Http\Resources\JournalResource;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
+use Maatwebsite\Excel\Concerns\WithCustomValueBinder;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Carbon\Carbon;
 
-class JournalImport implements ToCollection, WithHeadingRow
+class JournalImport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder implements ToCollection, WithHeadingRow, WithCustomValueBinder
 {
     /**
     * @param Collection $collection

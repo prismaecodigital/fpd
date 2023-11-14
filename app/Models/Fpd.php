@@ -26,7 +26,8 @@ class Fpd extends Model implements HasMedia
         'total_amount',
         'total_real_amount',
         'bukti_transfer',
-        'processed_date_raw'
+        'processed_date_raw',
+        'accurate_total'
     ];
 
     protected $dates = [
@@ -158,6 +159,7 @@ class Fpd extends Model implements HasMedia
         'bu_id'     => 'integer',
         'dept_id'   => 'integer',
         'user_id'   => 'integer',
+        'journaled' => 'integer'
     ];
 
     protected $fillable = [
@@ -308,5 +310,11 @@ class Fpd extends Model implements HasMedia
 
             return $media;
         });
+    }
+
+    public function getAccurateTotalAttribute()
+    {
+        $accurateTotal = $this->items->sum('real_amount');
+        return $accurateTotal;
     }
 }

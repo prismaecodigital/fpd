@@ -169,25 +169,6 @@ var render = function render() {
     staticClass: "card"
   }, [_vm._m(0), _vm._v(" "), _c("div", {
     staticClass: "card-body"
-  }, [_c("button", {
-    staticClass: "btn btn-default",
-    "class": {
-      disabled: _vm.loading
-    },
-    attrs: {
-      type: "button",
-      disabled: _vm.loading
-    },
-    on: {
-      click: _vm.fetchIndexData
-    }
-  }, [_c("i", {
-    staticClass: "material-icons",
-    "class": {
-      "fa-spin": _vm.loading
-    }
-  }, [_vm._v("\n              refresh\n            ")]), _vm._v("\n            " + _vm._s(_vm.$t("global.refresh")) + "\n          ")])]), _vm._v(" "), _c("div", {
-    staticClass: "card-body"
   }, [_c("div", {
     staticClass: "row"
   }, [_c("div", {

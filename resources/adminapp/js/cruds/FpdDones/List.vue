@@ -12,20 +12,6 @@
             </h4>
           </div>
           <div class="card-body">
-            <button
-              type="button"
-              class="btn btn-default"
-              @click="fetchIndexData"
-              :disabled="loading"
-              :class="{ disabled: loading }"
-            >
-              <i class="material-icons" :class="{ 'fa-spin': loading }">
-                refresh
-              </i>
-              {{ $t('global.refresh') }}
-            </button>
-          </div>
-          <div class="card-body">
             <div class="row">
               <div class="col-md-12">
                 <div class="table-overlay" v-show="loading">

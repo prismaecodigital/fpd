@@ -120,7 +120,7 @@ var render = function render() {
   return _c("div", {
     staticClass: "dt-action-container"
   }, [_vm.$can("fpd_access") ? _c("router-link", {
-    staticClass: "btn btn-lg btn-round btn-success btn-space",
+    staticClass: "btn btn-lg btn-round btn-primary btn-space",
     attrs: {
       to: {
         name: _vm.xprops.route + ".index",

@@ -35,5 +35,6 @@ Route::group(['prefix' => 'accurate', 'as' => 'accurate.', 'namespace' => 'Admin
     Route::get('/callback', 'AccurateController@callback');
     Route::get('/gl-account/{bu_id}', 'AccurateController@glAccount');
     Route::get('/journal-voucher/{bu_id}', 'AccurateController@journalVoucher');
+    Route::get('/detail-voucher/{bu_id}/{id}', 'AccurateController@detailJournal');
 });
 

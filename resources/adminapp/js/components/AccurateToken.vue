@@ -2,10 +2,10 @@
   <li class="nav-item">
       <div v-if="$can('finance') || $can('admin')">
           <div v-if="accurate.access_token !== null && accurate.access_token !== '' && accurate.status == 'available'">
-              Connected Accurate
+              API Connected
           </div>
           <div v-else>
-              Not Connected to Accurate
+              Login API
               <a class="btn btn-danger" href="/accurate/get-token" target="_blank">Connect</a>
           </div>
       </div>

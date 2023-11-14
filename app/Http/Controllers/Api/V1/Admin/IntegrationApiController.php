@@ -128,7 +128,7 @@ class IntegrationApiController extends Controller
             $params['data'][$x]['transDate'] = $journalDate;
             $params['data'][$x]['description'] = $fpd->ket.' (dana)';
             $params['data'][$x]['detailJournalVoucher'][0]['accountNo'] = $credit_account;
-            $params['data'][$x]['detailJournalVoucher'][0]['amount'] = $fpd->total_amount;
+            $params['data'][$x]['detailJournalVoucher'][0]['amount'] = $fpd->accurate_total;
             $params['data'][$x]['detailJournalVoucher'][0]['amountType'] = 'CREDIT';
             foreach ($fpd->items as $y => $item) {
                 $params['data'][$x]['detailJournalVoucher'][$y+1]['accountNo'] = $item->account->code;
