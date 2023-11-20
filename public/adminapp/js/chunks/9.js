@@ -107,32 +107,25 @@ __webpack_require__.r(__webpack_exports__);
           name: 'fpd'
         },
         gate: 'fpd_access',
-        children: [
-        // {
-        //   title: 'cruds.fpd.title',
-        //   icon: 'border_all',
-        //   path: { name: 'listFpd' },
-        //   gate: 'fpd_access'
-        // },
-        {
+        children: [{
           title: 'Dana Proses',
           icon: 'loop',
           path: {
-            name: 'listFpdProcess'
+            name: 'fpd-processes.index'
           },
           gate: 'fpd_access'
         }, {
           title: 'Realisasi',
           icon: 'checklist_rtl',
           path: {
-            name: 'listLrd'
+            name: 'lrds.index'
           },
           gate: 'fpd_access'
         }, {
           title: 'Selesai',
           icon: 'check_circle',
           path: {
-            name: 'listFpdDone'
+            name: 'fpd-dones.index'
           },
           gate: 'fpd_access'
         }]

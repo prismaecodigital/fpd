@@ -35,8 +35,6 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
     HeaderSettings: _components_Datatables_HeaderSettings__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   data: function data() {
-    var urlParams = new URLSearchParams(window.location.search);
-    var idFromURL = urlParams.get('id');
     return {
       columns: [{
         title: 'cruds.fpd.fields.dept',
@@ -90,7 +88,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         order: 'desc',
         limit: 100,
         s: '',
-        id: idFromURL
+        id: null
       },
       xprops: {
         module: 'FpdProcessesIndex',
@@ -102,8 +100,22 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   beforeDestroy: function beforeDestroy() {
     this.resetState();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('FpdProcessesIndex', ['data', 'total', 'loading', 'bu'])),
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('FpdProcessesIndex', ['data', 'total', 'loading', 'bu'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthBu', ['selected_bu'])), {}, {
+    updatedQuery: function updatedQuery() {
+      return _objectSpread(_objectSpread({}, this.query), {}, {
+        id: this.selected_bu.id
+      });
+    }
+  }),
+  mounted: function mounted() {
+    // Set the query.id when the component is mounted
+    this.query.id = this.selected_bu.id;
+  },
   watch: {
+    selected_bu: function selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.id = newSelectedBu.id;
+    },
     query: {
       handler: function handler(query) {
         this.setQuery(query);
@@ -143,7 +155,7 @@ var render = function render() {
     staticClass: "card-header card-header-primary card-header-icon"
   }, [_vm._m(0), _vm._v(" "), _c("h4", {
     staticClass: "card-title"
-  }, [_vm._v("\n            \n            List "), _c("strong", [_vm._v(" Pengajuan Dana " + _vm._s(_vm.bu))])])]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n            \n            List "), _c("strong", [_vm._v(" Pengajuan Dana " + _vm._s(this.selected_bu.code))])])]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_vm.$can(_vm.xprops.permission_prefix + "create") ? _c("router-link", {
     staticClass: "btn btn-primary",

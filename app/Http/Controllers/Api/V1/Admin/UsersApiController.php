@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\Admin\UserResource;
+use App\Http\Resources\Admin\BuResource;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Bu;
@@ -17,6 +18,20 @@ use Illuminate\Http\Response;
 
 class UsersApiController extends Controller
 {
+    public function home(Request $request)
+    {
+        $bus = Bu::whereIn('id', auth()->user()->bus->pluck('id'))->get(['id','code']);
+        $selected_bu = Bu::where('id', $request->selected_bu)->get(['id','code']);
+        return response()->json([
+            'data'  => new BuResource($bus),
+            'selected_bu' => [
+                'id' => $request->selected_bu === null ? $bus->first()->id : $selected_bu,
+                'code' => $request->selected_bu === null ? $bus->first()->code : $selected_bu
+                ]
+        ]);
+    }
+
+
     public function index()
     {
         abort_if(Gate::denies('user_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');

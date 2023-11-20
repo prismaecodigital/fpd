@@ -15,6 +15,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('roles', 'RolesApiController');
 
     // Users
+    Route::get('auth-bu', 'UsersApiController@home');
     Route::resource('users', 'UsersApiController');
 
     // Bu

@@ -37,7 +37,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
       }
     };
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('FpdProcessesSingle', ['entry', 'loading', 'lists'])),
+  computed: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('FpdProcessesSingle', ['entry', 'loading', 'lists'])), vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"]),
   mounted: function mounted() {
     this.fetchCreateData();
   },

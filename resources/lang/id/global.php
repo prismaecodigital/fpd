@@ -98,7 +98,7 @@ return [
     ],
     'table'                                => 'Tabel',
     'back'                                 => 'Kembali',
-    'refresh'                              => 'Muat ulang',
+    'refresh'                              => 'Refresh',
     'close'                                => 'Tutup',
     'create_success'                       => 'Item anda telah berhasil tersimpan',
     'update_success'                       => 'Item berhasil diubah.',

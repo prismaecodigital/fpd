@@ -17,12 +17,13 @@ class JournalResource extends JsonResource
         return [
             'no_journal' => $this->item,
             'trans_date' => $this->trans_date,
-            'noDetail' => $this->no_detail,
+            'no_detail' => $this->no_detail,
             'ket' => $this->ket,
             'account_no' => $this->account_no,
             'amount' => $this->amount,
             'account_type' => $this->account_type,
             'memo' => $this->memo,
+            'dept_name' => $this->dept_name,
         ];
     }
 }

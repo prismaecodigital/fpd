@@ -27,8 +27,9 @@ class JournalImport extends \PhpOffice\PhpSpreadsheet\Cell\StringValueBinder imp
                 'ket' => $item['ket'],
                 'account_no' => $item['account_no'],
                 'amount' => $item['amount'],
-                'account_type' => $item['account_type'],
+                'amount_type' => $item['amount_type'],
                 'memo' => $item['memo'],
+                'dept_name' => $item['dept_name'],
                 // Add more fields as needed
             ]));
         });

@@ -49,7 +49,7 @@ var render = function render() {
     staticClass: "card-body"
   }, [_vm._v("\n            " + _vm._s(_vm.$t("global.youAreLoggedIn")) + "\n          ")]), _vm._v(" "), _vm._m(1), _vm._v(" "), _c("div", {
     staticClass: "card-body"
-  }, [_vm._v("\n            Jika Anda menemui kendala dalam penggunaan aplikasi, hubungi Ibu Dian Finance Prisma\n          ")]), _vm._v(" "), _c("div", {
+  }, [_vm._v("\n            Jika Anda menemui kendala dalam penggunaan aplikasi, hubungi xxx\n          ")]), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [_vm._v("\n            Jika Anda menemui error, tekan Ctrl+F5. Jika masih error, hubungi Digitalisasi Prisma\n          ")])])])])])]);
 };

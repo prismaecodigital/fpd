@@ -90,7 +90,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         order: 'desc',
         limit: 100,
         s: '',
-        id: idFromURL
+        id: null
       },
       xprops: {
         module: 'LrdsIndex',
@@ -102,8 +102,22 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   beforeDestroy: function beforeDestroy() {
     this.resetState();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('LrdsIndex', ['data', 'total', 'loading', 'bu'])),
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('LrdsIndex', ['data', 'total', 'loading', 'bu'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthBu', ['selected_bu'])), {}, {
+    updatedQuery: function updatedQuery() {
+      return _objectSpread(_objectSpread({}, this.query), {}, {
+        id: this.selected_bu.id
+      });
+    }
+  }),
+  mounted: function mounted() {
+    // Set the query.id when the component is mounted
+    this.query.id = this.selected_bu.id;
+  },
   watch: {
+    selected_bu: function selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.id = newSelectedBu.id;
+    },
     query: {
       handler: function handler(query) {
         this.setQuery(query);

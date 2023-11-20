@@ -9,7 +9,7 @@
             </div>
             <h4 class="card-title">
               
-              List <strong> Pengajuan Dana {{bu}}</strong>
+              List <strong> Pengajuan Dana {{this.selected_bu.code}}</strong>
             </h4>
           </div>
           <div class="card-body">
@@ -81,8 +81,6 @@ export default {
     HeaderSettings
   },
   data() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const idFromURL = urlParams.get('id');
     return {
       columns: [
         {
@@ -140,7 +138,7 @@ export default {
           colStyle: 'width: 150px;'
         }
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: idFromURL },
+      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: null },
       xprops: {
         module: 'FpdProcessesIndex',
         route: 'fpd-processes',
@@ -152,9 +150,24 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('FpdProcessesIndex', ['data', 'total', 'loading','bu'])
+    ...mapGetters('FpdProcessesIndex', ['data', 'total', 'loading','bu']),
+    ...mapGetters('AuthBu', ['selected_bu']),
+    updatedQuery() {
+      return {
+        ...this.query,
+        id: this.selected_bu.id,
+      };
+    },
+  },
+  mounted() {
+    // Set the query.id when the component is mounted
+    this.query.id = this.selected_bu.id;
   },
   watch: {
+    selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.id = newSelectedBu.id;
+    },
     query: {
       handler(query) {
         this.setQuery(query)

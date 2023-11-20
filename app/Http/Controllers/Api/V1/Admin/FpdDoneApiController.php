@@ -21,6 +21,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Imports\JournalImport;
+use Illuminate\Support\Facades\Validator;
 
 class FpdDoneApiController extends Controller
 {
@@ -118,6 +119,9 @@ class FpdDoneApiController extends Controller
     {
         $file = $request->file('file');
         $data = Excel::toCollection(new JournalImport, $file)->first();
+        $data = $data->filter(function ($row) {
+            return !empty($row[0]) || $row[0] == ""; // Exclude rows where the first column is empty or null
+        });
 
         $bu = Bu::where('id', $request->bu_id)->first();
 
@@ -127,37 +131,7 @@ class FpdDoneApiController extends Controller
         if(Carbon::now() >= $bu->accurate_session_expire || empty($bu->accurate_bu_id) || $bu->accurate_bu_id == '') {
             return response()->json('tidak ada session BU didalam accurate');
         }
-
-        // foreach ($data as $key => $item) {
-        //     $rules["data.$key.account_no"] = [
-        //         'required',
-        //         function ($attribute, $value, $fail) {
-        //             $account = Account::where('code', $value)->first();
-        //             if ($account->parent_id === null || empty($account->parent_id)) {
-        //                 $fail('Akun tidak ditemukan atau merupakan parent.');
-        //             }
-        //         },
-        //     ];
-
-        //     $rules["data.$key.trans_date"] = [
-        //         'required',
-        //         'integer',
-        //     ];
-
-        //     $rules["data.$key.account_type"] = [
-        //         'required',
-        //         'in:DEBIT,CREDIT',
-        //     ];
-
-        //     $messages["data.$key.account_no.required"] = 'Account number is required.';
-        //     $messages["data.$key.trans_date.required"] = 'Date is required.';
-        //     $messages["data.$key.trans_date.date_format"] = 'Invalid date format. Use dd/mm/yyyy.';
-        //     $messages["data.$key.account_type.required"] = 'Account type is required.';
-        //     $messages["data.$key.account_type.in"] = 'Account type must be DEBIT or CREDIT.';
-        // }
-
-        // $validator = Validator::make(['data' => $data], $rules, $messages);
-
+        
         $validation = [];
         foreach ($data as $item) {
             $account = Account::where('code',$item['account_no'])->first();
@@ -171,13 +145,9 @@ class FpdDoneApiController extends Controller
                 $validation['account'][] = $item['account_no'];
                 $validation['account']['message'] = 'Akun tidak ditemukan atau merupakan parent';
             }
-            if(!is_numeric($item['trans_date'])) {
-                $validation['date'][] = $item['trans_date'];
-                $validation['date']['message'] = 'Pastikan Format Tanggal dd/mm/yyyy';
-            }
-            if($item['account_type'] !== 'CREDIT' && $item['account_type'] !== 'DEBIT') {
-                $validation['account_type'][]  = $item['account_type'];
-                $validation['account_type']['message']  = 'Pastikan tipe akun adalah DEBIT atau CREDIT';
+            if($item['amount_type'] !== 'CREDIT' && $item['amount_type'] !== 'DEBIT') {
+                $validation['amount_type'][]  = $item['amount_type'];
+                $validation['amount_type']['message']  = 'Pastikan tipe akun adalah DEBIT atau CREDIT';
             }
         }
         if(count($validation) > 0) {
@@ -190,7 +160,7 @@ class FpdDoneApiController extends Controller
         $referenceDate = strtotime('1899-12-30');
     
         foreach ($data as $item) {
-            $trans_date = date('d/m/Y', $referenceDate + ($item['trans_date'] * 24 * 60 * 60));
+            $trans_date = !is_numeric($item['trans_date']) ? $item['trans_date'] : date('d/m/Y', $referenceDate + ($item['trans_date'] * 24 * 60 * 60));
             $no_journal = $item['no_journal'];
             $ket       = $item['ket'];
     
@@ -200,9 +170,8 @@ class FpdDoneApiController extends Controller
     
             if (!isset($groupedData[$trans_date][$no_journal])) {
                 $groupedData[$trans_date][$no_journal] = [
-                    'no_journal' => $no_journal,
                     'transDate' => $trans_date,
-                    'description'        => $ket,
+                    'description'        => $ket. ' (dana)' ?? '',
                     'detailJournalVoucher' => [],
                 ];
             }
@@ -210,9 +179,10 @@ class FpdDoneApiController extends Controller
             // Map the item to the desired format
             $mappedItem = [
                 'accountNo' => $item['account_no'],
-                'amount' => $item['amount'],
-                'accountType' => $item['account_type'],
-                'memo' => $item['memo']
+                'amount' => number_format((float)$item['amount'], 2, '.', ''),
+                'amountType' => $item['amount_type'],
+                'memo' => $item['memo'] ?? '',
+                'departmentName' => $item['dept_name']
             ];
     
             $groupedData[$trans_date][$no_journal]['detailJournalVoucher'][] = $mappedItem;
@@ -221,7 +191,7 @@ class FpdDoneApiController extends Controller
         // Convert the grouped data to an array
         foreach ($groupedData as $trans_date => $data) {
             foreach ($data as $no_journal => $item) {
-                $result[] = $item;
+                $result['data'][] = $item;
             }
         }
         $bu_id = $request->bu_id;
@@ -274,7 +244,7 @@ class FpdDoneApiController extends Controller
 
         $context  = stream_context_create($opts);
         $result = file_get_contents($url, false, $context);
-        return 'success';
+        dd($result, $params);
     }
 
 }

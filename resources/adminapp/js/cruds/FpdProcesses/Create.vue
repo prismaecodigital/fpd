@@ -340,7 +340,8 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('FpdProcessesSingle', ['entry', 'loading', 'lists'])
+    ...mapGetters('FpdProcessesSingle', ['entry', 'loading', 'lists']),
+    ...mapGetters
   },
   mounted() {
     this.fetchCreateData()

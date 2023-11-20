@@ -29,6 +29,8 @@ import FpdDonesIndex from './cruds/FpdDones'
 import FpdDonesSingle from './cruds/FpdDones/single'
 import CalendarIndex from './cruds/Calendar/index'
 
+import AuthBu from './modules/AuthBu'
+
 Vue.use(Vuex)
 
 const debug = process.env.NODE_ENV !== 'production'
@@ -60,7 +62,8 @@ export default new Vuex.Store({
     FpdProcessesIndex,
     FpdProcessesSingle,
     LrdsIndex,
-    LrdsSingle
+    LrdsSingle,
+    AuthBu
   },
   strict: debug
 })

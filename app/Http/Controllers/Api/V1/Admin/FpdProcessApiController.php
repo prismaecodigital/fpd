@@ -32,8 +32,8 @@ class FpdProcessApiController extends Controller
     {
         $permissionsArray = app('permissionsArray');
         // dd($permissionsArray);
-        $bu = Bu::where('id', $request->id)->first()->code;
-        abort_if(Gate::denies($bu.'-fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $bu = Bu::where('id', $request->id)->first();
+        $bucode = $bu->code ?? '';
 
         return new FpdProcessResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '5')->paginate(request('limit', 10)));
     }

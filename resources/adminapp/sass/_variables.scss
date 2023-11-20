@@ -377,3 +377,7 @@ td.day.old, td.day.new {
 .table thead tr th, .table tbody tr td {
     font-size: 12px;
 }
+
+.sidebar .logo {
+    z-index: 99 !important;
+}

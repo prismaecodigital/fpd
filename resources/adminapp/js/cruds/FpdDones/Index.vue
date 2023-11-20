@@ -297,7 +297,7 @@ export default {
           sortable: true,
         },
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: idFromURL },
+      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: this.selected_bu },
       xprops: {
         module: 'FpdDonesIndex',
         route: 'fpd-dones',
@@ -309,10 +309,25 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('FpdDonesIndex', ['data', 'total', 'loading', 'lists', 'params', 'file','importedData'])
+    ...mapGetters('FpdDonesIndex', ['data', 'total', 'loading', 'lists', 'params', 'file','importedData']),
+    ...mapGetters('AuthBu', ['selected_bu']),
+    updatedQuery() {
+      return {
+        ...this.query,
+        id: this.selected_bu.id,
+      };
+    },
+  },
+  mounted() {
+    // Set the query.id when the component is mounted
+    this.query.id = this.selected_bu.id;
   },
   watch: {
     query: {
+      selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.id = newSelectedBu.id;
+      },
       handler(query) {
         this.setQuery(query)
         this.fetchIndexData()

@@ -20,7 +20,7 @@
               <a href="https://drive.google.com/drive/folders/1VWyftVKzPYCqIZJs8RGBedUcQbr32rTn?usp=drive_link" target="_blank">Link Panduan Penggunaan</a>
             </div>
             <div class="card-body">
-              Jika Anda menemui kendala dalam penggunaan aplikasi, hubungi Ibu Dian Finance Prisma
+              Jika Anda menemui kendala dalam penggunaan aplikasi, hubungi xxx
             </div>
             <div class="card-body">
               Jika Anda menemui error, tekan Ctrl+F5. Jika masih error, hubungi Digitalisasi Prisma

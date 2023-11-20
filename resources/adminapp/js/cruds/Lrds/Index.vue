@@ -130,7 +130,7 @@ export default {
           colStyle: 'width: 150px;'
         }
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: idFromURL },
+      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: null },
       xprops: {
         module: 'LrdsIndex',
         route: 'lrds',
@@ -142,9 +142,24 @@ export default {
     this.resetState()
   },
   computed: {
-    ...mapGetters('LrdsIndex', ['data', 'total', 'loading', 'bu'])
+    ...mapGetters('LrdsIndex', ['data', 'total', 'loading', 'bu']),
+    ...mapGetters('AuthBu', ['selected_bu']),
+    updatedQuery() {
+      return {
+        ...this.query,
+        id: this.selected_bu.id,
+      };
+    },
+  },
+  mounted() {
+    // Set the query.id when the component is mounted
+    this.query.id = this.selected_bu.id;
   },
   watch: {
+    selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.id = newSelectedBu.id;
+    },
     query: {
       handler(query) {
         this.setQuery(query)

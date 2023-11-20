@@ -271,7 +271,7 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
         order: 'desc',
         limit: 100,
         s: '',
-        id: idFromURL
+        id: this.selected_bu
       },
       xprops: {
         module: 'FpdDonesIndex',
@@ -283,9 +283,23 @@ function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input ==
   beforeDestroy: function beforeDestroy() {
     this.resetState();
   },
-  computed: _objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('FpdDonesIndex', ['data', 'total', 'loading', 'lists', 'params', 'file', 'importedData'])),
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('FpdDonesIndex', ['data', 'total', 'loading', 'lists', 'params', 'file', 'importedData'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthBu', ['selected_bu'])), {}, {
+    updatedQuery: function updatedQuery() {
+      return _objectSpread(_objectSpread({}, this.query), {}, {
+        id: this.selected_bu.id
+      });
+    }
+  }),
+  mounted: function mounted() {
+    // Set the query.id when the component is mounted
+    this.query.id = this.selected_bu.id;
+  },
   watch: {
     query: {
+      selected_bu: function selected_bu(newSelectedBu) {
+        // React to changes in selected_bu
+        this.query.id = newSelectedBu.id;
+      },
       handler: function handler(query) {
         this.setQuery(query);
         this.fetchIndexData();

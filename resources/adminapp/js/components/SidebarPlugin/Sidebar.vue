@@ -6,9 +6,16 @@
     :data-color="itemColor"
   >
     <div class="logo">
-      <a href="/" class="simple-text logo-normal">
-        {{ $t(title) }}
-      </a>
+      <v-select
+        name="bu"
+        label="code"
+        class="style-chooser"
+        :key="'bu-field'"
+        :value="selected_bu"
+        :options="bu"
+        :closeOnSelect="true"
+        @input="updateBu"
+      />
     </div>
     <div class="sidebar-wrapper">
       <slot name="content"></slot>
@@ -41,6 +48,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 export default {
   props: {
     title: {
@@ -91,9 +99,17 @@ export default {
       return {
         backgroundImage: `url(${this.backgroundImage})`
       }
-    }
+    },
+    ...mapGetters('AuthBu', ['bu','selected_bu'])
   },
   methods: {
+    ...mapActions('AuthBu', ['setBu']),
+    updateBu(value) {
+      console.log(value)
+      this.setBu(value)
+      // this.$router.push({ name: 'dashboard' })
+      // console.log(this.selected_bu)
+    },
     logout() {
       axios
         .request({ baseURL: '/', url: 'logout', method: 'post' })
