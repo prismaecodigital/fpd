@@ -54,4 +54,9 @@ class Dept extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function coa()
+    {
+        return $this->belongsToMany(Account::class);
+    }
 }

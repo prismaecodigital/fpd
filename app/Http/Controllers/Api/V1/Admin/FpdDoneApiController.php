@@ -32,10 +32,8 @@ class FpdDoneApiController extends Controller
 
     public function index(Request $request)
     {
-        $accessToken = Integration::where('id',1)->first()->access_token;
-
         $bu = Bu::where('id', $request->id)->first();
-        $accurate_bu_id = $bu->accurate_bu_id;
+        $accurate_bu_id = $bu ? $bu->accurate_bu_id : null;
         $today = Carbon::now();
 
         if($accurate_bu_id == '' || $accurate_bu_id == null || $today < $bu->accurate_session_expire) {
@@ -46,11 +44,12 @@ class FpdDoneApiController extends Controller
                     'host' => '',
                 ],
                 'lists' => [
-                    'accounts'      => Account::where('bu_id', $bu->id)->whereNotNull('parent_id')->get(['id','name']),
+                    'accounts'      => Account::where('bu_id', $bu ? $bu->id : null)->whereNotNull('parent_id')->get(['id','name']),
                 ]
             ]);
         }
 
+        $accessToken = Integration::where('id',1)->first()->access_token;
 
         // Header
         $header = array(
@@ -171,6 +170,7 @@ class FpdDoneApiController extends Controller
             if (!isset($groupedData[$trans_date][$no_journal])) {
                 $groupedData[$trans_date][$no_journal] = [
                     'transDate' => $trans_date,
+                    'number' => $no_journal,
                     'description'        => $ket. ' (dana)' ?? '',
                     'detailJournalVoucher' => [],
                 ];
@@ -244,7 +244,7 @@ class FpdDoneApiController extends Controller
 
         $context  = stream_context_create($opts);
         $result = file_get_contents($url, false, $context);
-        dd($result, $params);
+        return 'ok';
     }
 
 }

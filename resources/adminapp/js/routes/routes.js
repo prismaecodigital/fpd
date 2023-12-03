@@ -103,8 +103,8 @@ const routes = [
         ]
       },
       {
-        path: 'bu-dept',
-        name: 'bu_dept',
+        path: 'config',
+        name: 'config',
         component: View,
         redirect: { name: 'bus.index' },
         children: [
@@ -178,6 +178,30 @@ const routes = [
             path: 'sites/:id/edit',
             name: 'sites.edit',
             component: () => import('@cruds/Sites/Edit.vue'),
+            meta: { title: 'cruds.site.title' }
+          },
+          {
+            path: 'partners',
+            name: 'partners.index',
+            component: () => import('@cruds/Partners/Index.vue'),
+            meta: { title: 'cruds.site.title' }
+          },
+          {
+            path: 'partners/create',
+            name: 'partners.create',
+            component: () => import('@cruds/Partners/Create.vue'),
+            meta: { title: 'cruds.site.title' }
+          },
+          {
+            path: 'partners/:id',
+            name: 'partners.show',
+            component: () => import('@cruds/Partners/Show.vue'),
+            meta: { title: 'cruds.site.title' }
+          },
+          {
+            path: 'partners/:id/edit',
+            name: 'partners.edit',
+            component: () => import('@cruds/Partners/Edit.vue'),
             meta: { title: 'cruds.site.title' }
           },
           {
@@ -360,7 +384,103 @@ const routes = [
         meta: { title: 'Calendar' }
       },
 
-
+      // Cashflow
+      {
+        path: 'cashflows',
+        name: 'cashflows',
+        component: View,
+        redirect: { name: 'cash-out-projections.index' },
+        children: [
+          {
+            path: 'projections',
+            name: 'projections',
+            component: View,
+            redirect: { name: 'cash-out-projections.index' },
+            children: [
+              {
+                path: 'cash-out-projections',
+                name: 'cash-out-projections.index',
+                component: () => import('@cruds/CashOutProjections/Index.vue'),
+                meta: { title: 'cruds.cash-out-projection.title' }
+              },
+              {
+                path: 'cash-out-projections/create',
+                name: 'cash-out-projections.create',
+                component: () => import('@cruds/CashOutProjections/Create.vue'),
+                meta: { title: 'cruds.cash-out-projection.title' }
+              },
+              {
+                path: 'cash-in-projections',
+                name: 'cash-in-projections.index',
+                component: () => import('@cruds/CashInProjections/Index.vue'),
+                meta: { title: 'cruds.cash-in-projection.title' }
+              },
+              {
+                path: 'cash-in-projections/create',
+                name: 'cash-in-projections.create',
+                component: () => import('@cruds/CashInProjections/Create.vue'),
+                meta: { title: 'cruds.cash-in-projection.title' }
+              },
+            ]
+          },
+          {
+            path: 'additional-limits',
+            name: 'additional-limits.index',
+            component: () => import('@cruds/AdditionalLimits/Index.vue'),
+          },
+          {
+            path: 'additional-limits/create',
+            name: 'additional-limits.create',
+            component: () => import('@cruds/AdditionalLimits/Create.vue'),
+          },
+          {
+            path: 'adjustments-period',
+            name: 'adjustments-period.index',
+            component: () => import('@cruds/AdjustmentsPeriod/Index.vue')
+          },
+          {
+            path: 'adjustments-period/create',
+            name: 'adjustments-period.create',
+            component: () => import('@cruds/AdjustmentsPeriod/Create.vue')
+          },
+          {
+            path: 'adjustments-period/:id/edit',
+            name: 'adjustments-period.edit',
+            component: () => import('@cruds/AdjustmentsPeriod/Edit.vue')
+          },
+          {
+            path: 'adjustments-coa',
+            name: 'adjustments-coa.index',
+            component: () => import('@cruds/AdjustmentsCoa/Index.vue')
+          },
+          {
+            path: 'adjustments-coa/create',
+            name: 'adjustments-coa.create',
+            component: () => import('@cruds/AdjustmentsCoa/Create.vue')
+          },
+          {
+            path: 'adjustments-coa/:id/edit',
+            name: 'adjustments-coa.edit',
+            component: () => import('@cruds/AdjustmentsCoa/Edit.vue')
+          },
+        ]
+      },
+      {
+        path: 'cash-ins',
+        name: 'cash-ins.index',
+        component: () => import('@cruds/CashIns/Index.vue'),
+        meta: { title: 'Cash In' }
+      },
+      {
+        path: 'cash-ins/create',
+        name: 'cash-ins.create',
+        component: () => import('@cruds/CashIns/Create.vue'),
+      },
+      {
+        path: 'cash-ins/:id/edit',
+        name: 'cash-ins.edit',
+        component: () => import('@cruds/CashIns/Edit.vue'),
+      },
     ]
   }
 ]

@@ -121,4 +121,46 @@ class AccountApiController extends Controller
 
         return response()->json($accounts);
     }
+
+    // unused
+    public function getOldBalance(Request $request)
+    {
+        if($request->type == 1) {
+            $source_coa = Account::where('id', $request->source_coa_id)->first();
+            $source_amount = $request->source_date == '' || empty($source_coa) ? 0 : 
+                $source_coa->getProjection($request->source_date) - $source_coa->getCashOutActual($request->source_date) -
+                $source_coa->getAmountSourceAdjustment($request->source_date) + $source_coa->getAmountDestinationAdjustmentPeriod($request->source_date);
+            $destination_amount = $request->destination_date == '' || empty($source_coa) ? 0 : 
+                $source_coa->getProjection($request->destination_date) - $source_coa->getCashOutActual($request->destination_date) -
+                $source_coa->getAmountSourceAdjustment($request->destination_date) + $source_coa->getAmountDestinationAdjustmentPeriod($request->destination_date);
+        }
+
+        if($request->type == 2) {
+            $source_coa = $request->source_coa_id == '' ? '' : Account::where('id', $request->source_coa_id)->first();
+            $destination_coa = $request->destination_coa_id == '' ? '' : Account::where('id', $request->destination_coa_id)->first();
+            $source_amount = $source_coa == '' ? '' : $source_coa->getProjection($request->source_date) - $source_coa->getCashOutActual($request->source_date);
+            $destination_amount = $destination_coa == '' ? '' : $destination_coa->getProjection($request->source_date) - $destination_coa->getCashOutActual($request->source_date);
+        }
+
+        return response()->json(['source_amount' => $source_amount ?? 0, 'destination_amount' => $destination_amount ?? 0]);
+    }
+
+    public function getBalance(Request $request)
+    {
+        $source_coa = Account::find($request->source_coa_id);
+        $destination_coa = Account::find($request->destination_coa_id);
+    
+        $source_amount = $source_coa ? $source_coa->getBalance($request->source_date, $request->type) : 0;
+        if($request->type == 1) {
+            $destination_amount = $source_coa ? $source_coa->getBalance($request->destination_date, $request->type) : 0;
+        }
+        if($request->type == 2) {
+            $destination_amount = $destination_coa ? $destination_coa->getBalance($request->source_date, $request->type) : 0;
+        }
+    
+        return response()->json([
+            'source_amount' => $source_amount,
+            'destination_amount' => $destination_amount
+        ]);
+    }
 }

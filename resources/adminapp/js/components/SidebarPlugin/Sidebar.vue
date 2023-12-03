@@ -105,10 +105,8 @@ export default {
   methods: {
     ...mapActions('AuthBu', ['setBu']),
     updateBu(value) {
-      console.log(value)
       this.setBu(value)
       // this.$router.push({ name: 'dashboard' })
-      // console.log(this.selected_bu)
     },
     logout() {
       axios

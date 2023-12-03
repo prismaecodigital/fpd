@@ -20,13 +20,14 @@ class UsersApiController extends Controller
 {
     public function home(Request $request)
     {
-        $bus = Bu::whereIn('id', auth()->user()->bus->pluck('id'))->get(['id','code']);
-        $selected_bu = Bu::where('id', $request->selected_bu)->get(['id','code']);
+        $bus = Bu::whereIn('id', auth()->user()->bus->pluck('id'))->get(['id','code','name']);
+        $selected_bu = Bu::where('id', $request->selected_bu)->get(['id','code','name']);
         return response()->json([
             'data'  => new BuResource($bus),
             'selected_bu' => [
                 'id' => $request->selected_bu === null ? $bus->first()->id : $selected_bu,
-                'code' => $request->selected_bu === null ? $bus->first()->code : $selected_bu
+                'code' => $request->selected_bu === null ? $bus->first()->code : $selected_bu,
+                'name' => $request->selected_bu === null ? $bus->first()->name : $selected_bu
                 ]
         ]);
     }

@@ -95,7 +95,7 @@ return [
         'amount'       => 'Jumlah',
     ],
     'table'                                => 'Tabel',
-    'back'                                 => 'Kembali',
+    'back'                                 => 'Back',
     'refresh'                              => 'Refresh',
     'close'                                => 'Tutup',
     'create_success'                       => 'Item anda telah berhasil tersimpan',

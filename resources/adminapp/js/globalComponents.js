@@ -17,6 +17,7 @@ import excel from 'vue-excel-export'
 import { Timeline, TimelineItem, TimelineTitle } from 'vue-cute-timeline'
 import { BootstrapVue, IconsPlugin } from 'bootstrap-vue';
 import AccurateToken from '@components/AccurateToken.vue'
+import VueMonthlyPicker from 'vue-monthly-picker'
 
 const GlobalComponents = {
   install(Vue) {
@@ -34,6 +35,7 @@ const GlobalComponents = {
     Vue.component('timeline-item', TimelineItem)
     Vue.component('timeline-title', TimelineTitle)
     Vue.component('vuejs-datepicker', Datepicker)
+    Vue.component('vue-monthly-picker', VueMonthlyPicker)
     Vue.component('datetime-picker', DatetimePicker)
     Vue.component('back-button', BackButton)
     Vue.component('material-spinner', MaterialSpinner)

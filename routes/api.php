@@ -31,6 +31,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Get account based on bu
     Route::get('buaccount', 'AccountApiController@buaccount');
     Route::get('deptaccount', 'AccountApiController@deptaccount');
+    Route::get('account/getBalance', 'AccountApiController@getBalance')->name('account.getBalance');
 
     // Dept
     Route::resource('depts', 'DeptApiController');
@@ -75,6 +76,28 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::get('accurate-token', 'IntegrationApiController@getAccurateToken')->name('accurate.token');
     Route::get('save-journal','IntegrationApiController@saveJournalVoucher')->name('accurate.saveJournal');
     Route::resource('integrations', 'IntegrationApiController'); 
+
+    // Partner
+    Route::resource('partners', 'PartnerApiController');
+
+    // Cash In
+    Route::resource('cash-ins', 'CashInApiController');
+
+    // Cash In Projections
+    Route::resource('cash-in-projections', 'CashInProjectionApiController');
+
+    // Cash Out Projections
+    Route::resource('cash-out-projections', 'CashOutProjectionApiController');
+
+    // Additional
+    Route::resource('additional-limits', 'AdditionalLimitApiController');
+
+    // Adjustment
+    Route::resource('adjustments-period', 'AdjustmentApiController')->parameters(['adjustments-period' => 'adjustment']);
+    Route::resource('adjustments-coa', 'AdjustmentApiController')->parameters(['adjustments-coa' => 'adjustment']);
+
+    // Dashboard
+    Route::get('dashboard', 'DashboardApiController@index')->name('dashboard');
 
 });
 

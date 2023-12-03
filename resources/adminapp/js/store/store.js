@@ -28,7 +28,22 @@ import LrdsSingle from './cruds/Lrds/single'
 import FpdDonesIndex from './cruds/FpdDones'
 import FpdDonesSingle from './cruds/FpdDones/single'
 import CalendarIndex from './cruds/Calendar/index'
+import PartnersIndex from './cruds/Partners'
+import PartnersSingle from './cruds/Partners/single'
+import CashOutProjectionsIndex from './cruds/CashOutProjections'
+import CashOutProjectionsSingle from './cruds/CashOutProjections/single'
+import AdditionalLimitsIndex from './cruds/AdditionalLimits'
+import AdditionalLimitsSingle from './cruds/AdditionalLimits/single'
+import AdjustmentsPeriodIndex from './cruds/AdjustmentsPeriod'
+import AdjustmentsPeriodSingle from './cruds/AdjustmentsPeriod/single'
+import AdjustmentsCoaIndex from './cruds/AdjustmentsCoa'
+import AdjustmentsCoaSingle from './cruds/AdjustmentsCoa/single'
+import CashInProjectionsIndex from './cruds/CashInProjections'
+import CashInProjectionsSingle from './cruds/CashInProjections/single'
+import CashInsIndex from './cruds/CashIns'
+import CashInsSingle from './cruds/CashIns/single'
 
+import ChartIndex from './modules/Chart'
 import AuthBu from './modules/AuthBu'
 
 Vue.use(Vuex)
@@ -63,7 +78,22 @@ export default new Vuex.Store({
     FpdProcessesSingle,
     LrdsIndex,
     LrdsSingle,
-    AuthBu
+    AuthBu,
+    PartnersIndex,
+    PartnersSingle,
+    CashOutProjectionsIndex,
+    CashOutProjectionsSingle,
+    AdditionalLimitsIndex,
+    AdditionalLimitsSingle,
+    AdjustmentsPeriodIndex,
+    AdjustmentsPeriodSingle,
+    AdjustmentsCoaIndex,
+    AdjustmentsCoaSingle,
+    CashInProjectionsIndex,
+    CashInProjectionsSingle,
+    CashInsIndex,
+    CashInsSingle,
+    ChartIndex
   },
   strict: debug
 })

@@ -1726,3 +1726,11 @@ label {
   z-index: 99 !important;
 }
 
+.width100 {
+  width: 100px;
+}
+
+.disabled {
+  background-color: #f8f8f8 !important;
+}
+

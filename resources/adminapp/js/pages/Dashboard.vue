@@ -1,5 +1,4 @@
 <template>
-  <div class="container-fluid">
     <div class="container-fluid">
       <div class="row">
         <div class="col-md-12">
@@ -28,14 +27,307 @@
           </div>
         </div>
       </div>
+      <div class="row">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">stacked_line_chart</i>
+              </div>
+              <h4 class="card-title">
+                Charts
+              </h4>
+            </div>
+              <div class="card-body">
+                <div class="row justify-content-end">
+                  <div class="col-auto" style="width: 200px">
+                    <!-- Dept -->
+                    <v-select
+                      name="dept"
+                      label="name"
+                      :key="'dept-field'"
+                      :value="query.dept"
+                      :options="lists.dept"
+                      @input="updateDept"
+                      placeholder="Dept"
+                    >
+                    </v-select>
+                  </div>
+                  <div class="col-auto">
+                    <vue-monthly-picker
+                          input-class="form-control"
+                          :value="query.startDate"
+                          @input="updateStartDate"                    
+                          placeHolder="From Period"
+                          :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
+                          date-format="MMM yyyy">
+                        >
+                    </vue-monthly-picker>
+                  </div>
+                  <div class="col-auto"> --- </div>
+                  <div class="col-auto">
+                      <vue-monthly-picker
+                          input-class="form-control"
+                          placeHolder="To Period"
+                          :value="query.endDate"
+                          @input="updateEndDate"
+                          :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
+                          date-format="MMM yyyy">
+                        >
+                        </vue-monthly-picker>
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div class="card-header">
+                <h4 style="text-align: center"><strong><b>
+                  Cashflow IN Actual & Projection - {{this.selected_bu ? this.selected_bu.name : ''}}
+                </b></strong></h4>
+              </div>
+              <div class="card-body">
+                <LineChartGenerator :chart-options="chartOptions_cash_in" :chart-data="chart.cash_in_charts"
+                :dataset-id-key="datasetIdKey" :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
+              </div>
+              <br>
+              <div class="card-header">
+                <h4 style="text-align: center"><strong><b>
+                  Cashflow OUT Actual & Projection - {{this.selected_bu ? this.selected_bu.name : ''}}
+                </b></strong></h4>
+              </div>
+              <div class="card-body">
+                <LineChartGenerator :chart-options="chartOptions_cash_out" :chart-data="chart.cash_out_charts"
+                :dataset-id-key="datasetIdKey" :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
+              </div>
+              <div class="card-header">
+                <h4 style="text-align: center"><strong><b>
+                  Cashflow OUT by DEPT - {{this.query.dept ? this.query.dept.name : ''}}
+                </b></strong></h4>
+              </div>
+              <div class="card-body">
+                  <Bar :chart-options="chartOptions_coa_dept" :chart-data="chart.coa_dept_charts" :dataset-id-key="datasetIdKey"
+                  :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header card-header-success card-header-icon">
+              <div class="card-icon">
+                <i class="material-icons">summarize</i>
+              </div>
+              <h4 class="card-title">
+                Summary
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 </template>
 
+
 <script>
+import { Line as LineChartGenerator } from 'vue-chartjs/legacy'
+import { Bar } from 'vue-chartjs/legacy'
+import { mapGetters, mapActions } from 'vuex'
+import {
+  Chart as ChartJS,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  BarElement,
+  LinearScale,
+  CategoryScale,
+  PointElement
+} from 'chart.js'
+ChartJS.register(
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  BarElement,
+  LinearScale,
+  CategoryScale,
+  PointElement
+)
 export default {
+  components: {
+    LineChartGenerator, Bar
+  },
+  props: {
+    chartId: {
+      type: String,
+      default: 'cashIn'
+    },
+    datasetIdKey: {
+      type: String,
+      default: 'label'
+    },
+    width: {
+      type: Number,
+      default: 400
+    },
+    height: {
+      type: Number,
+      default: 400
+    },
+    cssClasses: {
+      default: '',
+      type: String
+    },
+    styles: {
+      type: Object,
+      default: () => { }
+    },
+    plugins: {
+      type: Array,
+      default: () => []
+    }
+  },
   data() {
-    return {}
+    return {
+      query: { bu_id: null, dept: {id: null, name: null}, startDate: null, endDate: null },
+      chartOptions_cash_in: {
+        legend: {
+          display: true
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                let label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(context.parsed.y * 100) + '%';
+                return label;
+              }
+            }
+          }
+        },
+        scales: {
+          y: { // 'y' specifies the y-axis
+            ticks: {
+              callback: function(value) {
+                return value*100 + '%'; // Formatting tick labels as percentages
+              }
+            }
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      },
+      chartOptions_cash_out: {
+        legend: {
+          display: true
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                let label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(context.parsed.y * 100) + '%';
+                return label;
+              }
+            }
+          }
+        },
+        scales: {
+          y: { // 'y' specifies the y-axis
+            ticks: {
+              callback: function(value) {
+                return value*100 + '%'; // Formatting tick labels as percentages
+              }
+            }
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      },
+      chartOptions_coa_dept: {
+        legend: {
+          display: true
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function(context) {
+                let label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(context.parsed.x * 100) + '%';
+                return label;
+              }
+            }
+          }
+        },
+        indexAxis: 'y',
+        scales: {
+          x: { // 'y' specifies the y-axis
+            ticks: {
+              callback: function(value) {
+                return value*100 + '%'; // Formatting tick labels as percentages
+              }
+            }
+          }
+        },
+        responsive: true,
+        maintainAspectRatio: false
+      },
+    }
+  },
+  beforeDestroy() {
+    this.resetState()
+  },
+  computed: {
+    ...mapGetters('ChartIndex', ['chart', 'loading', 'lists']),
+    ...mapGetters('AuthBu', ['selected_bu']),
+    updatedQuery() {
+      return {
+        ...this.query,
+        bu_id: this.selected_bu ? this.selected_bu.id : null,
+      };
+    },
+  },
+  mounted() {
+    // Set the query.id when the component is mounted
+    this.query.bu_id = this.selected_bu ? this.selected_bu.id : null;
+  },
+  watch: {
+    selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.bu_id = newSelectedBu ? newSelectedBu.id : null;
+    },
+    query: {
+      handler(query) {
+        this.setQuery(query)
+        this.fetchCharts()
+      },
+      deep: true
+    }
+  },
+  methods: {
+    ...mapActions('ChartIndex', ['fetchCharts', 'setQuery', 'resetState']),
+    updateStartDate(value) {
+      let newValue = JSON.parse(JSON.stringify(value.add(1, 'day'))); // Deep clone with value + 1 month
+      this.query.startDate = newValue;
+    },
+    updateEndDate(value) {
+      let newValue = JSON.parse(JSON.stringify(value.add(1, 'month').subtract(1, 'second'))); // Deep clone with value + 1 month
+      this.query.endDate = newValue;
+    },
+    updateDept(value) {
+      this.query.dept.id = value.id;
+      this.query.dept.name = value.name;
+      console.log(this.query.dept)
+    }
   }
 }
 </script>

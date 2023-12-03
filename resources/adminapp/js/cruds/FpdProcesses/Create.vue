@@ -232,7 +232,6 @@
                 </div>
                 
               </div>
-              
             </div>
             <div class="card-header card-header-primary card-header-icon">
               <h4 class="card-title">
@@ -341,7 +340,6 @@ export default {
   },
   computed: {
     ...mapGetters('FpdProcessesSingle', ['entry', 'loading', 'lists']),
-    ...mapGetters
   },
   mounted() {
     this.fetchCreateData()

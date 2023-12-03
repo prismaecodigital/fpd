@@ -146,8 +146,21 @@
                       </template>
                     </v-select>
                 </div>
-                
               </div>
+              <div class="modal-body row">
+                <div class="col-lg-3">Akun Kredit</div>
+                <div class="col">
+                    <v-select
+                      label="code"
+                      :key="'account-field'"
+                      :value="params.credit_account"
+                      :options="lists.accounts"
+                      disabled
+                    >
+                    </v-select>
+                </div>
+              </div>
+                
             </b-modal>
 
           </div>
@@ -297,7 +310,7 @@ export default {
           sortable: true,
         },
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: this.selected_bu },
+      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: null },
       xprops: {
         module: 'FpdDonesIndex',
         route: 'fpd-dones',
@@ -314,7 +327,7 @@ export default {
     updatedQuery() {
       return {
         ...this.query,
-        id: this.selected_bu.id,
+        id: this.selected_bu ? this.selected_bu.id : null
       };
     },
   },
@@ -323,11 +336,11 @@ export default {
     this.query.id = this.selected_bu.id;
   },
   watch: {
-    query: {
-      selected_bu(newSelectedBu) {
+    selected_bu(newSelectedBu) {
       // React to changes in selected_bu
-      this.query.id = newSelectedBu.id;
-      },
+        this.query.id = newSelectedBu.id;
+    },
+    query: {
       handler(query) {
         this.setQuery(query)
         this.fetchIndexData()

@@ -225,6 +225,11 @@ class FpdProcessApiController extends Controller
 
         // Added if request tidak memerlukan realisasi
         if($request->approve === "2") {
+            $statusHistory = StatusHistory::create([
+                'fpd_id'    => $fpd->id,
+                'user_id'   => auth()->user()->id,
+                'status'    => (int)$fpd->status + 1,
+            ]);
             $fpd->update(['status' => '9']);
             $new_fpd = Fpd::where('id',$fpd->id)->first();
             foreach($new_fpd->items as $item) {

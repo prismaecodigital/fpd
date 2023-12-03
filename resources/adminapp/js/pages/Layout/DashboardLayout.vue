@@ -62,9 +62,15 @@ export default {
         {
           title: 'Config',
           icon: 'table_view',
-          path: { name: 'bu_dept' },
+          path: { name: 'config' },
           gate: 'bu_dept_site_access',
           children: [
+            {
+              title: 'cruds.account.title',
+              icon: 'account_balance',
+              path: { name: 'listBu' },
+              gate: 'account_access'
+            },
             {
               title: 'cruds.bu.title',
               icon: 'business',
@@ -83,11 +89,17 @@ export default {
               path: { name: 'depts.index' },
               gate: 'bu_dept_site_access'
             },
+            {
+              title: 'partner',
+              icon: 'handshake',
+              path: { name: 'partners.index' },
+              gate: 'bu_dept_site_access'
+            },
           ]
         },
         {
-          title: 'Dana',
-          icon: 'dynamic_form',
+          title: 'DANA',
+          icon: 'shopping_cart_checkout',
           path: { name: 'fpd' },
           gate: 'fpd_access',
           children: [
@@ -112,10 +124,61 @@ export default {
           ]
         },
         {
-          title: 'cruds.account.title',
-          icon: 'account_balance',
-          path: { name: 'listBu' },
-          gate: 'account_access'
+          title: 'Cash IN',
+          icon: 'paid',
+          path: { name: 'cash-ins.index' },
+        },
+        {
+          title: 'Cashflow',
+          icon: 'currency_exchange',
+          path: { name: 'cashflows' },
+          gate: 'bu_dept_site_access',
+          children: [
+            {
+              title: 'Projection',
+              icon: 'repeat',
+              path: { name: 'projections' },
+              gate: 'bu_dept_site_access',
+              children: [
+                {
+                  title: 'OUT',
+                  icon: 'arrow_right_alt',
+                  gate: 'bu_dept_site_access',
+                  path: { name: 'cash-out-projections.index' },
+                },
+                {
+                  title: 'IN',
+                  icon: 'keyboard_backspace',
+                  gate: 'bu_dept_site_access',
+                  path: { name: 'cash-in-projections.index' },
+                },
+              ]
+            },
+            
+            {
+              title: 'Adjustment',
+              icon: 'adjust',
+              path: {name: 'adjustments-period.index'},
+              children: [
+                {
+                  title: 'Period',
+                  icon: 'calendar_month',
+                  path: { name: 'adjustments-period.index' },
+                },
+                {
+                  title: 'COA',
+                  icon: 'account_balance',
+                  path: { name: 'adjustments-coa.index' },
+                }
+              ]
+            },
+            {
+              title: 'Additional',
+              icon: 'battery_charging_full',
+              path: {name: 'additional-limits.index'}
+            },
+
+          ]
         },
         {
           title: 'cruds.fpd.calendar',
