@@ -16,6 +16,8 @@ function initialState() {
         destination_amount: '',
         status: '1',
         user_id: null,
+        approve: null,
+        reject: null,
       },
       lists: {
         coa: []
@@ -162,6 +164,9 @@ function initialState() {
     setStatus({ commit }, value) {
       commit('setStatus', value)
     },
+    setReject({ commit }, value) {
+      commit('setReject', value)
+    },
     setUser({ commit }, value) {
       commit('setUser', value)
     },
@@ -243,6 +248,9 @@ function initialState() {
     },
     setStatus(state, value) {
       state.entry.status = value
+    },
+    setReject(state, value) {
+      state.entry.reject = value
     },
     setUser(state, value) {
       state.entry.user_id = value

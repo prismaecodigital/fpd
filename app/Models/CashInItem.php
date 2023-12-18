@@ -15,7 +15,8 @@ class CashInItem extends Model
     public $table = 'cash_in_items';
 
     protected $appends = [
-        'date_label'
+        'date_label',
+        'real_amount_label'
     ];
 
     protected $dates = [
@@ -50,6 +51,11 @@ class CashInItem extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function getRealAmountLabelAttribute()
+    {
+        return $this->attributes['real_amount'] ? number_format((float)$this->attributes['real_amount'], 0, ',', '.') : 0;
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {

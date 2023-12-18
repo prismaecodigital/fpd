@@ -8,7 +8,7 @@
               <i class="material-icons">assignment</i>1
             </div>
             <h4 class="card-title">
-              Adjustment Anggaran antar PERIODE <strong>[ {{this.selected_bu.code}} ]</strong>
+              Adjustment Anggaran antar PERIODE <strong>[ {{this.selected_bu ? this.selected_bu.code : ''}} ]</strong>
             </h4>
             <p style="color: black">Daftar Penyesuaian Anggaran Antar COA</p>
           </div>
@@ -140,7 +140,7 @@ export default {
   },
   mounted() {
     // Set the query.id when the component is mounted
-    this.query.bu_id = this.selected_bu.id;
+    this.query.bu_id = this.selected_bu ? this.selected_bu.id : null;
   },
   watch: {
     selected_bu(newSelectedBu) {

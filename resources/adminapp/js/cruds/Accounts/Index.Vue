@@ -105,6 +105,11 @@ export default {
           sortable: true
         },
         {
+          title: 'Anggaran',
+          field: 'lock_label',
+          sortable: true
+        },
+        {
           title: 'global.actions',
           thComp: TranslatedHeader,
           tdComp: DatatableActions,

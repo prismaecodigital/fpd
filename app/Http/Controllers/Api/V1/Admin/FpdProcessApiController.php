@@ -80,6 +80,7 @@ class FpdProcessApiController extends Controller
                 'fpd_id' => $fpd->id,
                 'account_id' => $itemData['account_id'],
                 'amount' => $itemData['amount'],
+                'real_amount' => $itemData['amount'],
                 'site_id'   => $itemData['site_id'],
                 'ket' => $itemData['ket'] ?? '',
             ]);
@@ -213,6 +214,7 @@ class FpdProcessApiController extends Controller
             $item->delete();
         }
         foreach ($request->items as $itemData) {
+            $itemData['real_amount'] = $fpd->status <= 5 ? $itemData['amount'] : $itemData['real_amount'];
             $item = FpdItem::create([
                 'fpd_id' => $fpd->id,
                 'account_id' => $itemData['account_id'],
@@ -253,8 +255,15 @@ class FpdProcessApiController extends Controller
     {
         abort_if(Gate::denies($fpd->bu->code.'-fpd_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
+        $data = new FpdProcessResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories']));
+
+        $data->items = $data->items->transform(function ($item) use ($data) {
+            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw);
+            return $item;
+        });
+
         return response([
-            'data' => new FpdProcessResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories'])),
+            'data' => $data,
             'meta' => [
                 'bu'            => Bu::get(['id', 'name']),
                 'dept'          => Dept::where('bu_id', $fpd->bu_id)->get(['id', 'name']),

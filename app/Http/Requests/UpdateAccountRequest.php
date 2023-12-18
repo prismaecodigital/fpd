@@ -42,6 +42,9 @@ class UpdateAccountRequest extends FormRequest
                 'integer',
                 'exists:depts,id',
             ],
+            'projection_lock' => [
+                'nullable',
+            ],
         ];
     }
 }

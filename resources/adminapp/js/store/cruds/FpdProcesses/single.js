@@ -27,13 +27,18 @@ function initialState() {
         total_real_amount: '',
         items: [
           {
+            id: null,
             account_id : null,
             amount : '',
+            amount_label : '',
             real_amount : '',
+            real_amount_label : '',
             ket : '',
             site_id: null,
             ket: '',
             account: [],
+            source_amount: '',
+            source_amount_raw: 0,
           }
         ]
       },
@@ -148,8 +153,21 @@ function initialState() {
     setStatus({ commit }, value) {
       commit('setStatus', value)
     },
-    setReqDate({ commit }, value) {
+    setReqDate({ commit, state }, value) {
       commit('setReqDate', value)
+      state.entry.items.forEach(function(item, index) {
+        if(state.entry.date !== '' && item.account_id !== null) {
+          let params = {source_date: state.entry.req_date, source_coa_id: item.account_id}
+          axios
+          .get('account/getMaxAmount', { params: params })
+          .then(response => {
+            commit('setSourceAmount', {index, value : response.data.source_amount})
+          })
+          .catch(error => {
+            message = error.response.data.message || error.message
+          })
+        }
+      });
     },
     setProcessedDate({ commit }, value) {
       commit('setProcessedDate', value)
@@ -181,8 +199,19 @@ function initialState() {
     setItems({commit}, value) {
       commit('setItems', value)
     },
-    setItemAccount({commit}, {index, value}) {
+    setItemAccount({commit, state}, {index, value}) {
       commit('setItemAccount', {index, value})
+      if(state.entry.date !== '' && state.entry.items[index].account_id !== null) {
+        let params = {source_date: state.entry.req_date, source_coa_id: state.entry.items[index].account_id}
+        axios
+        .get('account/getMaxAmount', { params: params })
+        .then(response => {
+          commit('setSourceAmount', {index, value : response.data.source_amount})
+        })
+        .catch(error => {
+          message = error.response.data.message || error.message
+        })
+      }
     },
     setItemAmount({commit}, {index, val}) {
       commit('setItemAmount', {index, val})
@@ -253,7 +282,7 @@ function initialState() {
           commit('fetchDeptAccount', response.data)
       })      
     },
-    fetchEditData({ commit, dispatch }, id) {
+    fetchEditData({ commit, state, dispatch }, id) {
       axios.get(`${route}/${id}/edit`).then(response => {
         commit('setEntry', response.data.data)
         commit('setLists', response.data.meta)
@@ -437,13 +466,18 @@ function initialState() {
     },
     addItem(state) {
       state.entry.items.push({
+        id: null,
         account_id : null,
         amount : '',
+        amount_label : '',
         real_amount : '',
+        real_amount_label : '',
         ket : '',
         site_id: null,
         ket: '',
         account: [],
+        source_amount: '',
+        source_amount_raw: '',
       });
     },
     deleteItem(state, index) {
@@ -456,7 +490,19 @@ function initialState() {
       state.entry.items[index].account_id = value
     },
     setItemAmount(state, {index, val}) {
-      state.entry.items[index].amount = val
+      const parsedValue = parseFloat(val.replace(/\./g, '').replace(',', '.'));
+      state.entry.items[index].amount = parsedValue
+      state.entry.items[index].amount_label = parsedValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+      const total_amount = state.entry.items.reduce((total, item) => {
+        return total + Number(item.amount);
+      }, 0);
+      state.entry.total_amount = total_amount.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
     },
     setItemRealAmount(state, {index, val}) {
       
@@ -507,6 +553,9 @@ function initialState() {
     },
     fetchDeptAccount(state, lists) {
       state.lists.accounts = lists;
+    },
+    setSourceAmount(state, {index, value}) {
+      state.entry.items[index].source_amount = value
     },
   }
   

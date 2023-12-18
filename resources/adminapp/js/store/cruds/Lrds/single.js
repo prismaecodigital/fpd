@@ -27,9 +27,12 @@ function initialState() {
         total_real_amount: '',
         items: [
           {
+            id : null,
             account_id : null,
             amount : '',
+            amount_label : '',
             real_amount : '',
+            real_amount_label : '',
             ket : '',
             site_id: null,
             ket: '',
@@ -437,9 +440,12 @@ function initialState() {
     },
     addItem(state) {
       state.entry.items.push({
+        id : null,
         account_id : null,
         amount : '',
+        amount_label : '',
         real_amount : '',
+        real_amount_label : '',
         ket : '',
         site_id: null,
         ket: '',
@@ -457,16 +463,36 @@ function initialState() {
     },
     setItemAmount(state, {index, val}) {
       state.entry.items[index].amount = val
+      state.entry.items[index].amount_label = val.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
     },
     setItemRealAmount(state, {index, val}) {
-      
-      if(val !== '') {
-        console.log('ok')
-        state.entry.total_real_amount = parseInt(state.entry.total_real_amount) - parseInt(state.entry.items[index].real_amount) + parseInt(val)
-      }
-      state.entry.items[index].real_amount = val
-      console.log(state.entry.total_real_amount)
-      
+      // if(val !== '') {
+      //   state.entry.total_real_amount = parseInt(state.entry.total_real_amount) - parseInt(state.entry.items[index].real_amount) + parseInt(val)
+      // }
+      const parsedValue = parseFloat(val.replace(/\./g, '').replace(',', '.'));
+      state.entry.items[index].real_amount = parsedValue
+      state.entry.items[index].real_amount_label = parsedValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+      const total_real_amount = state.entry.items.reduce((total, item) => {
+        return total + Number(item.real_amount);
+      }, 0);
+      state.entry.total_real_amount = total_real_amount.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+    },
+    calculateTotalRealAmount(state) {
+      // Calculate the sum of real_amount values
+      state.total_real_amount = state.items.reduce((total, item) => {
+          return total + Number(item.real_amount);
+      }, 0);
+  
+      // Store the result in total_real_amount
     },
     setItemKet(state, {index, val}) {
       state.entry.items[index].ket = val

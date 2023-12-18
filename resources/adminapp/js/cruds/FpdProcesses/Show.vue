@@ -194,6 +194,14 @@
                   </td>
                 </tr>
               </tbody>
+              <tbody>
+                  <tr>
+                    <td>Total</td>
+                    <td>Rp. {{entry.total_amount ?? 0}}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+              </tbody>
             </table>
           </div>
           <div class="card-body">

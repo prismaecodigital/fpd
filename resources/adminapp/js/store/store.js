@@ -42,6 +42,8 @@ import CashInProjectionsIndex from './cruds/CashInProjections'
 import CashInProjectionsSingle from './cruds/CashInProjections/single'
 import CashInsIndex from './cruds/CashIns'
 import CashInsSingle from './cruds/CashIns/single'
+import DompetIndex from './cruds/Dompet'
+import DompetSingle from './cruds/Dompet/single'
 
 import ChartIndex from './modules/Chart'
 import AuthBu from './modules/AuthBu'
@@ -93,6 +95,8 @@ export default new Vuex.Store({
     CashInProjectionsSingle,
     CashInsIndex,
     CashInsSingle,
+    DompetIndex,
+    DompetSingle,
     ChartIndex
   },
   strict: debug

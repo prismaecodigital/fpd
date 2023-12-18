@@ -26,6 +26,7 @@ class Fpd extends Model implements HasMedia
         'total_amount',
         'total_real_amount',
         'bukti_transfer',
+        'req_date_raw',
         'processed_date_raw',
         'accurate_total'
     ];
@@ -153,6 +154,14 @@ class Fpd extends Model implements HasMedia
             'label' => 'Hutang NonSupplier',
             'value' => 'Hutang_NonSupplier',
         ],
+        [
+            'label' => 'COGS - Material Cost',
+            'value' => 'COGS-MC',
+        ],
+        [
+            'label' => 'COGS - Labor Cost',
+            'value' => 'COGS-LC',
+        ],
     ];
 
     protected $casts = [
@@ -184,6 +193,11 @@ class Fpd extends Model implements HasMedia
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+    
+    public function getReqDateRawAttribute()
+    {
+        return $this->attributes['req_date'];
     }
 
     public function getTransactTypeLabelAttribute()

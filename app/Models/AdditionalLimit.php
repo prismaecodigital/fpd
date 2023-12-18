@@ -15,7 +15,9 @@ class AdditionalLimit extends Model
     public $table = 'additional_limits';
 
     protected $appends = [
-
+        'amount_label',
+        'status_label',
+        'date_label'
     ];
 
     protected $fillable = [
@@ -24,7 +26,9 @@ class AdditionalLimit extends Model
         'amount',
         'ket',
         'created_at',
-        'updated_at'
+        'updated_at',
+        'status',
+        'reject'
     ];
 
     protected $dates = [
@@ -51,6 +55,31 @@ class AdditionalLimit extends Model
     protected $casts = [
         'coa_id'       => 'integer'
     ];
+
+    public const STATUS_SELECT = [
+        [
+            'label' => 'Menunggu Persetujuan Direktur',
+            'value' => '1',
+        ],
+        [
+            'label' => 'Selesai',
+            'value' => '9',
+        ],
+        [
+            'label' => 'Tidak Disetujui',
+            'value' => '99',
+        ],
+    ];
+
+    public function getStatusLabelAttribute()
+    {
+        return collect(static::STATUS_SELECT)->firstWhere('value', $this->status)['label'] ?? '';
+    }
+    
+    public function getAmountLabelAttribute()
+    {
+        return $this->attributes['amount'] ? number_format($this->attributes['amount'], 0, ',', '.') : '-';
+    }
     
     public function coa()
     {
@@ -64,7 +93,12 @@ class AdditionalLimit extends Model
 
     public function getDateAttribute($value)
     {
-        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format('F Y') : null;
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.date_format')) : null;
+    }
+
+    public function getDateLabelAttribute()
+    {
+        return $this->attributes['date'] ? Carbon::createFromFormat('Y-m-d', $this->attributes['date'])->format('F Y') : null;
     }
 
     public function setDateAttribute($value)

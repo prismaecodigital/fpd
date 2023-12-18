@@ -318,7 +318,14 @@
                         Rp.<input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
                     </td>
                     <td v-if="parseInt(entry.status) > 5">
-                        Rp.<input class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateImteRealAmount(k, $event)"/>
+                        Rp.   <input
+                                class="inputRp wrapText required"
+                                type="text"
+                                :value="item.real_amount_label"
+                                @input="updateItemRealAmount(k, $event)"
+                                @keypress="isNumberOrComma($event)"
+                                required
+                              />
                     </td>
                     <td>
                     <v-select
@@ -334,6 +341,17 @@
                     <td>
                         <input class="form-control wrapText" type="text" :value="item.ket" @input="updateItemKet(k, $event)"/>
                     </td>
+                  </tr>
+                </tbody>
+                <tbody v-if="entry.status >= 5">
+                  <tr>
+                    <td></td>
+                    <td>Total</td>
+                    <td v-if="entry.status >= 5">{{entry.total_amount}}</td>
+                    <td v-if="entry.status >= 5">{{entry.total_real_amount}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
@@ -532,7 +550,16 @@ export default {
     },
     clearFocus() {
       this.activeField = ''
-    }
+    },
+    isNumberOrComma(event) {
+      // Allow only numbers and a single comma
+      const char = String.fromCharCode(event.keyCode);
+      const isNumber = char >= '0' && char <= '9';
+      const isComma = char === ',' && event.target.value.indexOf(',') === -1;
+      if (!(isNumber || isComma)) {
+        event.preventDefault();
+      }
+    },
   }
 }
 </script>

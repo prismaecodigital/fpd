@@ -21,7 +21,8 @@ class CashIn extends Model
         'lc_amount',
         'transaction_type_label',
         'cash_in_type_label',
-        'status_label'
+        'status_label',
+        'amount_label'
     ];
 
     protected $dates = [
@@ -63,7 +64,7 @@ class CashIn extends Model
     protected $casts = [
         'bu_id'         => 'integer',
         'partner_id'    => 'integer',
-        'status'        => 'boolean'
+        'status'        => 'boolean',
     ];
 
     protected $fillable = [
@@ -118,14 +119,14 @@ class CashIn extends Model
     public function getCashInTypeLabelAttribute() {
         return collect(CashInType::CASH_IN_TYPE_SELECT)->firstWhere('value', $this->cash_in_type)['label'] ?? '';
     }
-    protected function serializeDate(DateTimeInterface $date)
-    {
-        return $date->format('Y-m-d H:i:s');
+
+    public function getAmountLabelAttribute() {
+        return $this->attributes['amount'] ? number_format((float)$this->attributes['amount'], 0,',','.') : 0;
     }
 
-    public function getDateAttribute($value)
+    protected function serializeDate(DateTimeInterface $date)
     {
-        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.date_format')) : null;
+        return $date->format('Y-m-d');
     }
 
     public function getDateLabelAttribute()
@@ -138,14 +139,37 @@ class CashIn extends Model
         $this->attributes['date'] = $value ? Carbon::createFromFormat(config('project.date_format'), $value)->format('Y-m-d') : null;
     }
 
+    public function getDateAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d', $value)->format(config('project.date_format')) : null;
+    }
+
     public function getMcAmountAttribute()
     {
-        return $this->attributes['mc_percentage'] ? $this->attributes['amount']*$this->attributes['mc_percentage']/100 : 0;
+        return $this->attributes['mc_percentage'] ? (float)$this->attributes['amount']*$this->attributes['mc_percentage']/100 : 0;
     }
 
     public function getLcAmountAttribute()
     {
-        return $this->attributes['lc_percentage'] ? $this->attributes['amount']*$this->attributes['lc_percentage']/100 : 0;
+        return $this->attributes['lc_percentage'] ? (float)$this->attributes['amount']*$this->attributes['lc_percentage']/100 : 0;
+    }
+
+    public function getTotalMcAmountByBuId($startDate, $endDate)
+    {
+        return $query->when($startDate && $endDate, function ($q) use ($startDate, $endDate) {
+            $q->whereBetween('date', [$startDate, $endDate]);
+        })->get()->sum(function ($cashIn) {
+            return $cashIn->mc_amount;
+        });
+    }
+
+    public function getTotalLcAmountByBuId($startDate, $endDate)
+    {
+        return $query->when($startDate && $endDate, function ($q) use ($startDate, $endDate) {
+            $q->whereBetween('date', [$startDate, $endDate]);
+        })->get()->sum(function ($cashIn) {
+            return $cashIn->lc_amount;
+        });
     }
 
     public function bu()

@@ -78,4 +78,9 @@ class Bu extends Model
         return 'Not Connected';
     }
 
+    public function depts()
+    {
+        return $this->hasMany(Dept::class);
+    }
+
 }

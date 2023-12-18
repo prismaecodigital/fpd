@@ -110,7 +110,7 @@
             </div>
           </div>
       </div>
-      <div class="row">
+      <div class="row" v-if="query.startDate && query.endDate">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header card-header-success card-header-icon">
@@ -120,6 +120,168 @@
               <h4 class="card-title">
                 Summary
               </h4>
+              <br>
+              <div class="table-responsive">
+                  <table class="table table-bordered">
+                    <tbody>
+                      <tr>
+                        <td class="text-black">
+                          <strong><b>KETERANGAN</b></strong>
+                        </td>
+                        <td class="text-black">
+                          <strong><b>UNREALIZED</b></strong>
+                        </td>
+                        <td class="text-black">
+                          <strong><b>REALIZED</b></strong>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          Saldo Awal
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.saldo_awal}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.saldo_awal}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          <strong><b></b></strong>
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          <strong><b>CASH IN</b></strong>
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          REVENUE
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.rev.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.rev.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          LOAN PRISMA
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.loan_prisma.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.loan_prisma.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          LOAN BANK
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.loan_bank.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.loan_bank.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          <strong><b>CASH OUT</b></strong>
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          COGS - MATERIAL COST
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.mc.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.mc.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          COGS - LABOR COST
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.lc.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.lc.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          OPEX
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.opex.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.opex.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          <strong><b></b></strong>
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                        <td class="text-black">
+                          
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          <strong><b>SURPLUS / DEFISIT</b></strong>
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.diff.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.diff.realized}}
+                        </td>
+                      </tr>
+                      
+                    </tbody>
+                  </table>
+                </div>
             </div>
           </div>
         </div>
@@ -316,7 +478,7 @@ export default {
   methods: {
     ...mapActions('ChartIndex', ['fetchCharts', 'setQuery', 'resetState']),
     updateStartDate(value) {
-      let newValue = JSON.parse(JSON.stringify(value.add(1, 'day'))); // Deep clone with value + 1 month
+      let newValue = JSON.parse(JSON.stringify(value.add(1, 'day')));
       this.query.startDate = newValue;
     },
     updateEndDate(value) {

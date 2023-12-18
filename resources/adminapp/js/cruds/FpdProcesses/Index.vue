@@ -9,7 +9,7 @@
             </div>
             <h4 class="card-title">
               
-              List <strong> Pengajuan Dana {{this.selected_bu.code}}</strong>
+              List <strong> Pengajuan Dana {{this.selected_bu ? this.selected_bu.code : ''}}</strong>
             </h4>
           </div>
           <div class="card-body">
@@ -161,7 +161,7 @@ export default {
   },
   mounted() {
     // Set the query.id when the component is mounted
-    this.query.id = this.selected_bu.id;
+    this.query.id = this.selected_bu ? this.selected_bu.id : null;
   },
   watch: {
     selected_bu(newSelectedBu) {
@@ -171,7 +171,9 @@ export default {
     query: {
       handler(query) {
         this.setQuery(query)
-        this.fetchIndexData()
+        if(query.id) {
+          this.fetchIndexData()
+        }
       },
       deep: true
     }

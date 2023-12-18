@@ -374,6 +374,11 @@ td.day.old, td.day.new {
     }
 }
 
+table > thead > th, table > tbody > tr > td, table > tbody > tr > td > div > span,
+table > tbody > tr > td > div > a {
+    font-size: 12px !important;
+}
+
 .table thead tr th, .table tbody tr td {
     font-size: 12px;
 }
@@ -388,4 +393,18 @@ td.day.old, td.day.new {
 
 .disabled {
     background-color: #f8f8f8 !important;
+}
+
+.v-select .vs__dropdown-toggle, table > tbody > tr > td {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    height: 30px;
+}
+
+.v-select .vs__search {
+    height: 0 ;
+}
+
+.text-black {
+    color: black !important;
 }

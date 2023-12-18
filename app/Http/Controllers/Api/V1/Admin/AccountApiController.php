@@ -8,6 +8,7 @@ use App\Http\Requests\UpdateAccountRequest;
 use App\Http\Resources\Admin\AccountResource;
 use App\Http\Resources\Admin\BuResource;
 use App\Models\Account;
+use App\Models\AdditionalLimit;
 use App\Models\Bu;
 use App\Models\Dept;
 use Gate;
@@ -150,17 +151,29 @@ class AccountApiController extends Controller
         $source_coa = Account::find($request->source_coa_id);
         $destination_coa = Account::find($request->destination_coa_id);
     
-        $source_amount = $source_coa ? $source_coa->getBalance($request->source_date, $request->type) : 0;
+        $source_amount = $source_coa ? $source_coa->getBalance($request->source_date) : 0;
+        $destination_amount = 1;
         if($request->type == 1) {
-            $destination_amount = $source_coa ? $source_coa->getBalance($request->destination_date, $request->type) : 0;
+            $destination_amount = $source_coa ? $source_coa->getBalance($request->destination_date) : 0;
         }
         if($request->type == 2) {
-            $destination_amount = $destination_coa ? $destination_coa->getBalance($request->source_date, $request->type) : 0;
+            $destination_amount = $destination_coa ? $destination_coa->getBalance($request->source_date) : 0;
         }
     
         return response()->json([
             'source_amount' => $source_amount,
             'destination_amount' => $destination_amount
+        ]);
+    }
+
+    public function getMaxAmount(Request $request)
+    {
+        $source_coa = Account::find($request->source_coa_id);
+        $source_amount = $source_coa ? $source_coa->getBalance($request->source_date) : 0;
+        $additional = AdditionalLimit::where('coa_id', $request->source_coa_id)->whereYear('date', substr($request->source_date,6,4))->whereMonth('date', substr($request->source_date,3,2))->sum('amount');
+        $source_amount = $source_amount + $additional;
+        return response()->json([
+            'source_amount' => $source_amount,
         ]);
     }
 }

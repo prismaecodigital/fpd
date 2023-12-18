@@ -9,11 +9,9 @@
                 <i class="material-icons">add</i>
               </div>
               <h4 class="card-title">
-                <strong><b>CASH IN (Kontrak/Invoice)</b></strong>
+                <strong><b>Edit / Proses CASH IN</b></strong>
               </h4>
-              <p style="color: black">
-                Masukkan Unrealized Cash In (Cash In yang belum direalisasikan)
-              </p>
+              
             </div>
             <div class="card-body row">
               <div class="col-auto" style="align-self: center;">Status Cash In : <strong><b>{{entry.status_label}}</b></strong></div>
@@ -22,7 +20,11 @@
               <bootstrap-alert />
               <div class="row">
                 <div class="col-md-6">
-
+                    <h4><strong><b>Unrealized Cash In</b></strong></h4>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
                   <!-- BU -->
                   <div
                     class="form-group bmd-form-group"
@@ -209,13 +211,13 @@
                     <label class="">{{
                       $t('cruds.cash-in.fields.amount')
                     }}</label>
-                    <input
+                   <input
                       class="form-control"
-                      type="number"
-                      :value="entry.amount"
+                      type="text"
+                      :value="entry.amount_label"
                       @input="updateAmount"
-                      @focus="focusField('amount')"
-                      @blur="clearFocus"
+                      @keypress="isNumberOrComma($event)"
+                      required
                     />
                   </div>
                   <!-- MC % -->
@@ -262,10 +264,14 @@
                 
               </div>
             </div>
-
+            <br>
             <!-- Items -->
             <div class="card-body">
-              <button type='button' class="btn btn-sm btn-info" @click="addNewRow">
+              <h4 style="color: black">
+                <strong><b>Realized Cash In (Pendapatan yang sudah masuk)</b></strong>
+              </h4>
+              <br v-if="entry.status == 0">
+              <button v-if="entry.status == 0" type='button' class="btn btn-sm btn-info" @click="addNewRow">
                   <i class="fa fa-plus-circle"></i>
                   Add Payment
               </button>
@@ -286,21 +292,31 @@
                     </td>
                     <td>
                        <!-- Tanggal -->
-                    <vuejs-datepicker
-                      input-class="form-control"
-                      format="dd-MM-yyyy"
-                      :value="item.date_label"
+                    <datetime-picker
+                      class="form-control"
+                      type="text"
+                      picker="date"
+                      :value="item.date"
                       @input="updateItemDate(k, $event)"
+                      required
                     >
-                    </vuejs-datepicker>
+                    </datetime-picker>
+
                     </td>
                     <!-- Keterangan -->
                     <td>
                         <input class="form-control" type="text" name="ket" :value="item.ket" @input="updateItemKet(k, $event)" required/>
                     </td>
-                    <!-- Amount -->
+                    <!-- Real Amount -->
                     <td>
-                        <input class="form-control wrapText required" name="real_amount" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)" required/>
+                        <input
+                          class="form-control wrapText required"
+                          type="text"
+                          :value="item.real_amount_label"
+                          @input="updateItemRealAmount(k, $event)"
+                          @keypress="isNumberOrComma($event)"
+                          required
+                        />
                     </td>
                   </tr>
                 </tbody>
@@ -425,7 +441,8 @@ export default {
         }
       })
     },
-    updateItemDate(index, value) {
+    updateItemDate(index, e) {
+      let value = e.target.value
       this.setItemDate({index, value})
     },
     updateItemKet(index, val) {
@@ -468,7 +485,16 @@ export default {
     },
     clearFocus() {
       this.activeField = ''
-    }
+    },
+    isNumberOrComma(event) {
+      // Allow only numbers and a single comma
+      const char = String.fromCharCode(event.keyCode);
+      const isNumber = char >= '0' && char <= '9';
+      const isComma = char === ',' && event.target.value.indexOf(',') === -1;
+      if (!(isNumber || isComma)) {
+        event.preventDefault();
+      }
+    },
   }
 }
 </script>

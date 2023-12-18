@@ -184,25 +184,25 @@ const routes = [
             path: 'partners',
             name: 'partners.index',
             component: () => import('@cruds/Partners/Index.vue'),
-            meta: { title: 'cruds.site.title' }
+            
           },
           {
             path: 'partners/create',
             name: 'partners.create',
             component: () => import('@cruds/Partners/Create.vue'),
-            meta: { title: 'cruds.site.title' }
+            
           },
           {
             path: 'partners/:id',
             name: 'partners.show',
             component: () => import('@cruds/Partners/Show.vue'),
-            meta: { title: 'cruds.site.title' }
+            
           },
           {
             path: 'partners/:id/edit',
             name: 'partners.edit',
             component: () => import('@cruds/Partners/Edit.vue'),
-            meta: { title: 'cruds.site.title' }
+            
           },
           {
             path: 'accounts/list',
@@ -233,7 +233,31 @@ const routes = [
             name: 'listBu',
             component: () => import('@cruds/Accounts/List.vue'),
             meta: { title: 'cruds.account.title' }
-          }
+          },
+          {
+            path: 'dompet',
+            name: 'dompet.index',
+            component: () => import('@cruds/Dompet/Index.vue'),
+            
+          },
+          {
+            path: 'dompet/create',
+            name: 'dompet.create',
+            component: () => import('@cruds/Dompet/Create.vue'),
+            
+          },
+          {
+            path: 'dompet/:id',
+            name: 'dompet.show',
+            component: () => import('@cruds/Dompet/Show.vue'),
+            
+          },
+          {
+            path: 'dompet/:id/edit',
+            name: 'dompet.edit',
+            component: () => import('@cruds/Dompet/Edit.vue'),
+            
+          },
 
         ]
       },
@@ -432,6 +456,11 @@ const routes = [
             path: 'additional-limits/create',
             name: 'additional-limits.create',
             component: () => import('@cruds/AdditionalLimits/Create.vue'),
+          },
+          {
+            path: 'additional-limits/:id/edit',
+            name: 'additional-limits.edit',
+            component: () => import('@cruds/AdditionalLimits/Edit.vue')
           },
           {
             path: 'adjustments-period',

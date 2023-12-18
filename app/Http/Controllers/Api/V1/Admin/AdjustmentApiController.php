@@ -45,7 +45,10 @@ class AdjustmentApiController extends Controller
 
         return response([
             'meta' => [
-                'coa' => Account::where('bu_id', $request->bu_id)->get(['id', 'code', 'name']),
+                'coa' => Account::where('bu_id', $request->bu_id)->whereHas('depts', function($q) {
+                    $q->whereIn('dept_id', auth()->user()->depts->pluck('id'));
+                })
+                ->get(['id', 'code', 'name']),
             ],
         ]);
     }
@@ -59,7 +62,10 @@ class AdjustmentApiController extends Controller
 
     public function update(Request $request, Adjustment $adjustment)
     {
-        $adjustment->update($request->all());
+        DB::transaction(function () use ($request, &$adjustment) {
+            $adjustment->update($request->all());
+            StatusAdjustment::create(['status' => $adjustment->status, 'adjustment_id' => $adjustment->id, 'user_id' => auth()->user()->id]);
+        });
 
         return (new AdjustmentResource($adjustment))
             ->response()

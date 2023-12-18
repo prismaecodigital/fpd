@@ -176,7 +176,6 @@ const mutations = {
   },
   setNotifable(state) {
     state.entry.notifable = !state.entry.notifable
-    console.log(state.entry.notifable)
   },
   setDept(state, value) {
     state.entry.depts = value

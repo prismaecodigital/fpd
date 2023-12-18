@@ -109,6 +109,12 @@ export default {
           sortable: true
         },
         {
+          title: 'Realisasi',
+          field: 'total_real_amount',
+          thComp: TranslatedHeader,
+          sortable: true
+        },
+        {
           title: 'cruds.fpd.fields.name',
           field: 'name',
           thComp: TranslatedHeader,
@@ -153,7 +159,7 @@ export default {
   },
   mounted() {
     // Set the query.id when the component is mounted
-    this.query.id = this.selected_bu.id;
+    this.query.id = this.selected_bu ? this.selected_bu.id : null;
   },
   watch: {
     selected_bu(newSelectedBu) {

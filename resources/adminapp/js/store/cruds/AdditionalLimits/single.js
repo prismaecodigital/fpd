@@ -6,7 +6,10 @@ function initialState() {
         date_label: '',
         coa_id: null,
         amount: '',
-        ket: ''
+        ket: '',
+        status: '1',
+        approve: null,
+        reject: null,
       },
       lists: {
         coa: []
@@ -101,6 +104,12 @@ function initialState() {
     setKet({ commit }, value) {
       commit('setKet', value)
     },
+    setStatus({ commit }, value) {
+      commit('setStatus', value)
+    },
+    setReject({ commit }, value) {
+      commit('setReject', value)
+    },
     fetchCreateData({ commit, state }) {
       axios.get(`${route}/create`, {params : state.query}).then(response => {
         commit('setLists', response.data.meta)
@@ -145,6 +154,12 @@ function initialState() {
     },
     setKet(state, value) {
       state.entry.ket = value
+    },
+    setStatus(state, value) {
+      state.entry.status = value
+    },
+    setReject(state, value) {
+      state.entry.reject = value
     },
     setLists(state, lists) {
       state.lists = lists

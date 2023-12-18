@@ -75,7 +75,8 @@ class Adjustment extends Model
         'created_at',
         'updated_at',
         'status',
-        'ket'
+        'ket',
+        'reject'
     ];
 
     public const TYPE_SELECT = [
@@ -108,6 +109,7 @@ class Adjustment extends Model
     {
         return collect(static::STATUS_SELECT)->firstWhere('value', $this->status)['label'] ?? '';
     }
+    
     public function getTypeLabelAttribute()
     {
         return collect(static::TYPE_SELECT)->firstWhere('value', $this->type)['label'] ?? '';

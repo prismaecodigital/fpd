@@ -212,7 +212,7 @@ class LrdApiController extends Controller
             $item = FpdItem::create([
                 'fpd_id' => $fpd->id,
                 'account_id' => $itemData['account_id'],
-                'amount' => $itemData['amount'],
+                'amount' => $itemData['amount'] ?? 0,
                 'real_amount' => $itemData['real_amount'],
                 'site_id'   => $itemData['site_id'],
                 'ket' => $itemData['ket'] ?? '',

@@ -177,9 +177,19 @@
               </div>
             </div>
             <div class="card-footer">
+              <div v-if="entry.status != 99" class="col-auto">
+                <button type='button' class="btn btn-sm btn-success" style="color:black" @click.prevent="submitForm()">
+                    Simpan
+                </button>
+              </div>
               <div v-if="entry.status == 1" class="col-auto">
                 <button type='button' class="btn btn-sm btn-primary" @click.prevent="approveData()">
                     Approve
+                </button>
+              </div>
+              <div v-if="entry.status == 1" class="col-auto">
+                <button type='button' class="btn btn-sm btn-danger" @click.prevent="rejectData()">
+                    Reject
                 </button>
               </div>
               <div class="col-auto">
@@ -228,6 +238,7 @@ export default {
       'setProcessedDate', 'setSourceDate', 'setDestinationDate',
       'setAmount',
       'setKet',
+      'setReject',
       'setStatus',
       'setSourceCoa',
       'fetchEditData','setQuery',
@@ -260,6 +271,32 @@ export default {
         if(result.value) {
             this.setStatus('9')
             this.submitForm()
+        }
+      })
+    },
+    rejectData() {
+      this.$swal({
+        title: 'Reject ?',
+        text: 'Masukkan Alasan',
+        input: 'text',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then(result => {
+        if(result.value) {
+            this.setStatus('99')
+            let value = result.value
+            this.setReject(value)
+            this.submitForm()
+        }
+        else {
+            this.$swal({
+            icon: 'error',
+            title: 'Failed',
+            text: 'Masukkan Alasan'
+            })
         }
       })
     },

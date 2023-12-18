@@ -9,10 +9,10 @@
                 <i class="material-icons">add</i>
               </div>
               <h4 class="card-title">
-                <strong><b>CASH IN (Kontrak/Invoice)</b></strong>
+                <strong><b>Buat CASH IN (Kontrak/Invoice) - {{this.selected_bu ? this.selected_bu.name : ''}}</b></strong>
               </h4>
               <p style="color: black">
-                Masukkan Unrealized Cash In (Cash In yang belum direalisasikan)
+                CASH IN disini adalah Unrealized Cash In (Cash In yang belum direalisasikan)
               </p>
             </div>
             <div class="card-body">
@@ -140,7 +140,7 @@
                       label="name"
                       :key="'partner-field'"
                       :value="entry.partner_id"
-                      :options="lists.partner"
+                      :options="lists.partner_type"
                       :reduce="entry => entry.id"
                       @input="updatePartner"
                     >

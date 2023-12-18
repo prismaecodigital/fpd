@@ -8,11 +8,11 @@
               <i class="material-icons">assignment</i>
             </div>
             <h4 class="card-title">
-              <strong>{{ $t('cruds.additional-limit.title') }} Limit COA {{this.selected_bu.code}}</strong>
+              <strong>{{ $t('cruds.additional-limit.title') }} Limit COA {{this.selected_bu ? this.selected_bu.code : ''}}</strong>
             </h4>
             <div class="card-body">
               <p style="color:black">
-                Daftar Penambahan Limit pada COA {{this.selected_bu.code}}
+                Daftar Penambahan Limit. Gunakan fitur ini saat anda ingin menambahkan batas pengeluaran dana pada COA tertentu.
               </p>
             </div>
           </div>
@@ -70,7 +70,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import BuDeptSiteActions from '@components/Datatables/BuDeptSiteActions'
+import AdditionalActions from '@components/Datatables/AdditionalActions'
 import TranslatedHeader from '@components/Datatables/TranslatedHeader'
 import HeaderSettings from '@components/Datatables/HeaderSettings'
 import GlobalSearch from '@components/Datatables/GlobalSearch'
@@ -87,7 +87,7 @@ export default {
       columns: [
         {
           title: 'cruds.additional-limit.fields.date',
-          field: 'date',
+          field: 'date_label',
           thComp: TranslatedHeader,
           sortable: true
         },
@@ -107,7 +107,7 @@ export default {
         },
         {
           title: 'cruds.additional-limit.fields.amount',
-          field: 'amount',
+          field: 'amount_label',
           thComp: TranslatedHeader,
           sortable: true
         },
@@ -117,15 +117,21 @@ export default {
           thComp: TranslatedHeader,
           sortable: true
         },
-        // {
-        //   title: 'global.actions',
-        //   thComp: TranslatedHeader,
-        //   tdComp: BuDeptSiteActions,
-        //   visible: true,
-        //   thClass: 'text-right',
-        //   tdClass: 'text-right td-actions',
-        //   colStyle: 'width: 150px;'
-        // }
+        {
+          title: 'Status',
+          field: 'status_label',
+          thComp: TranslatedHeader,
+          sortable: true
+        },
+        {
+          title: 'global.actions',
+          thComp: TranslatedHeader,
+          tdComp: AdditionalActions,
+          visible: true,
+          thClass: 'text-right',
+          tdClass: 'text-right td-actions',
+          colStyle: 'width: 150px;'
+        }
       ],
       query: { sort: 'date', order: 'desc', limit: 100, s: '', bu_id: null },
       xprops: {
@@ -150,7 +156,7 @@ export default {
   },
   mounted() {
     // Set the query.id when the component is mounted
-    this.query.bu_id = this.selected_bu.id;
+    this.query.bu_id = this.selected_bu ? this.selected_bu.id : null;
   },
   watch: {
     selected_bu(newSelectedBu) {

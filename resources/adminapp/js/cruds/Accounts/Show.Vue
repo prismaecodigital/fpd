@@ -63,6 +63,14 @@
                           </datatable-list>
                         </td>
                       </tr>
+                      <tr>
+                        <td class="text-primary">
+                          Pembatasan Anggaran
+                        </td>
+                        <td>
+                          {{ entry.lock_label }}
+                        </td>
+                      </tr>
                     </tbody>
                   </div>
                 </div>

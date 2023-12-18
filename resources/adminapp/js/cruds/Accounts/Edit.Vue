@@ -79,8 +79,7 @@
                       :reduce="entry => entry.id"
                       @input="updateBu"
                       disabled
-                      @search.focus="focusField('bu')"
-                      @search.blur="clearFocus"
+
                     />
                   </div>
                   <div
@@ -130,6 +129,19 @@
                     />
                     <span class="select-all badge" @click="selectAllDept">Pilih Semua</span>
                     <span class="select-all badge" @click="deselectAllDept">Batalkan pilihan</span>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.projection_lock !== null,
+                      'is-focused': activeField == 'projection_lock'
+                    }"
+                  >
+                  <input
+                      type="checkbox"
+                      :checked="entry.projection_lock" @change="updateProjectionLock"
+                    />
+                    <label class="">Kunci Pembatasan Anggaran ( Balance tidak bisa Minus )</label>
                   </div>
                 </div>
               </div>
@@ -186,6 +198,7 @@ export default {
       'setBu',
       'setDept',
       'setParent',
+      'setProjectionLock'
     ]),
     selectAllDept() {
       this.setDept('all')
@@ -201,6 +214,9 @@ export default {
     },
     updateBu(value) {
       this.setBu(value)
+    },
+    updateProjectionLock() {
+      this.setProjectionLock()
     },
     updateDept(value) {
       this.setDept(value)

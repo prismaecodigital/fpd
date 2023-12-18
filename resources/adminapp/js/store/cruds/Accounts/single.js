@@ -7,6 +7,7 @@ function initialState() {
         bu_id: null,
         depts: [],
         parent_id: null,
+        projection_lock: '',
         created_at: '',
         updated_at: '',
         deleted_at: ''
@@ -106,6 +107,9 @@ function initialState() {
     setParent({ commit }, value) {
       commit('setParent', value)
     },
+    setProjectionLock({ commit }) {
+      commit('setProjectionLock')
+    },
     setCreatedAt({ commit }, value) {
       commit('setCreatedAt', value)
     },
@@ -164,6 +168,9 @@ function initialState() {
     setParent(state, value) {
       state.entry.parent_id = value
       console.log(state.entry.parent_id)
+    },
+    setProjectionLock(state, value) {
+      state.entry.projection_lock = !state.entry.projection_lock
     },
     setCreatedAt(state, value) {
       state.entry.created_at = value

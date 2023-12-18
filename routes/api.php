@@ -32,6 +32,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::get('buaccount', 'AccountApiController@buaccount');
     Route::get('deptaccount', 'AccountApiController@deptaccount');
     Route::get('account/getBalance', 'AccountApiController@getBalance')->name('account.getBalance');
+    Route::get('account/getMaxAmount', 'AccountApiController@getMaxAmount')->name('account.getMaxAmount');
 
     // Dept
     Route::resource('depts', 'DeptApiController');
@@ -98,6 +99,9 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
 
     // Dashboard
     Route::get('dashboard', 'DashboardApiController@index')->name('dashboard');
+
+    // Dompet
+    Route::resource('dompet', 'DompetApiController');
 
 });
 

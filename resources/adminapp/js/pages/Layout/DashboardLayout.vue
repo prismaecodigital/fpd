@@ -95,6 +95,12 @@ export default {
               path: { name: 'partners.index' },
               gate: 'bu_dept_site_access'
             },
+            {
+              title: 'Opening Balance',
+              icon: 'paid',
+              path: { name: 'dompet.index' },
+              gate: 'bu_dept_site_access'
+            },
           ]
         },
         {

@@ -65,6 +65,14 @@ class StoreFpdRequest extends FormRequest
             ],
             'items.*.amount' => [
                 'required',
+                function($attribute, $value, $fail) {
+                    $itemIndex = explode('.', $attribute)[1];
+                    $sourceAmount = $this->items[$itemIndex]['source_amount'];
+
+                    if ($value > $sourceAmount) {
+                        $fail('The amount for each item must be less than or equal to the source amount.');
+                    }
+                }
             ],
         ];
     }

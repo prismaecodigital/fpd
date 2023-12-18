@@ -1,5 +1,4 @@
 <template>
-<!-- Belum di update -->
   <div class="container-fluid">
     <form @submit.prevent="submitForm">
       <div class="row">
@@ -7,36 +6,52 @@
           <div class="card">
             <div class="card-header card-header-primary card-header-icon">
               <div class="card-icon">
-                <i class="material-icons">edit</i>
+                <i class="material-icons">add</i>
               </div>
               <h4 class="card-title">
-                {{ $t('global.edit') }}
-                <strong>{{ $t('cruds.partner.title_singular') }}</strong>
+                <strong>Detail Request Penambahan Limit</strong>
               </h4>
             </div>
-            <div class="card-body">
-              <back-button></back-button>
-            </div>
+            
             <div class="card-body">
               <bootstrap-alert />
               <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                   <div
                     class="form-group bmd-form-group"
                     :class="{
-                      'is-filled': entry.name,
-                      'is-focused': activeField == 'name'
+                      'is-filled': entry.date,
+                      'is-focused': activeField == 'date'
                     }"
                   >
                     <label class="bmd-label-floating required">{{
-                      $t('cruds.partner.fields.name')
+                      $t('cruds.additional-limit.fields.date')
+                    }}</label>
+                    <vue-monthly-picker
+                      input-class="form-control"
+                      :value="entry.date_label"
+                      @input="updateDate"
+                      :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
+                      date-format="MMM yyyy"
+                      required>
+                    </vue-monthly-picker>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.amount,
+                      'is-focused': activeField == 'amount'
+                    }"
+                  >
+                    <label class="bmd-label-floating required">{{
+                      $t('cruds.additional-limit.fields.amount')
                     }}</label>
                     <input
                       class="form-control"
-                      type="text"
-                      :value="entry.name"
-                      @input="updateName"
-                      @focus="focusField('name')"
+                      type="number"
+                      :value="entry.amount"
+                      @input="updateAmount"
+                      @focus="focusField('amount')"
                       @blur="clearFocus"
                       required
                     />
@@ -44,25 +59,47 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
-                      'is-filled': entry.type,
-                      'is-focused': activeField == 'type'
+                      'is-filled': entry.ket,
+                      'is-focused': activeField == 'ket'
+                    }"
+                  >
+                    <label class="bmd-label-floating">{{
+                      $t('cruds.additional-limit.fields.ket')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.ket"
+                      @input="updateKet"
+                      @focus="focusField('ket')"
+                      @blur="clearFocus"
+                    />
+                  </div>                  
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.coa_id,
+                      'is-focused': activeField == 'coa'
                     }"
                   >
                     <label class="required">{{
-                      $t('cruds.partner.fields.type')
+                      $t('cruds.additional-limit.fields.coa_name')
                     }}</label>
                     <v-select
-                      name="type"
-                      :key="'type-field'"
-                      :value="entry.type"
-                      :options="lists.type"
-                      :reduce="entry => entry.value"
-                      @input="updateType"                      
+                      name="coa"
+                      label="name"
+                      :key="'coa-field'"
+                      :value="entry.coa_id"
+                      :options="lists.coa"
+                      :reduce="entry => entry.id"
+                      @input="updateCoa"                      
                     >
                     <template #search="{attributes, events}">
                         <input
                           class="vs__search"
-                          :required="!entry.type"
+                          :required="!entry.coa_id"
                           v-bind="attributes"
                           v-on="events"
                         />
@@ -72,44 +109,46 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
-                      'is-filled': entry.bu_id !== null,
-                      'is-focused': activeField == 'bu'
+                      'is-filled': entry.coa_id,
+                      'is-focused': activeField == 'coa'
                     }"
                   >
                     <label class="required">{{
-                      $t('cruds.partner.fields.bu')
+                      $t('cruds.additional-limit.fields.coa_code')
                     }}</label>
                     <v-select
-                      name="bu"
-                      label="name"
-                      :key="'bu-field'"
-                      :value="entry.bu_id"
-                      :options="lists.bu"
+                      name="coa"
+                      label="code"
+                      :key="'coa-field'"
+                      :value="entry.coa_id"
+                      :options="lists.coa"
                       :reduce="entry => entry.id"
-                      @input="updateBu"
+                      disabled
                     >
-                      <template #search="{attributes, events}">
-                        <input
-                          class="vs__search"
-                          :required="!entry.bu_id"
-                          v-bind="attributes"
-                          v-on="events"
-                        />
-                      </template>
                     </v-select>
                   </div>
                 </div>
               </div>
             </div>
             <div class="card-footer">
-              <vue-button-spinner
-                class="btn-primary"
-                :status="status"
-                :isLoading="loading"
-                :disabled="loading"
-              >
-                {{ $t('global.save') }}
-              </vue-button-spinner>
+              <div v-if="entry.status != 99" class="col-auto">
+                <button type='button' class="btn btn-sm btn-success" style="color:black" @click.prevent="submitForm()">
+                    Simpan
+                </button>
+              </div>
+              <div v-if="entry.status == 1" class="col-auto">
+                <button type='button' class="btn btn-sm btn-primary" @click.prevent="approveData()">
+                    Approve
+                </button>
+              </div>
+              <div v-if="entry.status == 1" class="col-auto">
+                <button type='button' class="btn btn-sm btn-danger" @click.prevent="rejectData()">
+                    Reject
+                </button>
+              </div>
+              <div class="col-auto">
+                <back-button class="btn-sm"></back-button>
+              </div>
             </div>
           </div>
         </div>
@@ -125,11 +164,12 @@ export default {
   data() {
     return {
       status: '',
-      activeField: ''
+      activeField: '',
+      query: {bu_id: null}
     }
   },
   computed: {
-    ...mapGetters('PartnersSingle', ['entry', 'loading', 'lists'])
+    ...mapGetters('AdditionalLimitsSingle', ['entry', 'loading', 'lists'])
   },
   beforeDestroy() {
     this.resetState()
@@ -144,27 +184,73 @@ export default {
     }
   },
   methods: {
-    ...mapActions('PartnersSingle', [
-      'fetchEditData',
-      'updateData',
+    ...mapActions('AdditionalLimitsSingle', [
+      'storeData',
       'resetState',
-      'setName',
-      'setType',
-      'setBu'
+      'setDate',
+      'setCoa',
+      'setAmount',
+      'setKet', 'setStatus', 'setReject', 'updateData',
+      'fetchEditData', 'setQuery'
     ]),
-    updateName(e) {
-      this.setName(e.target.value)
+    updateDate(value) {
+      this.setDate(value)
     },
-    updateType(value) {
-      this.setType(value)
+    updateCoa(value) {
+      this.setCoa(value)
     },
-    updateBu(value) {
-      this.setBu(value)
+    updateAmount(e) {
+      this.setAmount(e.target.value)
+    },
+    updateKet(e) {
+      this.setKet(e.target.value)
+    },
+    approveData() {
+      this.$swal({
+        title: 'Approve?',
+        text: 'Yakin ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then(result => {
+        if(result.value) {
+            this.setStatus('9')
+            this.submitForm()
+        }
+      })
+    },
+    rejectData() {
+      this.$swal({
+        title: 'Reject ?',
+        text: 'Masukkan Alasan',
+        input: 'text',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes'
+      }).then(result => {
+        if(result.value) {
+            this.setStatus('99')
+            let value = result.value
+            this.setReject(value)
+            this.submitForm()
+        }
+        else {
+            this.$swal({
+            icon: 'error',
+            title: 'Failed',
+            text: 'Masukkan Alasan'
+            })
+        }
+      })
     },
     submitForm() {
       this.updateData()
         .then(() => {
-          this.$router.push({ name: 'partners.index' })
+          this.$router.push({ name: 'additional-limits.index' })
           this.$eventHub.$emit('update-success')
         })
         .catch(error => {

@@ -8,7 +8,7 @@
               <i class="material-icons">assignment</i>
             </div>
             <h4 class="card-title">
-              <strong>Data Cashflow OUT [ {{this.selected_bu.name}} ]</strong>
+              <strong>Data Cashflow OUT [ {{this.selected_bu ? this.selected_bu.name : ''}} ]</strong>
             </h4>
           </div>
           <div class="card-body">
@@ -170,7 +170,7 @@ export default {
   },
   mounted() {
     // Set the query.id when the component is mounted
-    this.query.id = this.selected_bu.id;
+    this.query.id = this.selected_bu ? this.selected_bu.id : null;
   },
   watch: {
     selected_bu(newSelectedBu) {

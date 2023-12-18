@@ -81,8 +81,6 @@
                       :options="lists.bu"
                       :reduce="entry => entry.id"
                       @input="updateBu"
-                      @search.focus="focusField('bu')"
-                      @search.blur="clearFocus"
                     >
                       <template #search="{attributes, events}">
                         <input
@@ -112,8 +110,6 @@
                       :options="lists.dept"
                       :reduce="entry => entry.id"
                       @input="updateDept"
-                      @search.focus="focusField('dept')"
-                      @search.blur="clearFocus"
                     >
                     <template #search="{attributes, events}">
                         <input
@@ -183,8 +179,6 @@
                       :options="lists.transact_type"
                       :reduce="entry => entry.value"
                       @input="updateTransactType"
-                      @search.focus="focusField('transact_type')"
-                      @search.blur="clearFocus"
                     >
                     <template #search="{attributes, events}">
                         <input
@@ -213,8 +207,6 @@
                       :options="lists.klasifikasi"
                       :reduce="entry => entry.value"
                       @input="updateKlasifikasi"
-                      @search.focus="focusField('klasifikasi')"
-                      @search.blur="clearFocus"
                     />
                   </div>
                   <div class="form-group">
@@ -246,6 +238,7 @@
                   <th></th>
                   <th>Nama Account / COA</th>
                   <th>Amount (Nominal) </th>
+                  <th>Max </th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -275,7 +268,17 @@
                     </v-select>
                     </td>
                     <td>
-                        Rp. <input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                        Rp.   <input
+                                class="inputRp wrapText required"
+                                type="text"
+                                :value="item.amount_label"
+                                @input="updateItemAmount(k, $event)"
+                                @keypress="isNumberOrComma($event)"
+                                required
+                              />
+                    </td>
+                    <td>
+                      {{item.source_amount}}
                     </td>
                     <td>
                     <v-select
@@ -475,7 +478,16 @@ export default {
     },
     clearFocus() {
       this.activeField = ''
-    }
+    },
+    isNumberOrComma(event) {
+      // Allow only numbers and a single comma
+      const char = String.fromCharCode(event.keyCode);
+      const isNumber = char >= '0' && char <= '9';
+      const isComma = char === ',' && event.target.value.indexOf(',') === -1;
+      if (!(isNumber || isComma)) {
+        event.preventDefault();
+      }
+    },
   }
 }
 </script>

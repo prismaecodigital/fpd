@@ -180,9 +180,7 @@ function initialState() {
               responsive: true,
               maintainAspectRatio: false
             },
-            summary_charts: {
-    
-            },
+            summary: {},
         },
         lists: {
             dept: [],
@@ -206,6 +204,7 @@ function initialState() {
         if(state.query.startDate && state.query.endDate) {
             commit('setCashInCharts', response.data.data.dataCashIn)
             commit('setCashOutCharts', response.data.data.dataCashOut)
+            commit('setSummary', response.data.data.summary)
             if(state.query.dept.id) {
               commit('setCoaDeptCharts', response.data.data.dataCoaDept)
             }
@@ -259,6 +258,9 @@ function initialState() {
         };
         
       console.log(state.chart.coa_dept_charts)
+    },
+    setSummary(state, summary) {
+      state.chart.summary = summary
     },
     setQuery(state, query) {
         state.query = query

@@ -7,15 +7,16 @@ use App\Http\Resources\Admin\AdditionalLimitResource;
 use App\Models\AdditionalLimit;
 use App\Models\Bu;
 use App\Models\Account;
+use App\Models\StatusAdditional;
 use Gate;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\DB;
 
 class AdditionalLimitApiController extends Controller
 {
     public function index(Request $request)
     {
-
         return new AdditionalLimitResource(
             AdditionalLimit::with('coa')
                            ->whereHas('coa', function($query) use ($request) {
@@ -28,7 +29,12 @@ class AdditionalLimitApiController extends Controller
 
     public function store(Request $request)
     {
-        $additionalLimit = AdditionalLimit::create($request->all());
+        $additionalLimit = null;
+        
+        DB::transaction(function () use ($request, &$additionalLimit) {
+            $additionalLimit = AdditionalLimit::create($request->all());
+            statusAdditional::create(['status' => $additionalLimit->status, 'additional_id' => $additionalLimit->id, 'user_id' => auth()->user()->id]);
+        });
 
         return (new AdditionalLimitResource($additionalLimit))
             ->response()
@@ -41,7 +47,9 @@ class AdditionalLimitApiController extends Controller
 
         return response([
             'meta' => [
-                'coa' => Account::where('bu_id', $request->bu_id)->get(['id', 'code', 'name']),
+                'coa' => Account::where('bu_id', $request->bu_id)->whereHas('depts', function($q) {
+                    $q->whereIn('dept_id', auth()->user()->depts->pluck('id'));
+                })->get(['id', 'code', 'name']),
             ],
         ]);
     }
@@ -57,7 +65,10 @@ class AdditionalLimitApiController extends Controller
 
     public function update(Request $request, AdditionalLimit $additionalLimit)
     {
-        $additionalLimit->update($request->all());
+        DB::transaction(function () use ($request, &$additionalLimit) {
+            $additionalLimit->update($request->all());
+            statusAdditional::create(['status' => $additionalLimit->status, 'additional_id' => $additionalLimit->id, 'user_id' => auth()->user()->id]);
+        });
 
         return (new AdditionalLimitResource($additionalLimit))
             ->response()

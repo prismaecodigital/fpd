@@ -104,8 +104,6 @@
                       :options="lists.bu"
                       :reduce="entry => entry.id"
                       @input="updateBu"
-                      @search.focus="focusField('bu')"
-                      @search.blur="clearFocus"
                       disabled
                     >
                       <template #search="{attributes, events}">
@@ -303,12 +301,11 @@
                   <th></th>
                   <th>Nama Account / COA</th>
                   <th>Amount (Nominal) </th>
-                  <th v-if="entry.status >= 5">Realisasi</th>
-                  <th v-if="entry.status > 5">Selisih</th>
+                  <th>Max </th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
-                <tbody v-if="$can('finance')">
+                <tbody>
                   <tr v-for="(item, k) in entry.items" :key="k">
                     <td scope="row" class="trashIconContainer">
                         <i class="fa fa-trash-o" @click="deleteRow(k)"></i>
@@ -334,13 +331,17 @@
                     </v-select>
                     </td>
                     <td>
-                        Rp. <input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                        Rp.   <input
+                                class="inputRp wrapText required"
+                                type="text"
+                                :value="item.amount_label"
+                                @input="updateItemAmount(k, $event)"
+                                @keypress="isNumberOrComma($event)"
+                                required
+                              />
                     </td>
-                    <td v-if="entry.status >= 5">
-                        Rp. <input required class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)"/>
-                    </td>
-                    <td v-if="entry.status > 5">
-                        <input disabled class="inputRp wrapText required" type="number" :value="parseInt(item.real_amount) - parseInt(item.amount)" required/>
+                    <td>
+                      {{item.source_amount}}
                     </td>
                     <td>
                     <v-select
@@ -358,54 +359,14 @@
                     </td>
                   </tr>
                 </tbody>
-                <tbody v-else>
-                  <tr v-for="(item, k) in entry.items" :key="k">
-                    <td scope="row" class="trashIconContainer">
-                        <i class="fa fa-trash-o" @click="deleteRow(k)"></i>
-                    </td>
-                    <td>
-                    <v-select
-                      name="account"
-                      label="name"
-                      :key="'account-field'"
-                      :value="item.account_id"
-                      :options="lists.accounts"
-                      :reduce="account => account.id"
-                      @input="updateItemAccount(k, $event)"
-                    >
-                      <template #search="{attributes, events}">
-                        <input
-                          class="vs__search"
-                          :required="!item.account_id"
-                          v-bind="attributes"
-                          v-on="events"
-                        />
-                      </template>
-                    </v-select>
-                    </td>
-                    <td>
-                        <input class="form-control wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
-                    </td>
-                    <td v-if="entry.status >= 5">
-                        <input class="form-control wrapText required" type="number" :value="item.real_amount" @input="updateItemRealAmount(k, $event)" required/>
-                    </td>
-                    <td v-if="entry.status > 5">
-                        <input disabled class="form-control wrapText required" type="number" :value="parseInt(item.real_amount) - parseInt(item.amount)" required/>
-                    </td>
-                    <td>
-                    <v-select disabled
-                      name="site"
-                      label="name"
-                      :key="'site-field'"
-                      :value="item.site_id"
-                      :options="lists.site"
-                      :reduce="site => site.id"
-                      @input="updateItemSite(k, $event)"
-                    />
-                    </td>
-                    <td>
-                        <input disabled class="form-control wrapText" type="text" :value="item.ket" @input="updateItemKet(k, $event)"/>
-                    </td>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td>Total</td>
+                    <td>Rp. {{entry.total_amount ?? 0}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
@@ -701,7 +662,16 @@ export default {
     },
     clearFocus() {
       this.activeField = ''
-    }
+    },
+    isNumberOrComma(event) {
+      // Allow only numbers and a single comma
+      const char = String.fromCharCode(event.keyCode);
+      const isNumber = char >= '0' && char <= '9';
+      const isComma = char === ',' && event.target.value.indexOf(',') === -1;
+      if (!(isNumber || isComma)) {
+        event.preventDefault();
+      }
+    },
   }
 }
 </script>

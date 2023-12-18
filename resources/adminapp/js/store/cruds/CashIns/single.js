@@ -8,6 +8,8 @@ function initialState() {
         transaction_type: '',
         cash_in_type: '',
         amount: '',
+        amount_label: '',
+        total_real_amount: '',
         ket: '',
         mc_percentage: '',
         lc_percentage: '',
@@ -22,6 +24,7 @@ function initialState() {
           date: '',
           ket: '',
           real_amount: '',
+          real_amount_label: '',
           cash_in_id: null,
         }]
       },
@@ -30,6 +33,7 @@ function initialState() {
         transaction_type: [],
         cash_in_type: [],
         partner: [],
+        partner_type: [],
       },
       query : {},
       loading: false
@@ -210,9 +214,20 @@ function initialState() {
     },
     setCashInType(state, value) {
       state.entry.cash_in_type = value
+      let filteredPartners =  Object.entries(state.lists.partner).filter(([key, val]) => {
+        // Place your filter condition here
+        return val.type === value ;
+      })
+    
+      state.lists.partner_type = filteredPartners.length > 0 ? filteredPartners[0] : [];
     },
     setAmount(state, value) {
-      state.entry.amount = value
+      const parsedValue = parseFloat(value.replace(/\./g, '').replace(',', '.'));
+      state.entry.amount = parsedValue
+      state.entry.amount_label = parsedValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
     },
     setKet(state, value) {
       state.entry.ket = value
@@ -233,13 +248,23 @@ function initialState() {
       state.entry.status = value
     },
     setItemDate(state, {index, value}) {
-      state.entry.cash_in_items[index].date = moment(value).format('DD-MM-YYYY')
-      state.entry.cash_in_items[index].date_label = value
+      state.entry.cash_in_items[index].date = value
       console.log(state.entry.cash_in_items[index].date)
     },
     setItemRealAmount(state, {index, value}) {
-      state.entry.cash_in_items[index].real_amount = value
-      console.log(state.entry.cash_in_items)
+      const parsedValue = parseFloat(value.replace(/\./g, '').replace(',', '.'));
+      state.entry.cash_in_items[index].real_amount = parsedValue
+      state.entry.cash_in_items[index].real_amount_label = parsedValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+      const total_real_amount = state.entry.cash_in_items.reduce((total, item) => {
+        return total + Number(item.amount);
+      }, 0);
+      state.entry.total_real_amount = total_real_amount.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
     },
     setItemKet(state, {index, value}) {
       state.entry.cash_in_items[index].ket = value
@@ -265,6 +290,7 @@ function initialState() {
         date: '',
         ket: '',
         real_amount: '',
+        real_amount_label: '',
         cash_in_id: state.entry.id,
       });
     },

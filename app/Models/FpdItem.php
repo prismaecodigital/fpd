@@ -13,6 +13,11 @@ class FpdItem extends Model
 
     public $table = 'fpd_items';
 
+    protected $appends = [
+        'amount_label',
+        'real_amount_label',
+    ];
+
     protected $orderable = [
         'id',
         'amount',
@@ -48,6 +53,16 @@ class FpdItem extends Model
         'created_at',
         'updated_at',
     ];
+
+    public function getAmountLabelAttribute()
+    {
+        return $this->attributes['amount'] ? number_format($this->attributes['amount'], 0, ',','.') : 0;
+    }
+
+    public function getRealAmountLabelAttribute()
+    {
+        return $this->attributes['real_amount'] ? number_format($this->attributes['real_amount'], 0, ',','.') : 0;
+    }
 
     protected function serializeDate(DateTimeInterface $date)
     {

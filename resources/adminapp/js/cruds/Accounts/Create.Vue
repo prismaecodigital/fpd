@@ -131,6 +131,19 @@
                     <span class="select-all badge" @click="selectAllDept">Pilih Semua</span>
                     <span class="select-all badge" @click="deselectAllDept">Batalkan pilihan</span>
                   </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.projection_lock !== null,
+                      'is-focused': activeField == 'projection_lock'
+                    }"
+                  >
+                  <input
+                      type="checkbox"
+                      :checked="entry.projection_lock" @change="updateProjectionLock"
+                    />
+                    <label class="">Kunci Pembatasan Anggaran ( Balance tidak bisa Minus )</label>
+                  </div>
                 </div>
               </div>
             </div>
@@ -192,7 +205,7 @@ export default {
       'setBu',
       'setDept',
       'setParent',
-      'fetchCreateData'
+      'fetchCreateData', 'setProjectionLock'
     ]),
     selectAllDept() {
       this.setDept('all')
@@ -205,6 +218,9 @@ export default {
     },
     updateName(e) {
       this.setName(e.target.value)
+    },
+    updateProjectionLock() {
+      this.setProjectionLock()
     },
     updateBu(value) {
       this.setBu(value)

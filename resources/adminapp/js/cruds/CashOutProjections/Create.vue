@@ -10,7 +10,7 @@
               </div>
               <h4 class="card-title">
                 {{ $t('global.create') }}
-                <strong>{{ $t('cruds.cash-out-projection.title_singular') }} {{this.selected_bu.code}}</strong>
+                <strong>{{ $t('cruds.cash-out-projection.title_singular') }} {{this.selected_bu ? this.selected_bu.code : ''}}</strong>
               </h4>
             </div>
             <div class="card-header card-header-primary card-header-icon">
@@ -142,7 +142,7 @@ export default {
   },
   mounted() {
     // Set the query.id when the component is mounted
-    this.query.bu_id = this.selected_bu.id;
+    this.query.bu_id = this.selected_bu ? this.selected_bu.id : null;
   },
   watch: {
     selected_bu(newSelectedBu) {

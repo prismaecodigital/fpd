@@ -285,7 +285,6 @@
                   <th></th>
                   <th>Nama Account / COA</th>
                   <th>Amount (Nominal)</th>
-                  <th v-if="entry.status > 5">Nominal Realisasi</th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -315,10 +314,14 @@
                     </v-select>
                     </td>
                     <td>
-                        Rp.<input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
-                    </td>
-                    <td v-if="parseInt(entry.status) > 5">
-                        Rp.<input class="inputRp wrapText required" type="number" :value="item.real_amount" @input="updateImteRealAmount(k, $event)"/>
+                        Rp.   <input
+                                class="inputRp wrapText required"
+                                type="text"
+                                :value="item.amount_label"
+                                @input="updateItemAmount(k, $event)"
+                                @keypress="isNumberOrComma($event)"
+                                required
+                              />
                     </td>
                     <td>
                     <v-select
@@ -334,6 +337,15 @@
                     <td>
                         <input class="form-control wrapText" type="text" :value="item.ket" @input="updateItemKet(k, $event)"/>
                     </td>
+                  </tr>
+                </tbody>
+                <tbody>
+                  <tr>
+                    <td></td>
+                    <td>Total</td>
+                    <td>Rp. {{entry.total_amount ?? 0}}</td>
+                    <td></td>
+                    <td></td>
                   </tr>
                 </tbody>
               </table>
@@ -532,7 +544,16 @@ export default {
     },
     clearFocus() {
       this.activeField = ''
-    }
+    },
+    isNumberOrComma(event) {
+      // Allow only numbers and a single comma
+      const char = String.fromCharCode(event.keyCode);
+      const isNumber = char >= '0' && char <= '9';
+      const isComma = char === ',' && event.target.value.indexOf(',') === -1;
+      if (!(isNumber || isComma)) {
+        event.preventDefault();
+      }
+    },
   }
 }
 </script>

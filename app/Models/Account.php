@@ -15,6 +15,7 @@ class Account extends Model
     public $table = 'accounts';
 
     protected $appends = [
+        'lock_label'
     ];
 
     protected $orderable = [
@@ -50,9 +51,25 @@ class Account extends Model
         'updated_at',
     ];
 
+
+    protected $casts = [
+        'projection_lock'   => 'boolean',
+        'bu_id'             => 'integer',
+        'parent_id'         => 'integer',
+    ];
+
     protected function serializeDate(DateTimeInterface $date)
     {
         return $date->format('Y-m-d H:i:s');
+    }
+
+    public function getLockLabelAttribute()
+    {
+        if(array_key_exists('projection_lock', $this->attributes)) {
+            return $this->attributes['projection_lock'] == 1 ? 'Dibatasi' : 'Tidak Dibatasi';
+        }
+
+        return 'Tidak Dibatasi';
     }
 
     public function bu()
@@ -82,7 +99,7 @@ class Account extends Model
 
     public function cashOutProjections()
     {
-        return $this->hasMany(cashOutProjection::class, 'coa_id');
+        return $this->hasMany(CashOutProjection::class, 'coa_id');
     }
 
     public function fpdItems()
@@ -94,8 +111,9 @@ class Account extends Model
     {
         return $this->fpdItems()
                     ->whereHas('fpd', function ($query) use ($startDate, $endDate) {
+                        $query->whereNotNull('processed_date');
                         if ($startDate && $endDate) {
-                            $query->whereBetween('processed_date', [$startDate, $endDate]);
+                            $query->where('status', '>' , 4 )->whereBetween('processed_date', [$startDate, $endDate]);
                         }
                     })
                     ->sum('real_amount');
@@ -106,7 +124,7 @@ class Account extends Model
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
         return $this->fpdItems()->whereHas('fpd', function($query) use ($month, $year) {
-            $query->whereYear('processed_date', $year)->whereMonth('processed_date', $month);
+            $query->where('status', '>' , 4 )->whereYear('processed_date', $year)->whereMonth('processed_date', $month);
         })->sum('real_amount');
     }
 
@@ -141,7 +159,7 @@ class Account extends Model
     {
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
-        return $this->sourceAdjustments()->where('type', '1')->whereYear('destination_date', $year)->where('status','9')->whereMonth('destination_date', $month)->sum('amount');
+        return $this->sourceAdjustments()->where('type', '1')->where('status','9')->whereYear('destination_date', $year)->whereMonth('destination_date', $month)->sum('amount');
     }
 
     public function getAmountDestinationAdjustmentCoa($date)
@@ -172,33 +190,28 @@ class Account extends Model
         })->sum('amount');
     }
 
-    public function getBalance($date, $type)
+    public function getBalance($date)
     {
-        if($type == 1) {
-            return $this->calculateBalanceType1($date);
-        } elseif ($type == 2) {
-            return $this->calculateBalanceType2($date);
-        }
-
-        return 0;
-    }
-
-    protected function calculateBalanceType1($date)
-    {
-        if($date == '') {
-            return 0;
-        }
-
         return $this->getProjection($date) - $this->getCashOutActual($date) -
-               $this->getAmountSourceAdjustment($date) + $this->getAmountDestinationAdjustmentPeriod($date);
+               $this->getAmountSourceAdjustment($date) + $this->getAmountDestinationAdjustmentPeriod($date) + $this->getAmountDestinationAdjustmentCoa($date);
     }
 
-    protected function calculateBalanceType2($date)
+    public function additionalLimits()
     {
-        if($date == '') {
-            return 0;
-        }
+        return $this->hasMany(AdditionalLimit::class,'coa_id');
+    }
 
-        return $this->getProjection($date) - $this->getCashOutActual($date);
+    public function getAdditionalLimit($date)
+    {
+        $month = Carbon::parse($date)->month;
+        $year = Carbon::parse($date)->year;
+        return $this->additionalLimits()->where('status','9')->whereYear('date', $year)->whereMonth('date', $month)->sum('amount');
+    }
+
+    public function getMaxAmount($date)
+    {
+        $max = $this->getBalance($date) + $this->getAdditionalLimit($date);
+
+        return number_format($max, 0 ,',', '.');
     }
 }

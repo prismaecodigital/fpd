@@ -38,12 +38,11 @@ class CashInProjectionApiController extends Controller
                 ->paginate(request('limit', 10));
 
         $data->getCollection()->transform(function ($item) use ($actualAmounts) {
-            
-            $item->total_cash_in_actual = isset($actualAmounts[$item->cash_in_type]) 
-                            ? $actualAmounts[$item->cash_in_type]
-                            : 0;
-            $item->percentage = number_format($item->total_cash_in_actual / $item->total_projection_amount * 100, 2, ',','.') . ' %' ;
+            $item->percentage = $item->total_projection_amount == 0 ? 0 : number_format($item->total_cash_in_actual / $item->total_projection_amount * 100, 2, ',','.') . ' %' ;
             $item->total_projection_amount = number_format($item->total_projection_amount, 0, ',', '.');
+            $item->total_cash_in_actual = isset($actualAmounts[$item->cash_in_type]) 
+                ? number_format($actualAmounts[$item->cash_in_type], 0, ',','.')
+                : 0;
             return $item;
         });
 

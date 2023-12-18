@@ -425,5 +425,25 @@ return [
             'items_helper'         => ' ',
         ],
     ],
+    'dompet' => [
+        'title'          => 'Opening Balance',
+        'title_singular' => 'Opening Balance',
+        'fields'         => [
+            'id'                => 'ID',
+            'id_helper'         => ' ',
+            'amount'              => 'Opening Balance',
+            'amount_helper'       => ' ',
+            'date'              => 'Periode',
+            'date_helper'       => ' ',
+            'created_at'        => 'Created at',
+            'created_at_helper' => ' ',
+            'updated_at'        => 'Updated at',
+            'updated_at_helper' => ' ',
+            'deleted_at'        => 'Deleted at',
+            'deleted_at_helper' => ' ',
+            'bu'                => 'BU',
+            'bu_helper'         => ' ',
+        ],
+    ],
 
 ];
