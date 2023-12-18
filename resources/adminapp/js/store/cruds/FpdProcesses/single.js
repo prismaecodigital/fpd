@@ -28,7 +28,7 @@ function initialState() {
         items: [
           {
             id: null,
-            account_id : null,
+            account : null,
             amount : '',
             amount_label : '',
             real_amount : '',
@@ -36,7 +36,6 @@ function initialState() {
             ket : '',
             site_id: null,
             ket: '',
-            account: [],
             source_amount: '',
             source_amount_raw: 0,
           }
@@ -156,8 +155,8 @@ function initialState() {
     setReqDate({ commit, state }, value) {
       commit('setReqDate', value)
       state.entry.items.forEach(function(item, index) {
-        if(state.entry.date !== '' && item.account_id !== null) {
-          let params = {source_date: state.entry.req_date, source_coa_id: item.account_id}
+        if(state.entry.date !== '' && item.account !== null) {
+          let params = {source_date: state.entry.req_date, source_coa_id: item.account}
           axios
           .get('account/getMaxAmount', { params: params })
           .then(response => {
@@ -201,8 +200,8 @@ function initialState() {
     },
     setItemAccount({commit, state}, {index, value}) {
       commit('setItemAccount', {index, value})
-      if(state.entry.date !== '' && state.entry.items[index].account_id !== null) {
-        let params = {source_date: state.entry.req_date, source_coa_id: state.entry.items[index].account_id}
+      if(state.entry.date !== '' && state.entry.items[index].account !== null) {
+        let params = {source_date: state.entry.req_date, source_coa_id: state.entry.items[index].account.id}
         axios
         .get('account/getMaxAmount', { params: params })
         .then(response => {
@@ -467,7 +466,7 @@ function initialState() {
     addItem(state) {
       state.entry.items.push({
         id: null,
-        account_id : null,
+        account : null,
         amount : '',
         amount_label : '',
         real_amount : '',
@@ -475,7 +474,6 @@ function initialState() {
         ket : '',
         site_id: null,
         ket: '',
-        account: [],
         source_amount: '',
         source_amount_raw: '',
       });
@@ -487,7 +485,8 @@ function initialState() {
       state.entry.items = value
     },
     setItemAccount(state, {index, value}) {
-      state.entry.items[index].account_id = value
+      state.entry.items[index].account = value
+      console.log(state.entry.items[index].account)
     },
     setItemAmount(state, {index, val}) {
       const parsedValue = parseFloat(val.replace(/\./g, '').replace(',', '.'));

@@ -49,7 +49,7 @@ class Dompet extends Model
 
     protected function serializeDate(DateTimeInterface $date)
     {
-        return $date->format('Y-m-d H:i:s');
+        return $date->format('Y-m-d');
     }
 
     public function bu()
@@ -60,6 +60,11 @@ class Dompet extends Model
     public function getAmountLabelAttribute()
     {
         return $this->attributes['amount'] ? number_format($this->attributes['amount'], 0, ',','.') : 0;
+    }
+
+    public function setDateAttribute($value)
+    {
+        $this->attributes['date'] = $value ? Carbon::createFromFormat(config('project.date_format'), $value)->format('Y-m-d') : null;
     }
 
     public function getDateLabelAttribute()

@@ -78,7 +78,7 @@ class FpdProcessApiController extends Controller
         foreach ($request->items as $itemData) {
             $item = FpdItem::create([
                 'fpd_id' => $fpd->id,
-                'account_id' => $itemData['account_id'],
+                'account_id' => $itemData['account']['id'],
                 'amount' => $itemData['amount'],
                 'real_amount' => $itemData['amount'],
                 'site_id'   => $itemData['site_id'],
@@ -120,7 +120,7 @@ class FpdProcessApiController extends Controller
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
                 'klasifikasi'   => Fpd::KLASIFIKASI_SELECT,
-                'accounts'      => Account::whereNotNull('parent_id')->get(['id','name']),
+                'accounts'      => Account::whereNotNull('parent_id')->get(['id','name','projection_lock']),
                 'site'          => Site::get(['id','name'])
             ],
         ]);
@@ -217,7 +217,7 @@ class FpdProcessApiController extends Controller
             $itemData['real_amount'] = $fpd->status <= 5 ? $itemData['amount'] : $itemData['real_amount'];
             $item = FpdItem::create([
                 'fpd_id' => $fpd->id,
-                'account_id' => $itemData['account_id'],
+                'account_id' => $itemData['account']['id'],
                 'amount' => $itemData['amount'],
                 'real_amount' => $itemData['real_amount'],
                 'site_id'   => $itemData['site_id'],
@@ -270,7 +270,7 @@ class FpdProcessApiController extends Controller
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
                 'klasifikasi'   => Fpd::KLASIFIKASI_SELECT,
-                'accounts'      => Account::where('bu_id', $fpd->bu_id)->get(['id','name']),
+                'accounts'      => Account::where('bu_id', $fpd->bu_id)->get(['id','name','projection_lock']),
                 'site'          => Site::where('bu_id', $fpd->bu_id)->orWhere('name','-')->get(['id','name'])
             ],
         ]);

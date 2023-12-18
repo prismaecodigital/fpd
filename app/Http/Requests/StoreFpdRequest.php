@@ -57,10 +57,10 @@ class StoreFpdRequest extends FormRequest
                 'nullable',
             ],
             'items' => [
-                'required', // Make sure 'items' is present
-                'array', // Ensure 'items' is an array
+                'required', 
+                'array', 
             ],
-            'items.*.account_id' => [
+            'items.*.account' => [
                 'required',
             ],
             'items.*.amount' => [
@@ -68,9 +68,10 @@ class StoreFpdRequest extends FormRequest
                 function($attribute, $value, $fail) {
                     $itemIndex = explode('.', $attribute)[1];
                     $sourceAmount = $this->items[$itemIndex]['source_amount'];
+                    $projection_lock = $this->items[$itemIndex]['account']['projection_lock'];
 
-                    if ($value > $sourceAmount) {
-                        $fail('The amount for each item must be less than or equal to the source amount.');
+                    if ($projection_lock == true && $value > $sourceAmount) {
+                        $fail('Nominal pengajuan harus kurang dari maksimum yang dibatasi');
                     }
                 }
             ],

@@ -315,15 +315,14 @@
                       name="account"
                       label="name"
                       :key="'account-field'"
-                      :value="item.account_id"
+                      :value="item.account"
                       :options="lists.accounts"
-                      :reduce="account => account.id"
                       @input="updateItemAccount(k, $event)"
                     >
                       <template #search="{attributes, events}">
                         <input
                           class="vs__search"
-                          :required="!item.account_id"
+                          :required="!item.account"
                           v-bind="attributes"
                           v-on="events"
                         />
