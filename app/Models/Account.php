@@ -210,8 +210,6 @@ class Account extends Model
 
     public function getMaxAmount($date)
     {
-        $max = $this->getBalance($date) + $this->getAdditionalLimit($date);
-
-        return number_format($max, 0 ,',', '.');
+        return $this->getBalance($date) + $this->getAdditionalLimit($date);
     }
 }

@@ -59,6 +59,17 @@ class UpdateFpdRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            'total_amount' => [
+                function($attribute, $value, $fail) {
+                    $amount = $this->total_amount;
+                    $sourceAmount = $this->total_source_amount;
+                    $status = $this->status;
+
+                    if ($status <= 4 && $amount > $sourceAmount) {
+                        $fail('Nominal pengajuan melebihi batas maksimum');
+                    }
+                }
+            ],
             'items' => [
                 'required', // Make sure 'items' is present
                 'array', // Ensure 'items' is an array
@@ -68,15 +79,15 @@ class UpdateFpdRequest extends FormRequest
             ],
             'items.*.amount' => [
                 'nullable',
-                function($attribute, $value, $fail) {
-                    $itemIndex = explode('.', $attribute)[1];
-                    $sourceAmount = $this->items[$itemIndex]['source_amount'];
-                    $projection_lock = $this->items[$itemIndex]['account']['projection_lock'];
+                // function($attribute, $value, $fail) {
+                //     $itemIndex = explode('.', $attribute)[1];
+                //     $sourceAmount = $this->items[$itemIndex]['source_amount'];
+                //     $projection_lock = $this->items[$itemIndex]['account']['projection_lock'];
 
-                    if ($this->status <= 4 && $projection_lock == true && $value > $sourceAmount) {
-                        $fail('The amount for each item must be less than or equal to the source amount.');
-                    }
-                }
+                //     if ($this->status <= 4 && $projection_lock == true && $value > $sourceAmount) {
+                //         $fail('The amount for each item must be less than or equal to the source amount.');
+                //     }
+                // }
             ],
             'items.*.real_amount' => [
                 'required_if:status,5', // Make 'real_amount' required if 'status' is 4 for each item

@@ -124,6 +124,7 @@ function initialState() {
     },
     setCashInType({ commit }, value) {
       commit('setCashInType', value)
+      commit('setPartner', '')
     },
     setAmount({commit}, value) {
       commit('setAmount', value)
@@ -214,12 +215,12 @@ function initialState() {
     },
     setCashInType(state, value) {
       state.entry.cash_in_type = value
-      let filteredPartners =  Object.entries(state.lists.partner).filter(([key, val]) => {
-        // Place your filter condition here
-        return val.type === value ;
-      })
-    
-      state.lists.partner_type = filteredPartners.length > 0 ? filteredPartners[0] : [];
+      state.lists.partner_type =  state.lists.partner.filter(function(obj) {
+        return obj.type === value;
+      });    
+      
+      console.log(state.lists.partner_type)
+      console.log(state.lists.partner)
     },
     setAmount(state, value) {
       const parsedValue = parseFloat(value.replace(/\./g, '').replace(',', '.'));

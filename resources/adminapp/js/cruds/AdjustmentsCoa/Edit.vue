@@ -19,6 +19,24 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
+                      'is-filled': entry.source_date_label,
+                      'is-focused': activeField == 'source_date'
+                    }"
+                  >
+                    <label class="required">Periode</label>
+                    <vue-monthly-picker
+                      input-class="form-control"
+                      placeHolder="From Period"
+                      :value="entry.source_date_label"
+                      @input="updateSourceDate"
+                      :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
+                      date-format="MMM yyyy">
+                    >
+                    </vue-monthly-picker>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
                       'is-filled': entry.source_coa_id,
                       'is-focused': activeField == 'source_coa_id'
                     }"
@@ -45,45 +63,35 @@
                       </template>
                     </v-select>
                   </div>
+                  
                   <div
                     class="form-group bmd-form-group"
                     :class="{
-                      'is-filled': entry.source_date_label,
-                      'is-focused': activeField == 'source_date'
+                      'is-filled': entry.destination_coa,
+                      'is-focused': activeField == 'destination_coa'
                     }"
                   >
                     <label class="required">{{
-                      $t('cruds.adjustment-period.fields.source_date')
+                      $t('cruds.adjustment-period.fields.destination_coa')
                     }}</label>
-                    <vue-monthly-picker
-                      input-class="form-control"
-                      placeHolder="From Period"
-                      :value="entry.source_date_label"
-                      @input="updateSourceDate"
-                      :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
-                      date-format="MMM yyyy">
+                    <v-select
+                      name="destination_coa"
+                      :key="'destination_coa-field'"
+                      label="name"
+                      :value="entry.destination_coa_id"
+                      :options="lists.coa"
+                      :reduce="coa => coa.id"
+                      @input="updateSourceCoa"                      
                     >
-                    </vue-monthly-picker>
-                  </div>
-                  <div
-                    class="form-group bmd-form-group"
-                    :class="{
-                      'is-filled': entry.destination_date_label,
-                      'is-focused': activeField == 'destination_date'
-                    }"
-                  >
-                    <label class="required">{{
-                      $t('cruds.adjustment-period.fields.destination_date')
-                    }}</label>
-                    <vue-monthly-picker
-                      input-class="form-control"
-                      placeHolder="From Period"
-                      :value="entry.destination_date_label"
-                      @input="updateDestinationDate"
-                      :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
-                      date-format="MMM yyyy">
-                    >
-                    </vue-monthly-picker>
+                    <template #search="{attributes, events}">
+                        <input
+                          class="vs__search"
+                          :required="!entry.destination_coa_id"
+                          v-bind="attributes"
+                          v-on="events"
+                        />
+                      </template>
+                    </v-select>
                   </div>
                   <div
                     class="form-group bmd-form-group"
@@ -318,6 +326,15 @@ export default {
     },
     clearFocus() {
       this.activeField = ''
+    },
+    isNumberOrComma(event) {
+      // Allow only numbers and a single comma
+      const char = String.fromCharCode(event.keyCode);
+      const isNumber = char >= '0' && char <= '9';
+      const isComma = char === ',' && event.target.value.indexOf(',') === -1;
+      if (!(isNumber || isComma)) {
+        event.preventDefault();
+      }
     },
   }
 }

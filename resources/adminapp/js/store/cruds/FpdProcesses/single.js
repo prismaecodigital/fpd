@@ -24,7 +24,10 @@ function initialState() {
         approve: null,
         authUserId: null,
         total_amount: '',
+        total_amount_label: '',
+        total_source_amount: '',
         total_real_amount: '',
+        total_real_amount_label: '',
         items: [
           {
             id: null,
@@ -37,7 +40,7 @@ function initialState() {
             site_id: null,
             ket: '',
             source_amount: '',
-            source_amount_raw: 0,
+            source_amount_label: 0,
           }
         ]
       },
@@ -156,7 +159,7 @@ function initialState() {
       commit('setReqDate', value)
       state.entry.items.forEach(function(item, index) {
         if(state.entry.date !== '' && item.account !== null) {
-          let params = {source_date: state.entry.req_date, source_coa_id: item.account}
+          let params = {source_date: state.entry.req_date, source_coa_id: item.account.id}
           axios
           .get('account/getMaxAmount', { params: params })
           .then(response => {
@@ -410,6 +413,18 @@ function initialState() {
           state.timelineData[entry.status_histories.length - 1].proses = 'cancel'
         })
       }
+
+      let totalSourceAmount = 0
+      const uniqueAccounts = new Set();
+    
+      state.entry.items.forEach(item => {
+        if (!uniqueAccounts.has(item.account.id)) {
+          totalSourceAmount += item.source_amount;
+          uniqueAccounts.add(item.account.id);
+        }
+      });
+
+      state.entry.total_source_amount = totalSourceAmount
     },
     setCodeVoucher(state, value) {
       state.entry.code_voucher = value
@@ -475,7 +490,7 @@ function initialState() {
         site_id: null,
         ket: '',
         source_amount: '',
-        source_amount_raw: '',
+        source_amount_label: '',
       });
     },
     deleteItem(state, index) {
@@ -495,10 +510,10 @@ function initialState() {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
-      const total_amount = state.entry.items.reduce((total, item) => {
+      state.entry.total_amount = state.entry.items.reduce((total, item) => {
         return total + Number(item.amount);
       }, 0);
-      state.entry.total_amount = total_amount.toLocaleString('de-DE', {
+      state.entry.total_amount_label = state.entry.total_amount.toLocaleString('de-DE', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
@@ -508,9 +523,12 @@ function initialState() {
       if(val !== '') {
         console.log('ok')
         state.entry.total_real_amount = parseInt(state.entry.total_real_amount) - parseInt(state.entry.items[index].real_amount) + parseInt(val)
+        state.entry.total_real_amount_label = state.entry.total_real_amount.toLocaleString('de-DE', {
+                                                minimumFractionDigits: 0,
+                                                maximumFractionDigits: 2
+                                              });
       }
       state.entry.items[index].real_amount = val
-      console.log(state.entry.total_real_amount)
       
     },
     setItemKet(state, {index, val}) {
@@ -555,6 +573,22 @@ function initialState() {
     },
     setSourceAmount(state, {index, value}) {
       state.entry.items[index].source_amount = value
+      state.entry.items[index].source_amount_label = value.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+
+      let totalSourceAmount = 0;
+      const uniqueAccounts = new Set();
+    
+      state.entry.items.forEach(item => {
+        if (!uniqueAccounts.has(item.account.id)) {
+          totalSourceAmount += item.source_amount;
+          uniqueAccounts.add(item.account.id);
+        }
+      });
+
+      state.entry.total_source_amount = totalSourceAmount
     },
   }
   

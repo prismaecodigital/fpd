@@ -152,7 +152,7 @@ class Adjustment extends Model
 
     public function getAmountLabelAttribute()
     {
-        return 'Rp. ' . number_format($this->attributes['amount'], 0, ',', '.');
+        return number_format($this->attributes['amount'], 0, ',', '.');
     }
 
     public function getSourceAmountAttribute()

@@ -25,9 +25,7 @@
                       'is-focused': activeField == 'source_date'
                     }"
                   >
-                    <label class="required">{{
-                      $t('cruds.adjustment-period.fields.source_date')
-                    }}</label>
+                    <label class="required">Periode</label>
                     <vue-monthly-picker
                       input-class="form-control"
                       placeHolder="From Period"
@@ -124,15 +122,14 @@
                     <label class="required">{{
                       $t('cruds.adjustment-period.fields.amount')
                     }}</label>
-                    <input
-                      class="form-control"
-                      type="number"
-                      :value="entry.amount"
-                      @input="updateAmount"
-                      @focus="focusField('amount')"
-                      @blur="clearFocus"
-                      required
-                    />
+                  <input
+                    class="form-control required"
+                    type="text"
+                    :value="entry.amount_label"
+                    @input="updateAmount"
+                    @keypress="isNumberOrComma($event)"
+                    required
+                  />
                   </div>
                   <div
                     class="form-group bmd-form-group"
@@ -143,7 +140,7 @@
                   <input
                       class="form-control disabled"
                       type="text"
-                      :value="entry.amount == '' ? entry.source_amount : entry.source_amount + ' (-' + entry.amount + ')'"
+                      :value="entry.amount == '' ? entry.source_amount : entry.source_amount + ' (-' + entry.amount_label + ')'"
                       disabled
                     />
                   </div>
@@ -156,7 +153,7 @@
                   <input
                       class="form-control disabled"
                       type="text"
-                      :value="entry.amount == '' ? entry.destination_amount : entry.destination_amount + ' (+' + entry.amount + ')'"
+                      :value="entry.amount == '' ? entry.destination_amount : entry.destination_amount + ' (+' + entry.amount_label + ')'"
                       disabled
                     />
                   </div>
@@ -269,6 +266,15 @@ export default {
     },
     clearFocus() {
       this.activeField = ''
+    },
+    isNumberOrComma(event) {
+      // Allow only numbers and a single comma
+      const char = String.fromCharCode(event.keyCode);
+      const isNumber = char >= '0' && char <= '9';
+      const isComma = char === ',' && event.target.value.indexOf(',') === -1;
+      if (!(isNumber || isComma)) {
+        event.preventDefault();
+      }
     },
   }
 }

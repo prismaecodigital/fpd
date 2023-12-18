@@ -24,7 +24,9 @@ function initialState() {
         approve: null,
         authUserId: null,
         total_amount: '',
+        total_amount_label: '',
         total_real_amount: '',
+        total_real_amount_label: '',
         items: [
           {
             id : null,
@@ -462,8 +464,9 @@ function initialState() {
       state.entry.items[index].account_id = value
     },
     setItemAmount(state, {index, val}) {
-      state.entry.items[index].amount = val
-      state.entry.items[index].amount_label = val.toLocaleString('de-DE', {
+      const parsedValue = parseFloat(val.replace(/\./g, '').replace(',', '.'));
+      state.entry.items[index].amount = parsedValue
+      state.entry.items[index].amount_label = parsedValue.toLocaleString('de-DE', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
@@ -478,10 +481,10 @@ function initialState() {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
-      const total_real_amount = state.entry.items.reduce((total, item) => {
+      state.entry.total_real_amount = state.entry.items.reduce((total, item) => {
         return total + Number(item.real_amount);
       }, 0);
-      state.entry.total_real_amount = total_real_amount.toLocaleString('de-DE', {
+      state.entry.total_real_amount_label = state.entry.total_real_amount.toLocaleString('de-DE', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });

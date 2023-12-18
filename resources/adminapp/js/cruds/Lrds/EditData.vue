@@ -367,8 +367,8 @@
                   <tr>
                     <td></td>
                     <td>Total</td>
-                    <td v-if="entry.status >= 5">Rp. {{entry.total_amount}}</td>
-                    <td v-if="entry.status >= 5">Rp. {{entry.total_real_amount}}</td>
+                    <td v-if="entry.status >= 5">Rp. {{entry.total_amount_label}}</td>
+                    <td v-if="entry.status >= 5">Rp. {{entry.total_real_amount_label}}</td>
                     <td></td>
                     <td></td>
                     <td></td>

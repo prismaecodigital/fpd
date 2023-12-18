@@ -10,6 +10,7 @@ function initialState() {
         destination_date: '',
         destination_date_label: '',
         amount: '',
+        amount_label: '',
         source_coa_id: '',
         source_amount: '',
         destination_coa_id: '',
@@ -228,20 +229,31 @@ function initialState() {
       state.entry.destination_date_label = newValue;
     },
     setAmount(state, value) {
-      state.entry.amount = value
+      const parsedValue = parseFloat(value.replace(/\./g, '').replace(',', '.'));
+      state.entry.amount = parsedValue
+      state.entry.amount_label = parsedValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
     },
     setSourceCoa(state, value) {
       state.entry.source_coa_id = value
     },
     setSourceAmount(state, value) {
-      state.entry.source_amount = value
+      state.entry.source_amount = value.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
       console.log(state.entry.source_amount)
     },
     setDestinationCoa(state, value) {
       state.entry.destination_coa_id = value
     },
     setDestinationAmount(state, value) {
-      state.entry.destination_amount = value
+      state.entry.destination_amount = value.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
     },
     setKet(state, value) {
       state.entry.ket = value

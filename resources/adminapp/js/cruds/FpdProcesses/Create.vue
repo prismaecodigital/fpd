@@ -277,7 +277,7 @@
                               />
                     </td>
                     <td>
-                      {{item.source_amount}}
+                      {{item.source_amount_label}}
                     </td>
                     <td>
                     <v-select

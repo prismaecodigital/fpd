@@ -160,7 +160,7 @@ export default {
     updateEndDate(value) {
       let newValue = JSON.parse(JSON.stringify(value.add(1, 'month').subtract(1, 'second'))); // Deep clone with value + 1 month
       this.query.endDate = newValue;
-    }
+    },
   }
 }
 </script>

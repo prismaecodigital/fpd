@@ -38,15 +38,22 @@ class CashOutProjectionApiController extends Controller
             return $item;
         });
 
-        // Material Cost
-        $mc = $this->materialCost($request->id, $startDate, $endDate);
+        // // Material Cost
+        // $mc = $this->materialCost($request->id, $startDate, $endDate);
 
-        // Labour Cost
-        $lc = $this->laborCost($request->id, $startDate, $endDate);
+        // // Labour Cost
+        // $lc = $this->laborCost($request->id, $startDate, $endDate);
 
-        // Merge
+        // // Merge
 
-        $data->push($mc, $lc);
+        // if($mc->total_projection_amount !== 0 && $mc->total_cash_out_actual !== 0)
+        // {
+        //     $data->push($mc);
+        // }
+        // if($lc->total_projection_amount !== 0 && $lc->total_cash_out_actual !== 0)
+        // {
+        //     $data->push($lc);
+        // }
 
         return new CashOutProjectionResource($data);
     }

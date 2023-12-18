@@ -197,7 +197,7 @@
               <tbody>
                   <tr>
                     <td>Total</td>
-                    <td>Rp. {{entry.total_amount ?? 0}}</td>
+                    <td>Rp. {{entry.total_amount_label ?? 0}}</td>
                     <td></td>
                     <td></td>
                   </tr>

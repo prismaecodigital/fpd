@@ -24,7 +24,9 @@ class Fpd extends Model implements HasMedia
         'klasifikasi_label',
         'lampiran',
         'total_amount',
+        'total_amount_label',
         'total_real_amount',
+        'total_real_amount_label',
         'bukti_transfer',
         'req_date_raw',
         'processed_date_raw',
@@ -232,11 +234,22 @@ class Fpd extends Model implements HasMedia
 
     public function getTotalAmountAttribute()
     {
+        return $this->items->sum('amount');
+        
+    }
+
+    public function getTotalAmountLabelAttribute()
+    {
         $totalAmount = $this->items->sum('amount');
         return number_format($totalAmount, 0, ',', '.');
     }
 
     public function getTotalRealAmountAttribute()
+    {
+        return $this->items->sum('real_amount');
+    }
+
+    public function getTotalRealAmountLabelAttribute()
     {
         $totalRealAmount = $this->items->sum('real_amount');
         return number_format($totalRealAmount, 0, ',', '.');

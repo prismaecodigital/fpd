@@ -315,7 +315,7 @@
                     </v-select>
                     </td>
                     <td>
-                        Rp.<input class="inputRp wrapText required" type="number" :value="item.amount" @input="updateItemAmount(k, $event)" required/>
+                        Rp.<input class="inputRp wrapText required" type="number" :value="item.amount_label" @input="updateItemAmount(k, $event)" required/>
                     </td>
                     <td v-if="parseInt(entry.status) > 5">
                         Rp.   <input
@@ -347,8 +347,8 @@
                   <tr>
                     <td></td>
                     <td>Total</td>
-                    <td v-if="entry.status >= 5">{{entry.total_amount}}</td>
-                    <td v-if="entry.status >= 5">{{entry.total_real_amount}}</td>
+                    <td v-if="entry.status >= 5">{{entry.total_amount_label}}</td>
+                    <td v-if="entry.status >= 5">{{entry.total_real_amount_label}}</td>
                     <td></td>
                     <td></td>
                     <td></td>

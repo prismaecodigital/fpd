@@ -60,20 +60,30 @@ class StoreFpdRequest extends FormRequest
                 'required', 
                 'array', 
             ],
+            'total_amount' => [
+                function($attribute, $value, $fail) {
+                    $amount = $this->total_amount;
+                    $sourceAmount = $this->total_source_amount;
+
+                    if ($amount > $sourceAmount) {
+                        $fail('Nominal pengajuan melebihi batas maksimum');
+                    }
+                }
+            ],
             'items.*.account' => [
                 'required',
             ],
             'items.*.amount' => [
                 'required',
-                function($attribute, $value, $fail) {
-                    $itemIndex = explode('.', $attribute)[1];
-                    $sourceAmount = $this->items[$itemIndex]['source_amount'];
-                    $projection_lock = $this->items[$itemIndex]['account']['projection_lock'];
+                // function($attribute, $value, $fail) {
+                //     $itemIndex = explode('.', $attribute)[1];
+                //     $sourceAmount = $this->items[$itemIndex]['source_amount'];
+                //     $projection_lock = $this->items[$itemIndex]['account']['projection_lock'];
 
-                    if ($projection_lock == true && $value > $sourceAmount) {
-                        $fail('Nominal pengajuan harus kurang dari maksimum yang dibatasi');
-                    }
-                }
+                //     if ($projection_lock == true && $value > $sourceAmount) {
+                //         $fail('Nominal pengajuan harus kurang dari maksimum yang dibatasi');
+                //     }
+                // }
             ],
         ];
     }

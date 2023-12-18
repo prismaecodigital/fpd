@@ -6,6 +6,7 @@ function initialState() {
         date_label: '',
         coa_id: null,
         amount: '',
+        amount_label: '',
         ket: '',
         status: '1',
         approve: null,
@@ -150,7 +151,12 @@ function initialState() {
       state.entry.coa_id = value
     },
     setAmount(state, value) {
-      state.entry.amount = value
+      const parsedValue = parseFloat(value.replace(/\./g, '').replace(',', '.'));
+      state.entry.amount = parsedValue
+      state.entry.amount_label = parsedValue.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
     },
     setKet(state, value) {
       state.entry.ket = value
