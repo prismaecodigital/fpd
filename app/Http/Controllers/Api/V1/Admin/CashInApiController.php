@@ -44,30 +44,7 @@ class CashInApiController extends Controller
 
         DB::transaction(function () use ($request) {
             $cashIn = CashIn::create($request->all());
-            if($cashIn->transaction_type == 1) {
-                $coa_mc = Account::firstOrCreate(
-                    ['name' => 'COGS-MC', 'bu_id' => $cashIn->bu_id],
-                    ['code' => $cashIn->bu->code . '-COGS-MC']
-                );
-                $coa_lc = Account::firstOrCreate(
-                    ['name' => 'COGS-LC', 'bu_id' => $cashIn->bu_id],
-                    ['code' => $cashIn->bu->code . '-COGS-LC']
-                );
-                $projection_mc = CashOutProjection::create([
-                        'date'              => $cashIn->date,
-                        'projection_amount' => ($cashIn->mc_percentage ?? 0) * $cashIn->amount / 100 ,
-                        'coa_id'            => $coa_mc->id,
-                        'bu_id'             => $cashIn->bu_id,
-                        'dept_id'           => $cashIn->bu->depts->first()->id
-                    ]);
-                $projection_lc = CashOutProjection::create([
-                        'date'              => $cashIn->date,
-                        'projection_amount' => ($cashIn->lc_percentage ?? 0) * $cashIn->amount / 100 ,
-                        'coa_id'            => $coa_lc->id,
-                        'bu_id'             => $cashIn->bu_id,
-                        'dept_id'           => $cashIn->bu->depts->first()->id
-                    ]);
-            }
+
         });
 
         return (new CashInResource($cashIn))
@@ -111,30 +88,30 @@ class CashInApiController extends Controller
                 }
             }
 
-            if($cashIn->transaction_type == 1) {
-                $coa_mc = Account::firstOrCreate(
-                    ['name' => 'COGS-MC', 'bu_id' => $cashIn->bu_id],
-                    ['code' => $cashIn->bu->code . '-COGS-MC']
-                );
-                $coa_lc = Account::firstOrCreate(
-                    ['name' => 'COGS-LC', 'bu_id' => $cashIn->bu_id],
-                    ['code' => $cashIn->bu->code . '-COGS-LC']
-                );
-                $projection_mc = CashOutProjection::create([
-                        'date'              => $cashIn->date,
-                        'projection_amount' => ($cashIn->mc_percentage ?? 0) * $cashIn->amount / 100 ,
-                        'coa_id'            => $coa_mc->id,
-                        'bu_id'             => $cashIn->bu_id,
-                        'dept_id'           => $cashIn->bu->depts->first()->id
-                    ]);
-                $projection_lc = CashOutProjection::create([
-                        'date'              => $cashIn->date,
-                        'projection_amount' => ($cashIn->lc_percentage ?? 0) * $cashIn->amount / 100 ,
-                        'coa_id'            => $coa_lc->id,
-                        'bu_id'             => $cashIn->bu_id,
-                        'dept_id'           => $cashIn->bu->depts->first()->id
-                    ]);
-            }
+            // if($cashIn->transaction_type == 1) {
+            //     $coa_mc = Account::firstOrCreate(
+            //         ['name' => 'COGS-MC', 'bu_id' => $cashIn->bu_id],
+            //         ['code' => $cashIn->bu->code . '-COGS-MC']
+            //     );
+            //     $coa_lc = Account::firstOrCreate(
+            //         ['name' => 'COGS-LC', 'bu_id' => $cashIn->bu_id],
+            //         ['code' => $cashIn->bu->code . '-COGS-LC']
+            //     );
+            //     $projection_mc = CashOutProjection::create([
+            //             'date'              => $cashIn->date,
+            //             'projection_amount' => ($cashIn->mc_percentage ?? 0) * $cashIn->amount / 100 ,
+            //             'coa_id'            => $coa_mc->id,
+            //             'bu_id'             => $cashIn->bu_id,
+            //             'dept_id'           => $cashIn->bu->depts->first()->id
+            //         ]);
+            //     $projection_lc = CashOutProjection::create([
+            //             'date'              => $cashIn->date,
+            //             'projection_amount' => ($cashIn->lc_percentage ?? 0) * $cashIn->amount / 100 ,
+            //             'coa_id'            => $coa_lc->id,
+            //             'bu_id'             => $cashIn->bu_id,
+            //             'dept_id'           => $cashIn->bu->depts->first()->id
+            //         ]);
+            // }
         });
 
         return (new CashInResource($cashIn))
