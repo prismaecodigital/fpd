@@ -435,6 +435,7 @@ export default {
         indexAxis: 'y',
         scales: {
           x: { // 'y' specifies the y-axis
+            beginAtZero: true,
             ticks: {
               callback: function(value) {
                 return value*100 + '%'; // Formatting tick labels as percentages
