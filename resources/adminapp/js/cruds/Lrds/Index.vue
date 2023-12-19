@@ -74,7 +74,6 @@ export default {
     const idFromURL = urlParams.get('id');
     return {
       columns: [
-
         {
           title: 'cruds.fpd.fields.dept',
           field: 'dept.code',
@@ -110,7 +109,7 @@ export default {
         },
         {
           title: 'Realisasi',
-          field: 'total_real_amount',
+          field: 'total_real_amount_label',
           thComp: TranslatedHeader,
           sortable: true
         },

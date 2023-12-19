@@ -25,6 +25,7 @@ function initialState() {
         authUserId: null,
         total_amount: '',
         total_amount_label: '',
+        validation:[],
         total_source_amount: '',
         total_real_amount: '',
         total_real_amount_label: '',
@@ -217,6 +218,7 @@ function initialState() {
     },
     setItemAmount({commit}, {index, val}) {
       commit('setItemAmount', {index, val})
+      commit('setValidation')
     },
     setItemRealAmount({commit}, {index, val}) {
       commit('setItemRealAmount', {index, val})
@@ -414,17 +416,38 @@ function initialState() {
         })
       }
 
-      let totalSourceAmount = 0
-      const uniqueAccounts = new Set();
+      // let totalSourceAmount = 0
+      // const uniqueAccounts = new Set();
+    
+      // state.entry.items.forEach(item => {
+      //   if (!uniqueAccounts.has(item.account.id)) {
+      //     totalSourceAmount += item.source_amount;
+      //     uniqueAccounts.add(item.account.id);
+      //   }
+      // });
+
+      // state.entry.total_source_amount = totalSourceAmount
+
+      const validation = [];
+      const accountSums = {};
     
       state.entry.items.forEach(item => {
-        if (!uniqueAccounts.has(item.account.id)) {
-          totalSourceAmount += item.source_amount;
-          uniqueAccounts.add(item.account.id);
+        const accountId = item.account.id; // Updated to access id from account object
+        if (!accountSums[accountId]) {
+          accountSums[accountId] = {
+            amount: 0,
+            source_amount: item.source_amount,
+            projection_lock: item.account.projection_lock
+          };
         }
+        accountSums[accountId].amount += item.amount;
       });
+    
+      for (const [accountId, data] of Object.entries(accountSums)) {
+        validation.push(data);
+      }
 
-      state.entry.total_source_amount = totalSourceAmount
+      state.entry.validation = validation
     },
     setCodeVoucher(state, value) {
       state.entry.code_voucher = value
@@ -578,18 +601,41 @@ function initialState() {
         maximumFractionDigits: 2
       });
 
-      let totalSourceAmount = 0;
-      const uniqueAccounts = new Set();
+      // let totalSourceAmount = 0;
+      // const uniqueAccounts = new Set();
+    
+      // state.entry.items.forEach(item => {
+      //   if (!uniqueAccounts.has(item.account.id)) {
+      //     totalSourceAmount += item.source_amount;
+      //     uniqueAccounts.add(item.account.id);
+      //   }
+      // });
+      // state.entry.total_source_amount = totalSourceAmount
+
+    },
+    setValidation(state) {
+      const validation = [];
+      const accountSums = {};
     
       state.entry.items.forEach(item => {
-        if (!uniqueAccounts.has(item.account.id)) {
-          totalSourceAmount += item.source_amount;
-          uniqueAccounts.add(item.account.id);
+        const accountId = item.account.id; // Updated to access id from account object
+        if (!accountSums[accountId]) {
+          accountSums[accountId] = {
+            amount: 0,
+            source_amount: item.source_amount,
+            projection_lock: item.account.projection_lock
+          };
         }
+        accountSums[accountId].amount += item.amount;
       });
+    
+      for (const [accountId, data] of Object.entries(accountSums)) {
+        validation.push(data);
+      }
 
-      state.entry.total_source_amount = totalSourceAmount
-    },
+      state.entry.validation = validation
+      console.log(state.entry.validation)
+    }
   }
   
   export default {

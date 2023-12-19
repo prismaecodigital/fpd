@@ -85,7 +85,7 @@ class CashInApiController extends Controller
         return response([
             'meta' => [
                 'bu' => Bu::where('id', $request->bu_id)->get(['id', 'name']),
-                'partner' => Partner::get(['id', 'name', 'type']),
+                'partner' => Partner::where('id', $request->bu_id)->get(['id', 'name', 'type']),
                 'transaction_type' => CashIn::TRANSACTION_TYPE_SELECT,
                 'cash_in_type' => CashInType::CASH_IN_TYPE_SELECT,
             ],

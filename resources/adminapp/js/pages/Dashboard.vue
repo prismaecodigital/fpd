@@ -372,6 +372,7 @@ export default {
         },
         scales: {
           y: { // 'y' specifies the y-axis
+            beginAtZero: true,
             ticks: {
               callback: function(value) {
                 return value*100 + '%'; // Formatting tick labels as percentages
@@ -402,6 +403,7 @@ export default {
         },
         scales: {
           y: { // 'y' specifies the y-axis
+            beginAtZero: true,
             ticks: {
               callback: function(value) {
                 return value*100 + '%'; // Formatting tick labels as percentages

@@ -112,7 +112,7 @@ export default {
         },
         {
           title: 'cruds.fpd.fields.amount',
-          field: 'total_amount',
+          field: 'total_amount_label',
           thComp: TranslatedHeader,
           sortable: true
         },

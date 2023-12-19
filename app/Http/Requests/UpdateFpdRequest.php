@@ -59,14 +59,16 @@ class UpdateFpdRequest extends FormRequest
                 'string',
                 'nullable',
             ],
-            'total_amount' => [
+            'validation.*.amount' => [
+                'required',
                 function($attribute, $value, $fail) {
-                    $amount = $this->total_amount;
-                    $sourceAmount = $this->total_source_amount;
-                    $status = $this->status;
+                    $itemIndex = explode('.', $attribute)[1];
+                    $sourceAmount = $this->validation[$itemIndex]['source_amount'];
+                    $amount = $this->validation[$itemIndex]['amount'];
+                    $projection_lock = $this->validation[$itemIndex]['projection_lock'];
 
-                    if ($status <= 4 && $amount > $sourceAmount) {
-                        $fail('Nominal pengajuan melebihi batas maksimum');
+                    if ($projection_lock == true && $value > $sourceAmount) {
+                        $fail('Nominal pengajuan harus kurang dari maksimum yang dibatasi');
                     }
                 }
             ],
