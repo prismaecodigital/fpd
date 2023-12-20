@@ -214,7 +214,7 @@ class DashboardApiController extends Controller
                 $q->where('bu_id', $bu)->where('klasifikasi', 'COGS-LC')->where('status', '>=', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
             })->sum('real_amount');
         $arr['opex']['realized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
-                $q->where('bu_id', $bu)->where('klasifikasi', 'COGS-operasional')->where('status', '>=', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
+                $q->where('bu_id', $bu)->where('klasifikasi', 'Operasional')->where('status', '>=', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
             })->sum('real_amount');
         $arr['cash_out']['realized'] = $arr['mc']['realized'] + $arr['lc']['realized'] + $arr['opex']['realized'];
 

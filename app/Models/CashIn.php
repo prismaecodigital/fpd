@@ -17,6 +17,7 @@ class CashIn extends Model
 
     protected $appends = [
         'date_label',
+        'date_raw',
         'mc_amount',
         'lc_amount',
         'transaction_type_label',
@@ -132,6 +133,11 @@ class CashIn extends Model
     public function getDateLabelAttribute()
     {
         return Carbon::createFromFormat('Y-m-d', $this->attributes['date'])->format(config('project.date_format'));
+    }
+
+    public function getDateRawAttribute()
+    {
+        return $this->attributes['date'];
     }
 
     public function setDateAttribute($value)

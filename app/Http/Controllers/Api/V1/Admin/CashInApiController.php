@@ -26,6 +26,7 @@ class CashInApiController extends Controller
         $startDate = $request->startDate ? Carbon::createFromFormat('d-m-Y', $request->startDate)->startOfDay() : null;
         $endDate = $request->endDate ? Carbon::createFromFormat('d-m-Y', $request->endDate)->endOfDay() : null;
         $data = new CashInResource(CashIn::with(['bu', 'cash_in_items', 'partner'])->advancedFilter()
+            ->where('bu_id', $request->id)
             ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
                 $query->whereBetween('date', [$startDate, $endDate]);
             })->paginate(request('limit', 10)));
@@ -48,13 +49,13 @@ class CashInApiController extends Controller
             if($cashIn->transaction_type == 1) {
                 $coa_mc = Account::firstOrCreate(
                     ['code' => $cashIn->bu->code . '-COGS-MC', 'bu_id' => $cashIn->bu_id],
-                    ['name' => 'COGS-Material-Cost', 'projection_lock' => true],
+                    ['name' => 'COGS-Material-Cost', 'projection_lock' => true]
                     
                 );
                 $coa_mc->depts()->sync(Dept::where('bu_id', $cashIn->bu_id)->pluck('id'));
                 $coa_lc = Account::firstOrCreate(
                     ['code' => $cashIn->bu->code . '-COGS-LC', 'bu_id' => $cashIn->bu_id],
-                    ['name' => 'COGS-Labor-Cost', 'projection_lock' => true],
+                    ['name' => 'COGS-Labor-Cost', 'projection_lock' => true]
                 );
                 $coa_lc->depts()->sync(Dept::where('bu_id', $cashIn->bu_id)->pluck('id'));
                 $projection_mc = CashOutProjection::create([
@@ -85,7 +86,7 @@ class CashInApiController extends Controller
         return response([
             'meta' => [
                 'bu' => Bu::where('id', $request->bu_id)->get(['id', 'name']),
-                'partner' => Partner::where('id', $request->bu_id)->get(['id', 'name', 'type']),
+                'partner' => Partner::where('bu_id', $request->bu_id)->get(['id', 'name', 'type']),
                 'transaction_type' => CashIn::TRANSACTION_TYPE_SELECT,
                 'cash_in_type' => CashInType::CASH_IN_TYPE_SELECT,
             ],
@@ -116,27 +117,21 @@ class CashInApiController extends Controller
             }
 
             if($cashIn->transaction_type == 1) {
-                $coa_mc = Account::firstOrCreate(
-                    ['name' => 'COGS-MC', 'bu_id' => $cashIn->bu_id],
-                    ['code' => $cashIn->bu->code . '-COGS-MC']
-                );
-                $coa_lc = Account::firstOrCreate(
-                    ['name' => 'COGS-LC', 'bu_id' => $cashIn->bu_id],
-                    ['code' => $cashIn->bu->code . '-COGS-LC']
-                );
-                $projection_mc = CashOutProjection::update([
+                $coa_mc = CashOutProjection::where('bu_id',$request->bu_id)->where('date', substr($request->date, 6,4).'-'.substr($request->date, 3,2).'-'.substr($request->date,0,2))
+                    ->whereHas('coa', function($q) use($cashIn) {
+                        $q->where('code',$cashIn->bu->code. '-COGS-MC');
+                    })->first();
+                $coa_lc = CashOutProjection::where('bu_id',$request->bu_id)->where('date', substr($request->date, 6,4).'-'.substr($request->date, 3,2).'-'.substr($request->date,0,2))
+                    ->whereHas('coa', function($q) use($cashIn) {
+                        $q->where('code',$cashIn->bu->code. '-COGS-LC');
+                    })->first();
+                $projection_mc = $coa_mc->update([
                         'date'              => $cashIn->date,
                         'projection_amount' => ($cashIn->mc_percentage ?? 0) * $cashIn->amount / 100 ,
-                        'coa_id'            => $coa_mc->id,
-                        'bu_id'             => $cashIn->bu_id,
-                        'dept_id'           => $cashIn->bu->depts->first()->id
                     ]);
-                $projection_lc = CashOutProjection::update([
+                $projection_lc = $coa_lc->update([
                         'date'              => $cashIn->date,
                         'projection_amount' => ($cashIn->lc_percentage ?? 0) * $cashIn->amount / 100 ,
-                        'coa_id'            => $coa_lc->id,
-                        'bu_id'             => $cashIn->bu_id,
-                        'dept_id'           => $cashIn->bu->depts->first()->id
                     ]);
             }
         });
@@ -152,7 +147,7 @@ class CashInApiController extends Controller
             'data' => new CashInResource($cashIn->load('cash_in_items')),
             'meta' => [
                 'bu' => Bu::get(['id', 'name']),
-                'partner' => Partner::get(['id', 'name','type']),
+                'partner' => Partner::where('bu_id', $cashIn->bu_id)->get(['id', 'name','type']),
                 'transaction_type' => CashIn::TRANSACTION_TYPE_SELECT,
                 'cash_in_type' => CashInType::CASH_IN_TYPE_SELECT,
             ],
@@ -161,7 +156,23 @@ class CashInApiController extends Controller
 
     public function destroy(CashIn $cashIn)
     {
-        $cashIn->delete();
+        DB::transaction(function () use ($cashIn) {
+            if($cashIn->transaction_type == 1) {
+                $coa_mc = CashOutProjection::where('bu_id',$cashIn->bu_id)->where('date', $cashIn->date_raw)
+                    ->whereHas('coa', function($q) use($cashIn) {
+                        $q->where('code',$cashIn->bu->code. '-COGS-MC');
+                    })->first();
+                $coa_lc = CashOutProjection::where('bu_id',$cashIn->bu_id)->where('date', $cashIn->date_raw)
+                    ->whereHas('coa', function($q) use($cashIn) {
+                        $q->where('code',$cashIn->bu->code. '-COGS-LC');
+                    })->first();
+                    
+                $coa_mc->delete();
+                $coa_lc->delete();
+            }
+            
+                $cashIn->delete();
+        });
 
         return response(null, Response::HTTP_NO_CONTENT);
     }
