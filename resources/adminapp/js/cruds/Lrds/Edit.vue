@@ -280,12 +280,13 @@
             <br>
             <div class="card-body">
               <bootstrap-alert />
-              <table class="table table-bordered" name="inputItem">
+              <table class="table table-bordered table-wrap" name="inputItem">
                 <thead>
                   <th></th>
                   <th>Nama Account / COA</th>
-                  <th>Amount (Nominal)</th>
-                  <th v-if="entry.status > 5">Nominal Realisasi</th>
+                  <th>Pengajuan</th>
+                  <th v-if="entry.status > 5">Realisasi</th>
+                  <th>Max</th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -299,15 +300,14 @@
                       name="account"
                       label="name"
                       :key="'account-field'"
-                      :value="item.account_id"
+                      :value="item.account"
                       :options="lists.accounts"
-                      :reduce="account => account.id"
                       @input="updateItemAccount(k, $event)"
                     >
                       <template #search="{attributes, events}">
                         <input
                           class="vs__search"
-                          :required="!item.account_id"
+                          :required="!item.account"
                           v-bind="attributes"
                           v-on="events"
                         />
@@ -315,10 +315,17 @@
                     </v-select>
                     </td>
                     <td>
-                        Rp.<input class="inputRp wrapText required" type="number" :value="item.amount_label" @input="updateItemAmount(k, $event)" required/>
+                          <input
+                                class="inputRp wrapText required"
+                                type="text"
+                                :value="item.amount_label"
+                                @input="updateItemAmount(k, $event)"
+                                @keypress="isNumberOrComma($event)"
+                                required
+                              />
                     </td>
                     <td v-if="parseInt(entry.status) > 5">
-                        Rp.   <input
+                          <input
                                 class="inputRp wrapText required"
                                 type="text"
                                 :value="item.real_amount_label"
@@ -327,6 +334,7 @@
                                 required
                               />
                     </td>
+                    <td>{{item.source_amount_label}}</td>
                     <td>
                     <v-select
                       name="site"
@@ -349,6 +357,7 @@
                     <td>Total</td>
                     <td v-if="entry.status >= 5">{{entry.total_amount_label}}</td>
                     <td v-if="entry.status >= 5">{{entry.total_real_amount_label}}</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                     <td></td>

@@ -25,20 +25,22 @@ function initialState() {
         authUserId: null,
         total_amount: '',
         total_amount_label: '',
+        total_source_amount: '',
         total_real_amount: '',
         total_real_amount_label: '',
+        validation:[],
         items: [
           {
             id : null,
-            account_id : null,
+            account : null,
             amount : '',
             amount_label : '',
             real_amount : '',
             real_amount_label : '',
-            ket : '',
             site_id: null,
             ket: '',
-            account: [],
+            source_amount: '',
+            source_amount_label: 0,
           }
         ]
       },
@@ -186,11 +188,23 @@ function initialState() {
     setItems({commit}, value) {
       commit('setItems', value)
     },
-    setItemAccount({commit}, {index, value}) {
+    setItemAccount({commit, state}, {index, value}) {
       commit('setItemAccount', {index, value})
+      if(state.entry.date !== '' && state.entry.items[index].account !== null) {
+        let params = {source_date: state.entry.req_date, source_coa_id: state.entry.items[index].account.id}
+        axios
+        .get('account/getMaxAmount', { params: params })
+        .then(response => {
+          commit('setSourceAmount', {index, value : response.data.source_amount})
+        })
+        .catch(error => {
+          message = error.response.data.message || error.message
+        })
+      }
     },
     setItemAmount({commit}, {index, val}) {
       commit('setItemAmount', {index, val})
+      commit('setValidation')
     },
     setItemRealAmount({commit}, {index, val}) {
       commit('setItemRealAmount', {index, val})
@@ -387,6 +401,27 @@ function initialState() {
           state.timelineData[entry.status_histories.length - 1].proses = 'cancel'
         })
       }
+
+      const validation = [];
+      const accountSums = {};
+    
+      state.entry.items.forEach(item => {
+        const accountId = item.account.id; // Updated to access id from account object
+        if (!accountSums[accountId]) {
+          accountSums[accountId] = {
+            amount: 0,
+            source_amount: item.source_amount,
+            projection_lock: item.account.projection_lock
+          };
+        }
+        accountSums[accountId].amount +=  parseFloat(item.real_amount);
+      });
+    
+      for (const [accountId, data] of Object.entries(accountSums)) {
+        validation.push(data);
+      }
+
+      state.entry.validation = validation
     },
     setCodeVoucher(state, value) {
       state.entry.code_voucher = value
@@ -443,15 +478,15 @@ function initialState() {
     addItem(state) {
       state.entry.items.push({
         id : null,
-        account_id : null,
+        account : null,
         amount : '',
         amount_label : '',
         real_amount : '',
         real_amount_label : '',
-        ket : '',
         site_id: null,
         ket: '',
-        account: [],
+        source_amount: '',
+        source_amount_label: 0,
       });
     },
     deleteItem(state, index) {
@@ -461,7 +496,8 @@ function initialState() {
       state.entry.items = value
     },
     setItemAccount(state, {index, value}) {
-      state.entry.items[index].account_id = value
+      state.entry.items[index].account = value
+      
     },
     setItemAmount(state, {index, val}) {
       const parsedValue = parseFloat(val.replace(/\./g, '').replace(',', '.'));
@@ -537,6 +573,37 @@ function initialState() {
     fetchDeptAccount(state, lists) {
       state.lists.accounts = lists;
     },
+    setSourceAmount(state, {index, value}) {
+      state.entry.items[index].source_amount = value
+      state.entry.items[index].source_amount_label = value.toLocaleString('de-DE', {
+        minimumFractionDigits: 0,
+        maximumFractionDigits: 2
+      });
+      console.log(state.entry.items[index].source_amount)
+    },
+    setValidation(state) {
+      const validation = [];
+      const accountSums = {};
+    
+      state.entry.items.forEach(item => {
+        const accountId = item.account.id;
+        if (!accountSums[accountId]) {
+          accountSums[accountId] = {
+            amount: 0,
+            source_amount: item.source_amount,
+            projection_lock: item.account.projection_lock
+          };
+        }
+        accountSums[accountId].amount +=  parseFloat(item.real_amount);
+      });
+    
+      for (const [accountId, data] of Object.entries(accountSums)) {
+        validation.push(data);
+      }
+
+      state.entry.validation = validation
+      console.log(state.entry.validation)
+    }
   }
   
   export default {

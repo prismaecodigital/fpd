@@ -18,7 +18,8 @@ class AdjustmentApiController extends Controller
 {
     public function index(Request $request)
     {
-        abort_if(Gate::denies('bu_dept_site_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $buCode = Bu::where('id', $request->bu_id)->first()->code;
+        abort_if(Gate::denies($buCode.'-adjustment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new AdjustmentResource(Adjustment::with(['sourceCoa', 'destinationCoa'])->advancedFilter()->whereHas('sourceCoa', function($query) use ($request) {
             $query->where('bu_id', $request->bu_id);
@@ -41,7 +42,8 @@ class AdjustmentApiController extends Controller
 
     public function create(Request $request)
     {
-        abort_if(Gate::denies('bu_dept_site_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $buCode = Bu::where('id', $request->bu_id)->first()->code;
+        abort_if(Gate::denies($buCode.'-adjustment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'meta' => [
@@ -55,7 +57,7 @@ class AdjustmentApiController extends Controller
 
     public function show(Adjustment $adjustment)
     {
-        abort_if(Gate::denies('bu_dept_site_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('adjustment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new AdjustmentResource($adjustment);
     }
@@ -74,10 +76,10 @@ class AdjustmentApiController extends Controller
 
     public function edit(Adjustment $adjustment)
     {
-        // abort_if(Gate::denies('bu_dept_site_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('adjustment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
-            'data' => new AdjustmentResource($adjustment),
+            'data' => new AdjustmentResource($adjustment->load('sourceCoa')),
             'meta' => [
                 'coa' => Account::where('bu_id', $adjustment->sourceCoa->bu_id)->get(['id', 'code', 'name']),
                 'type' => Adjustment::TYPE_SELECT,
@@ -87,7 +89,7 @@ class AdjustmentApiController extends Controller
 
     public function destroy(Adjustment $adjustment)
     {
-        abort_if(Gate::denies('bu_dept_site_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('adjustment_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $adjustment->delete();
 

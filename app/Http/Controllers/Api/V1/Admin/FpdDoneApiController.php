@@ -35,8 +35,9 @@ class FpdDoneApiController extends Controller
         $bu = Bu::where('id', $request->id)->first();
         $accurate_bu_id = $bu ? $bu->accurate_bu_id : null;
         $today = Carbon::now();
+        $accessToken = Integration::where('id',1)->first()->access_token;
 
-        if($accurate_bu_id == '' || $accurate_bu_id == null || $today < $bu->accurate_session_expire) {
+        if($accurate_bu_id == '' || $accurate_bu_id == null || $today < $bu->accurate_session_expire || empty($accessToken)) {
             return response([
                 'data' => new FpdDoneResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '>=', '9')->paginate(request('limit', 10))),
                 'meta' => [
@@ -49,7 +50,6 @@ class FpdDoneApiController extends Controller
             ]);
         }
 
-        $accessToken = Integration::where('id',1)->first()->access_token;
 
         // Header
         $header = array(

@@ -172,7 +172,7 @@ class Adjustment extends Model
 
     public function sourceCoa()
     {
-        return $this->belongsTo(Account::class, 'source_coa_id');
+        return $this->belongsTo(Account::class, 'source_coa_id')->with('bu');
     }
 
     public function destinationCoa()

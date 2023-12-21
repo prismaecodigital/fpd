@@ -178,13 +178,13 @@
               <tbody>
                 <tr v-for="(item, k) in entry.items" :key="k">
                   <td>
-                      {{item.account.name}}
+                      {{item.account ? item.account.name : '-'}}
                   </td>
                   <td>
-                      {{formatCurrency(item.amount)}}
+                      {{item.amount_label}}
                   </td>
                   <td v-if="parseInt(entry.status) > 4">
-                      {{item.real_amount}}
+                      {{item.real_amount_label}}
                   </td>
                   <td>
                       {{item.site ? item.site.name : '-'}}

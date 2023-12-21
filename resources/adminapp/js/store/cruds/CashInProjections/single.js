@@ -112,6 +112,10 @@ function initialState() {
       axios.get(`${route}/create`, { params: state.query }).then(response => {
         commit('setLists', response.data.meta)
         commit('setBu', response.data.meta.bu[0].id)
+      }).catch(error => {
+        if (error.response && error.response.status === 403) {
+          alert('ANDA TIDAK PUNYA AKSES'); // or use a more sophisticated alert system
+        }
       })
     },
     fetchEditData({ commit, dispatch }, id) {

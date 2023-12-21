@@ -20,14 +20,10 @@ class CashInProjectionApiController extends Controller
     public function index(Request $request)
     {
         // Gate
+        $buCode = Bu::where('id', $request->id)->first()->code;
+        abort_if(Gate::denies($buCode.'-projection_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $startDate = $request->startDate ? Carbon::parse(trim($request->startDate, '"'))->format('Y-m-d') : null;
         $endDate = $request->endDate ? Carbon::parse(trim($request->endDate, '"'))->format('Y-m-d') : null;
-
-        // $data = CashInProjection::where('bu_id', $request->id)->getSummedProjectionAmountByType($startDate, $endDate)->with('bu')->paginate(request('limit', 10));
-        // $data->getCollection()->transform(function ($item) use ($startDate, $endDate) {
-        //     $item->total_projection_amount = number_format($item->total_projection_amount, 0, ',', '.');
-        //     return $item;
-        // });
         $actualAmounts = CashIn::where('bu_id', $request->id)
                 ->getSummedActualAmountByType($startDate, $endDate);
 
@@ -38,7 +34,7 @@ class CashInProjectionApiController extends Controller
                 ->paginate(request('limit', 10));
 
         $data->getCollection()->transform(function ($item) use ($actualAmounts) {
-            $item->percentage = $item->total_projection_amount == 0 ? 0 : number_format($item->total_cash_in_actual / $item->total_projection_amount * 100, 2, ',','.') . ' %' ;
+            $item->percentage = $item->total_projection_amount == 0 && isset($actualAmounts[$item->cash_in_type]) ? 0 : number_format((float)$actualAmounts[$item->cash_in_type] / (float)$item->total_projection_amount * 100, 2, ',','.') . ' %' ;
             $item->total_projection_amount = number_format($item->total_projection_amount, 0, ',', '.');
             $item->total_cash_in_actual = isset($actualAmounts[$item->cash_in_type]) 
                 ? number_format($actualAmounts[$item->cash_in_type], 0, ',','.')
@@ -71,7 +67,8 @@ class CashInProjectionApiController extends Controller
 
     public function create(Request $request)
     {
-
+        $buCode = Bu::where('id', $request->bu_id)->first()->code;
+        abort_if(Gate::denies($buCode.'-projection_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response([
             'meta' => [
                 'bu' => Bu::where('id', $request->bu_id)->get(['id', 'code', 'name']),
@@ -96,6 +93,7 @@ class CashInProjectionApiController extends Controller
 
     public function edit(CashInProjection $cashInProjection)
     {
+        abort_if(Gate::denies('projection_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response([
             'data' => new CashInProjectionResource($cashInProjection),
             'meta' => [
@@ -107,6 +105,7 @@ class CashInProjectionApiController extends Controller
 
     public function destroy(CashInProjection $cashInProjection)
     {
+        abort_if(Gate::denies('projection_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $cashInProjection->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

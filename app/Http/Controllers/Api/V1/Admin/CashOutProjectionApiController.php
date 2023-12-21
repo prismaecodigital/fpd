@@ -22,7 +22,8 @@ class CashOutProjectionApiController extends Controller
 {
     public function index(Request $request)
     {
-        
+        $buCode = Bu::where('id', $request->id)->first()->code;
+        abort_if(Gate::denies($buCode.'-projection_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $startDate = $request->startDate ? Carbon::parse(trim($request->startDate, '"'))->format('Y-m-d') : null;
         $endDate = $request->endDate ? Carbon::parse(trim($request->endDate, '"'))->format('Y-m-d') : null;
 
@@ -81,6 +82,8 @@ class CashOutProjectionApiController extends Controller
 
     public function create(Request $request)
     {
+        $buCode = Bu::where('id', $request->bu_id)->first()->code;
+        abort_if(Gate::denies($buCode.'-projection_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response([
             'meta' => [
                 'coa' => Account::where('bu_id', $request->bu_id)->get(['id', 'code', 'name']),
@@ -108,6 +111,7 @@ class CashOutProjectionApiController extends Controller
 
     public function edit(CashOutProjection $cash_out_projection)
     {
+        abort_if(Gate::denies('projection_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response([
             'data' => new CashOutProjectionResource($cash_out_projection),
             'meta' => [
@@ -118,6 +122,7 @@ class CashOutProjectionApiController extends Controller
 
     public function destroy(CashOutProjection $cash_out_projection)
     {
+        abort_if(Gate::denies('projection_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         $cash_out_projection->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);

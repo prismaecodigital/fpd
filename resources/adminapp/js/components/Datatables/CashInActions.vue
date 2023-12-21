@@ -3,7 +3,7 @@
 
     <router-link
       class="btn btn-round btn-success"
-      v-if="$can('bu_dept_site_edit')"
+      v-if="$can('cash_in_access')"
       :to="{ name: xprops.route + '.edit', params: { id: row.id } }"
     >
       <i class="material-icons">remove_red_eye</i>
@@ -12,7 +12,7 @@
     <a
       href="#"
       class="btn btn-round btn-danger"
-      v-if="$can('bu_dept_site_delete')"
+      v-if="$can('cash_in_delete')"
       @click.prevent="destroyData(row.id)"
       type="button"
     >

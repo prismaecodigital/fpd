@@ -13,7 +13,7 @@
             <p style="color: black">Data Unrealized Cash IN</p>
           </div>
           <div class="card-body">
-            <router-link
+            <router-link v-if="$can('cash_in_create')"
               class="btn btn-sm btn-primary"
               :to="{ name: xprops.route + '.create' }"
             >
@@ -150,7 +150,7 @@ export default {
       xprops: {
         module: 'CashInsIndex',
         route: 'cash-ins',
-        permission_prefix: 'cash-ins_'
+        permission_prefix: 'cash-in_'
       }
     }
   },

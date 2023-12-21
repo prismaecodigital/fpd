@@ -27,7 +27,7 @@
                       'is-focused': activeField == 'title'
                     }"
                   >
-                    <label class="bmd-label-floating required">{{
+                    <label class="required">{{
                       $t('cruds.role.fields.title')
                     }}</label>
                     <input
@@ -59,8 +59,6 @@
                       :closeOnSelect="false"
                       multiple
                       @input="updatePermissions"
-                      @search.focus="focusField('permissions')"
-                      @search.blur="clearFocus"
                     />
                   </div>
                 </div>

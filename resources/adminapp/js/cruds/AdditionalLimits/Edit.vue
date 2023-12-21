@@ -93,7 +93,7 @@
                       :value="entry.coa_id"
                       :options="lists.coa"
                       :reduce="entry => entry.id"
-                      @input="updateCoa"                      
+                      @input="updateCoa"
                     >
                     <template #search="{attributes, events}">
                         <input
@@ -130,17 +130,17 @@
               </div>
             </div>
             <div class="card-footer">
-              <div v-if="entry.status != 99" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_edit')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-success" style="color:black" @click.prevent="submitForm()">
                     Simpan
                 </button>
               </div>
-              <div v-if="entry.status == 1" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_edit') && $can(entry.coa ? entry.coa.bu.code + '-1' :'---')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-primary" @click.prevent="approveData()">
                     Approve
                 </button>
               </div>
-              <div v-if="entry.status == 1" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_edit') && $can(entry.coa ? entry.coa.bu.code + '-1' :'---')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-danger" @click.prevent="rejectData()">
                     Reject
                 </button>

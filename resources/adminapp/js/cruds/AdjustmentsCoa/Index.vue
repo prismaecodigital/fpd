@@ -13,7 +13,7 @@
             <p style="color: black">Daftar Penyesuaian Anggaran Antar COA</p>
           </div>
           <div class="card-body">
-            <router-link
+            <router-link v-if="$can('adjustment_create')"
               class="btn btn-sm btn-primary"
               :to="{ name: xprops.route + '.create' }"
             >
@@ -121,7 +121,7 @@ export default {
       xprops: {
         module: 'AdjustmentsCoaIndex',
         route: 'adjustments-coa',
-        permission_prefix: 'bu_dept_site_'
+        permission_prefix: 'adjustment_'
       }
     }
   },

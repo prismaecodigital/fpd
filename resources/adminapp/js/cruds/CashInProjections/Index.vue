@@ -12,7 +12,7 @@
             </h4>
           </div>
           <div class="card-body">
-            <router-link
+            <router-link v-if="$can('projection_create')"
               class="btn btn-sm btn-primary"
               :to="{ name: xprops.route + '.create' }"
             >
@@ -131,7 +131,7 @@ export default {
       xprops: {
         module: 'CashInProjectionsIndex',
         route: 'cash-in-projections',
-        permission_prefix: 'cash-in-projections_'
+        permission_prefix: 'projection_'
       }
     }
   },

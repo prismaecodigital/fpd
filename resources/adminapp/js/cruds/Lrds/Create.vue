@@ -242,7 +242,7 @@
             <br>
             <div class="card-body">
               <bootstrap-alert />
-              <table class="table table-bordered" name="inputItem">
+              <table class="table table-bordered table-wrap" name="inputItem">
                 <thead>
                   <th></th>
                   <th>Nama Account / COA</th>
@@ -260,15 +260,14 @@
                       name="account"
                       label="name"
                       :key="'account-field'"
-                      :value="item.account_id"
+                      :value="item.account"
                       :options="lists.accounts"
-                      :reduce="account => account.id"
                       @input="updateItemAccount(k, $event)"
                     >
                       <template #search="{attributes, events}">
                         <input
                           class="vs__search"
-                          :required="!item.account_id"
+                          :required="!item.account"
                           v-bind="attributes"
                           v-on="events"
                         />

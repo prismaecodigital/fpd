@@ -23,6 +23,9 @@ class CashInApiController extends Controller
     public function index(Request $request)
     {
         // Gate
+        $buCode = Bu::where('id', $request->id)->first()->code;
+        abort_if(Gate::denies($buCode.'-cash_in_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         $startDate = $request->startDate ? Carbon::createFromFormat('d-m-Y', $request->startDate)->startOfDay() : null;
         $endDate = $request->endDate ? Carbon::createFromFormat('d-m-Y', $request->endDate)->endOfDay() : null;
         $data = new CashInResource(CashIn::with(['bu', 'cash_in_items', 'partner'])->advancedFilter()
@@ -52,17 +55,24 @@ class CashInApiController extends Controller
                     ['name' => 'COGS-Material-Cost', 'projection_lock' => true]
                     
                 );
-                $coa_mc->depts()->sync(Dept::where('bu_id', $cashIn->bu_id)->pluck('id'));
+                if ($coa_mc->depts->isEmpty()) {
+                    $deptIds = Dept::where('bu_id', $cashIn->bu_id)->pluck('id');
+                    $coa_mc->depts()->sync($deptIds);
+                }
                 $coa_lc = Account::firstOrCreate(
                     ['code' => $cashIn->bu->code . '-COGS-LC', 'bu_id' => $cashIn->bu_id],
                     ['name' => 'COGS-Labor-Cost', 'projection_lock' => true]
                 );
-                $coa_lc->depts()->sync(Dept::where('bu_id', $cashIn->bu_id)->pluck('id'));
+                if ($coa_lc->depts->isEmpty()) {
+                    $deptIds = Dept::where('bu_id', $cashIn->bu_id)->pluck('id');
+                    $coa_lc->depts()->sync($deptIds);
+                }
                 $projection_mc = CashOutProjection::create([
                         'date'              => $cashIn->date,
                         'projection_amount' => ($cashIn->mc_percentage ?? 0) * $cashIn->amount / 100 ,
                         'coa_id'            => $coa_mc->id,
                         'bu_id'             => $cashIn->bu_id,
+                        'cash_in_id'        => $cashIn->id,
                         'dept_id'           => $cashIn->bu->depts->first()->id
                     ]);
                 $projection_lc = CashOutProjection::create([
@@ -70,6 +80,7 @@ class CashInApiController extends Controller
                         'projection_amount' => ($cashIn->lc_percentage ?? 0) * $cashIn->amount / 100 ,
                         'coa_id'            => $coa_lc->id,
                         'bu_id'             => $cashIn->bu_id,
+                        'cash_in_id'        => $cashIn->id,
                         'dept_id'           => $cashIn->bu->depts->first()->id
                     ]);
             }
@@ -82,7 +93,8 @@ class CashInApiController extends Controller
 
     public function create(Request $request)
     {
-
+        $buCode = Bu::where('id', $request->bu_id)->first()->code;
+        abort_if(Gate::denies($buCode.'-cash_in_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         return response([
             'meta' => [
                 'bu' => Bu::where('id', $request->bu_id)->get(['id', 'name']),
@@ -117,19 +129,19 @@ class CashInApiController extends Controller
             }
 
             if($cashIn->transaction_type == 1) {
-                $coa_mc = CashOutProjection::where('bu_id',$request->bu_id)->where('date', substr($request->date, 6,4).'-'.substr($request->date, 3,2).'-'.substr($request->date,0,2))
+                $projection_mc = CashOutProjection::where('bu_id',$request->bu_id)->where('cash_in_id',$cashIn->id)
                     ->whereHas('coa', function($q) use($cashIn) {
                         $q->where('code',$cashIn->bu->code. '-COGS-MC');
                     })->first();
-                $coa_lc = CashOutProjection::where('bu_id',$request->bu_id)->where('date', substr($request->date, 6,4).'-'.substr($request->date, 3,2).'-'.substr($request->date,0,2))
+                $projection_lc = CashOutProjection::where('bu_id',$request->bu_id)->where('cash_in_id',$cashIn->id)
                     ->whereHas('coa', function($q) use($cashIn) {
                         $q->where('code',$cashIn->bu->code. '-COGS-LC');
                     })->first();
-                $projection_mc = $coa_mc->update([
+                $projection_mc = $projection_mc->update([
                         'date'              => $cashIn->date,
                         'projection_amount' => ($cashIn->mc_percentage ?? 0) * $cashIn->amount / 100 ,
                     ]);
-                $projection_lc = $coa_lc->update([
+                $projection_lc = $projection_lc->update([
                         'date'              => $cashIn->date,
                         'projection_amount' => ($cashIn->lc_percentage ?? 0) * $cashIn->amount / 100 ,
                     ]);
@@ -143,6 +155,8 @@ class CashInApiController extends Controller
 
     public function edit(CashIn $cashIn)
     {
+        abort_if(Gate::denies('cash_in_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
         return response([
             'data' => new CashInResource($cashIn->load('cash_in_items')),
             'meta' => [
@@ -156,13 +170,14 @@ class CashInApiController extends Controller
 
     public function destroy(CashIn $cashIn)
     {
+        abort_if(Gate::denies('cash_in_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         DB::transaction(function () use ($cashIn) {
             if($cashIn->transaction_type == 1) {
-                $coa_mc = CashOutProjection::where('bu_id',$cashIn->bu_id)->where('date', $cashIn->date_raw)
+                $coa_mc = CashOutProjection::where('bu_id',$cashIn->bu_id)->where('cash_in_id', $cashIn->id)
                     ->whereHas('coa', function($q) use($cashIn) {
                         $q->where('code',$cashIn->bu->code. '-COGS-MC');
                     })->first();
-                $coa_lc = CashOutProjection::where('bu_id',$cashIn->bu_id)->where('date', $cashIn->date_raw)
+                $coa_lc = CashOutProjection::where('bu_id',$cashIn->bu_id)->where('cash_in_id', $cashIn->id)
                     ->whereHas('coa', function($q) use($cashIn) {
                         $q->where('code',$cashIn->bu->code. '-COGS-LC');
                     })->first();

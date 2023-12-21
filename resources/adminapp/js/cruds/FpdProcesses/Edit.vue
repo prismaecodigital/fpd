@@ -280,11 +280,12 @@
             <br>
             <div class="card-body">
               <bootstrap-alert />
-              <table class="table table-bordered" name="inputItem">
+              <table class="table table-bordered table-wrap" name="inputItem">
                 <thead>
                   <th></th>
                   <th>Nama Account / COA</th>
                   <th>Amount (Nominal)</th>
+                  <th>Max</th>
                   <th>Site</th>
                   <th>Notes</th>
                 </thead>
@@ -322,6 +323,7 @@
                                 required
                               />
                     </td>
+                    <td>Rp. {{item.source_amount_label ?? 0}}</td>
                     <td>
                     <v-select
                       name="site"
@@ -343,6 +345,7 @@
                     <td></td>
                     <td>Total</td>
                     <td>Rp. {{entry.total_amount_label ?? 0}}</td>
+                    <td></td>
                     <td></td>
                     <td></td>
                   </tr>

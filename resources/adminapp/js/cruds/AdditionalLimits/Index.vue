@@ -19,7 +19,7 @@
           <div class="card-body">
             <router-link
               class="btn btn-sm btn-primary"
-              v-if="$can('bu_dept_site_create')"
+              v-if="$can('adjustment_create')"
               :to="{ name: xprops.route + '.create' }"
             >
               <i class="material-icons">
@@ -137,7 +137,7 @@ export default {
       xprops: {
         module: 'AdditionalLimitsIndex',
         route: 'additional-limits',
-        permission_prefix: 'additional-limit_'
+        permission_prefix: 'adjustment_'
       }
     }
   },

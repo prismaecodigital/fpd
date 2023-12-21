@@ -179,18 +179,21 @@ class DashboardApiController extends Controller
         $arr['saldo_awal'] = $saldo_awal - $total_in + $total_out;
 
         // Cash IN
-        $arr['rev']['unrealized'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 1)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
+        $arr['rev']['total'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 1)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
         $arr['rev']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 1);
             })->sum('real_amount');
-        $arr['loan_prisma']['unrealized'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 2)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
+        $arr['rev']['unrealized'] = $arr['rev']['total'] - $arr['rev']['realized'];
+        $arr['loan_prisma']['total'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 2)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
         $arr['loan_prisma']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 2);
             })->sum('real_amount');
-        $arr['loan_bank']['unrealized'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 3)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
+        $arr['loan_prisma']['unrealized'] = $arr['loan_prisma']['total'] - $arr['loan_prisma']['realized'];
+        $arr['loan_bank']['total'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 3)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
         $arr['loan_bank']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 3);
             })->sum('real_amount');
+        $arr['loan_bank']['unrealized'] = $arr['loan_bank']['total'] - $arr['loan_bank']['realized'];
         $arr['cash_in']['unrealized'] = $arr['rev']['unrealized'] + $arr['loan_prisma']['unrealized'] + $arr['loan_bank']['unrealized'];
         $arr['cash_in']['realized'] = $arr['rev']['realized'] + $arr['loan_prisma']['realized'] + $arr['loan_bank']['realized'];
 

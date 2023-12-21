@@ -46,6 +46,7 @@ class CashOutProjection extends Model
         'bu_id' => 'integer',
         'coa_id' => 'integer',
         'dept_id' => 'integer',
+        'cash_in_id' => 'integer'
     ];
 
     protected $fillable = [
@@ -54,6 +55,7 @@ class CashOutProjection extends Model
         'projection_amount',
         'coa_id',
         'bu_id',
+        'cash_in_id',
         'dept_id',
         'created_at',
         'updated_at',
@@ -122,5 +124,10 @@ class CashOutProjection extends Model
                          $query->whereBetween('date', [$startDate, $endDate]);
                      })
                      ->groupBy('coa_id','dept_id');
+    }
+
+    public function cashIn()
+    {
+        return $this->belongsTo(CashIn::class, 'cash_in_id');
     }
 }

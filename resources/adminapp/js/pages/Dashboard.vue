@@ -1,6 +1,6 @@
 <template>
     <div class="container-fluid">
-      <div class="row">
+      <!-- <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header card-header-success card-header-icon">
@@ -26,8 +26,8 @@
             </div>
           </div>
         </div>
-      </div>
-      <div class="row">
+      </div> -->
+      <div v-if="$can(this.selected_bu ? this.selected_bu.code + '-graph_access' : '-')" class="row">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header card-header-success card-header-icon">
@@ -110,7 +110,7 @@
             </div>
           </div>
       </div>
-      <div class="row" v-if="query.startDate && query.endDate">
+      <div class="row" v-if="query.startDate && query.endDate && $can(this.selected_bu ? this.selected_bu.code + '-summary_access' : '-')">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header card-header-success card-header-icon">

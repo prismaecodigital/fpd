@@ -233,7 +233,7 @@
             <br>
             <div class="card-body">
               <bootstrap-alert />
-              <table class="table table-bordered" name="inputItem">
+              <table class="table table-bordered table-wrap" name="inputItem">
                 <thead>
                   <th></th>
                   <th>Nama Account / COA</th>

@@ -93,13 +93,13 @@ export default {
               title: 'partner',
               icon: 'handshake',
               path: { name: 'partners.index' },
-              gate: 'bu_dept_site_access'
+              gate: 'partner_access'
             },
             {
               title: 'Opening Balance',
               icon: 'paid',
               path: { name: 'dompet.index' },
-              gate: 'bu_dept_site_access'
+              gate: 'dompet_access'
             },
           ]
         },
@@ -133,29 +133,30 @@ export default {
           title: 'Cash IN',
           icon: 'paid',
           path: { name: 'cash-ins.index' },
+          gate: 'cash_in_access',
         },
         {
           title: 'Cashflow',
           icon: 'currency_exchange',
           path: { name: 'cashflows' },
-          gate: 'bu_dept_site_access',
+          gate: 'projection_access',
           children: [
             {
               title: 'Projection',
               icon: 'repeat',
               path: { name: 'projections' },
-              gate: 'bu_dept_site_access',
+              gate: 'projection_access',
               children: [
                 {
                   title: 'OUT',
                   icon: 'arrow_right_alt',
-                  gate: 'bu_dept_site_access',
+                  gate: 'projection_access',
                   path: { name: 'cash-out-projections.index' },
                 },
                 {
                   title: 'IN',
                   icon: 'keyboard_backspace',
-                  gate: 'bu_dept_site_access',
+                  gate: 'projection_access',
                   path: { name: 'cash-in-projections.index' },
                 },
               ]
@@ -165,23 +166,27 @@ export default {
               title: 'Adjustment',
               icon: 'adjust',
               path: {name: 'adjustments-period.index'},
+              gate: 'adjustment_access',
               children: [
                 {
                   title: 'Period',
                   icon: 'calendar_month',
                   path: { name: 'adjustments-period.index' },
+                  gate: 'adjustment_access',
                 },
                 {
                   title: 'COA',
                   icon: 'account_balance',
                   path: { name: 'adjustments-coa.index' },
+                  gate: 'adjustment_access',
                 }
               ]
             },
             {
               title: 'Additional',
               icon: 'battery_charging_full',
-              path: {name: 'additional-limits.index'}
+              path: {name: 'additional-limits.index'},
+              gate: 'adjustment_access',
             },
 
           ]

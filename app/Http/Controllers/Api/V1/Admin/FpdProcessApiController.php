@@ -213,6 +213,7 @@ class FpdProcessApiController extends Controller
         foreach($fpd->items as $item) {
             $item->delete();
         }
+        
         foreach ($request->items as $itemData) {
             $itemData['real_amount'] = $fpd->status <= 5 ? $itemData['amount'] : $itemData['real_amount'];
             $item = FpdItem::create([
@@ -259,6 +260,7 @@ class FpdProcessApiController extends Controller
 
         $data->items = $data->items->transform(function ($item) use ($data) {
             $item->source_amount = $item->account->getMaxAmount($data->req_date_raw);
+            $item->source_amount_label = number_format($item->source_amount, 0, ',','.');
             return $item;
         });
 

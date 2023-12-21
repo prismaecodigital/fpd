@@ -83,7 +83,7 @@ class AdditionalLimit extends Model
     
     public function coa()
     {
-        return $this->belongsTo(Account::class, 'coa_id');
+        return $this->belongsTo(Account::class, 'coa_id')->with('bu');
     }
 
     protected function serializeDate(DateTimeInterface $date)

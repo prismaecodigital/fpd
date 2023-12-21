@@ -22,7 +22,9 @@ class AuthGates
         $buroleusers            = BuRoleUser::where('user_id', $user->id)->with(['bu','user','role'])->get();
         $permissionsArray = [];
 
-        $array = ['fpd_access','fpd_create','fpd_edit','fpd_delete','fpd_show','leader','direktur','0','1','2','3','4','5','6','7','8','admin'];
+        $array = ['fpd_access','fpd_create','fpd_edit','fpd_delete','fpd_show','leader','direktur','0','1','2','3','4','5','6','7','8','admin',
+            'cash_in_access', 'projection_access','adjustment_access','cash_in_create', 'projection_create', 'adjustment_create'
+        ];
 
         foreach ($buroleusers as $buroleuser) {
             foreach ($buroleuser->role->permissions as $permissions) {

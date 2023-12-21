@@ -296,7 +296,7 @@
             <br>
             <div class="card-body">
               <bootstrap-alert />
-              <table class="table table-bordered" name="inputItem">
+              <table class="table table-bordered table-wrap" name="inputItem">
                 <thead>
                   <th></th>
                   <th>Nama Account / COA</th>
@@ -340,7 +340,7 @@
                               />
                     </td>
                     <td>
-                      {{item.source_amount}}
+                      {{item.source_amount_label}}
                     </td>
                     <td>
                     <v-select

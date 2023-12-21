@@ -12,6 +12,7 @@ function initialState() {
         amount: '',
         amount_label: '',
         source_coa_id: '',
+        source_coa: null,
         source_amount: '',
         destination_coa_id: '',
         destination_amount: '',
@@ -174,6 +175,10 @@ function initialState() {
     fetchCreateData({ commit, state }) {
       axios.get(`${route}/create`, {params : state.query}).then(response => {
         commit('setLists', response.data.meta)
+      }).catch(error => {
+        if (error.response && error.response.status === 403) {
+          alert('ANDA TIDAK PUNYA AKSES'); // or use a more sophisticated alert system
+        }
       })
     },
     fetchEditData({ commit, state, dispatch }, id) {

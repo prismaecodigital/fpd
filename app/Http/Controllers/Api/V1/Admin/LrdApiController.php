@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api\V1\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreFpdRequest;
-use App\Http\Requests\UpdateFpdRequest;
+use App\Http\Requests\UpdateLrdRequest;
 use App\Http\Resources\Admin\LrdResource;
 use App\Models\Bu;
 use App\Models\BuRoleUser;
@@ -128,7 +128,7 @@ class LrdApiController extends Controller
         return new LrdResource($fpd->load(['items', 'bu', 'dept', 'user', 'statusHistories']));
     }
 
-    public function update(UpdateFpdRequest $request, Fpd $fpd)
+    public function update(UpdateLrdRequest $request, Fpd $fpd)
     {        // Update FPD
         $bu = Bu::findOrFail($fpd->bu_id);
         $userBuRole = BuRoleUser::where('user_id', auth()->user()->id)->where('bu_id', $bu->id)->first();
@@ -242,9 +242,16 @@ class LrdApiController extends Controller
 
     public function edit(Fpd $fpd)
     {
+        $data = new LrdResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories']));
+
+        $data->items = $data->items->transform(function ($item) use ($data) {
+            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw);
+            $item->source_amount_label = number_format($item->source_amount, 0, ',', '.');
+            return $item;
+        });
 
         return response([
-            'data' => new LrdResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories'])),
+            'data' => $data,
             'meta' => [
                 'bu'            => Bu::get(['id', 'name']),
                 'dept'          => Dept::where('bu_id', $fpd->bu_id)->get(['id', 'name']),

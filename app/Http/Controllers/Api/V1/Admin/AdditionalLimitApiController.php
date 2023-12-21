@@ -17,6 +17,9 @@ class AdditionalLimitApiController extends Controller
 {
     public function index(Request $request)
     {
+        $buCode = Bu::where('id', $request->bu_id)->first()->code;
+        abort_if(Gate::denies($buCode.'-adjustment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         return new AdditionalLimitResource(
             AdditionalLimit::with('coa')
                            ->whereHas('coa', function($query) use ($request) {
@@ -43,7 +46,8 @@ class AdditionalLimitApiController extends Controller
 
     public function create(Request $request)
     {
-        abort_if(Gate::denies('bu_dept_site_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        $buCode = Bu::where('id', $request->bu_id)->first()->code;
+        abort_if(Gate::denies($buCode.'-adjustment_create'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'meta' => [
@@ -56,7 +60,7 @@ class AdditionalLimitApiController extends Controller
 
     public function show(AdditionalLimit $additionalLimit)
     {
-        abort_if(Gate::denies('bu_dept_site_show'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('adjustment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new AdditionalLimitResource($additionalLimit);
     }
@@ -77,10 +81,10 @@ class AdditionalLimitApiController extends Controller
 
     public function edit(AdditionalLimit $additionalLimit)
     {
-        abort_if(Gate::denies('bu_dept_site_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('adjustment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
-            'data' => new AdditionalLimitResource($additionalLimit),
+            'data' => new AdditionalLimitResource($additionalLimit->load('coa')),
             'meta' => [
                 'coa' => Account::get(['id', 'code' ,'name']),
             ],
@@ -89,7 +93,7 @@ class AdditionalLimitApiController extends Controller
 
     public function destroy(AdditionalLimit $additionalLimit)
     {
-        abort_if(Gate::denies('bu_dept_site_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies('adjustment_delete'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         $additionalLimit->delete();
 

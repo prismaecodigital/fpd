@@ -395,10 +395,18 @@ table > tbody > tr > td > div > a {
     background-color: #f8f8f8 !important;
 }
 
-.v-select .vs__dropdown-toggle, table > tbody > tr > td {
+// .v-select .vs__dropdown-toggle, table > tbody > tr > td {
+//     text-overflow: ellipsis;
+// }
+
+.table-wrap .v-select .vs__dropdown-toggle, .table-wrap > tbody > tr > td {
     white-space: nowrap;
     text-overflow: ellipsis;
     height: 30px;
+}
+
+.table-nowhite {
+    white-space: nowrap;
 }
 
 .v-select .vs__search {

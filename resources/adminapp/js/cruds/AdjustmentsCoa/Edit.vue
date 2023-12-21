@@ -103,15 +103,14 @@
                     <label class="required">{{
                       $t('cruds.adjustment-period.fields.amount')
                     }}</label>
-                    <input
-                      class="form-control"
-                      type="number"
-                      :value="entry.amount"
-                      @input="updateAmount"
-                      @focus="focusField('amount')"
-                      @blur="clearFocus"
-                      required
-                    />
+                  <input
+                    class="form-control required"
+                    type="text"
+                    :value="entry.amount_label"
+                    @input="updateAmount"
+                    @keypress="isNumberOrComma($event)"
+                    required
+                  />
                   </div>
                   <div
                     class="form-group bmd-form-group"
@@ -185,17 +184,17 @@
               </div>
             </div>
             <div class="card-footer">
-              <div v-if="entry.status != 99" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_edit')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-success" style="color:black" @click.prevent="submitForm()">
                     Simpan
                 </button>
               </div>
-              <div v-if="entry.status == 1" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_edit') && $can(entry.source_coa.bu.code + '-1')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-primary" @click.prevent="approveData()">
                     Approve
                 </button>
               </div>
-              <div v-if="entry.status == 1" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_edit') && $can(entry.source_coa.bu.code + '-1')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-danger" @click.prevent="rejectData()">
                     Reject
                 </button>

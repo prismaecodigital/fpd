@@ -168,7 +168,9 @@ export default {
     query: {
       handler(query) {
         this.setQuery(query)
-        this.fetchIndexData()
+        if(query.id) {
+          this.fetchIndexData()
+        }
       },
       deep: true
     }
