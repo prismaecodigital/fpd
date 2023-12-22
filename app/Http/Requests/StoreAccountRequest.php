@@ -20,7 +20,6 @@ class StoreAccountRequest extends FormRequest
             'code' => [
                 'string',
                 'required',
-                'unique:accounts',
             ],
             'name' => [
                 'string',

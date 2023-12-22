@@ -20,7 +20,6 @@ class UpdateAccountRequest extends FormRequest
             'code' => [
                 'string',
                 'required',
-                'unique:accounts,code,' . request()->route('account')->id,
             ],
             'name' => [
                 'string',
