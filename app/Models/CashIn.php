@@ -216,4 +216,25 @@ class CashIn extends Model
             });
     }
 
+    public static function getSumUnrealized($bu, $type, $startDate1, $endDate1)
+    {
+        if (self::where('status', 0)->exists()) {
+            $cashIns = self::with('cash_in_items')
+                        ->where('bu_id', $bu)
+                        ->where('status', 0)
+                        ->where('cash_in_type', $type)
+                        ->whereBetween('date', [$startDate1, $endDate1])
+                        ->get();
+
+            $un_cash = $cashIns->sum('amount');
+            $real_cash = $cashIns->reduce(function ($carry, $cashIn) {
+                return $carry + $cashIn->cash_in_items->sum('real_amount');
+            }, 0);
+
+            return $un_cash - $real_cash;
+        }
+
+        return 0;
+    }
+
 }

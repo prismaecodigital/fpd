@@ -1,1 +1,442 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[50],{XOaC:function(t,e,a){"use strict";a.r(e);var s=a("L2JU");function r(t){return(r="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}function n(t,e){var a=Object.keys(t);if(Object.getOwnPropertySymbols){var s=Object.getOwnPropertySymbols(t);e&&(s=s.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),a.push.apply(a,s)}return a}function o(t){for(var e=1;e<arguments.length;e++){var a=null!=arguments[e]?arguments[e]:{};e%2?n(Object(a),!0).forEach((function(e){i(t,e,a[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(a)):n(Object(a)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(a,e))}))}return t}function i(t,e,a){return(e=function(t){var e=function(t,e){if("object"!==r(t)||null===t)return t;var a=t[Symbol.toPrimitive];if(void 0!==a){var s=a.call(t,e||"default");if("object"!==r(s))return s;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"===r(e)?e:String(e)}(e))in t?Object.defineProperty(t,e,{value:a,enumerable:!0,configurable:!0,writable:!0}):t[e]=a,t}var c={components:{BootstrapAlert:a("vkmG").a},data:function(){return{status:"",activeField:""}},computed:o({},Object(s.c)("AdjustmentsCoaSingle",["entry","loading","lists"])),watch:{"$route.params.id":{immediate:!0,handler:function(){this.resetState(),this.fetchEditData(this.$route.params.id)}}},beforeDestroy:function(){this.resetState()},methods:o(o({},Object(s.b)("AdjustmentsCoaSingle",["updateData","resetState","setProcessedDate","setSourceDate","setDestinationDate","setAmount","setKet","setReject","setStatus","setSourceCoa","fetchEditData","setQuery"])),{},{updateSourceDate:function(t){this.setSourceDate(t)},updateDestinationDate:function(t){this.setDestinationDate(t)},updateAmount:function(t){this.setAmount(t.target.value)},updateKet:function(t){this.setKet(t.target.value)},updateSourceCoa:function(t){this.setSourceCoa(t)},approveData:function(){var t=this;this.$swal({title:"Approve?",text:"Yakin ?",icon:"warning",showCancelButton:!0,confirmButtonColor:"#3085d6",cancelButtonColor:"#d33",confirmButtonText:"Yes"}).then((function(e){e.value&&(t.setStatus("9"),t.submitForm())}))},rejectData:function(){var t=this;this.$swal({title:"Reject ?",text:"Masukkan Alasan",input:"text",icon:"warning",showCancelButton:!0,confirmButtonColor:"#3085d6",cancelButtonColor:"#d33",confirmButtonText:"Yes"}).then((function(e){if(e.value){t.setStatus("99");var a=e.value;t.setReject(a),t.submitForm()}else t.$swal({icon:"error",title:"Failed",text:"Masukkan Alasan"})}))},submitForm:function(){var t=this;this.updateData().then((function(){t.$router.push({name:"adjustments-coa.index"}),t.$eventHub.$emit("create-success")})).catch((function(e){t.status="failed",_.delay((function(){t.status=""}),3e3)}))},focusField:function(t){this.activeField=t},clearFocus:function(){this.activeField=""},isNumberOrComma:function(t){var e=String.fromCharCode(t.keyCode),a=e>="0"&&e<="9",s=","===e&&-1===t.target.value.indexOf(",");a||s||t.preventDefault()}})},u=a("KHd+"),l=Object(u.a)(c,(function(){var t=this,e=t._self._c;return e("div",{staticClass:"container-fluid"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-md-12"},[e("div",{staticClass:"card"},[t._m(0),t._v(" "),e("div",{staticClass:"card-body"},[e("bootstrap-alert"),t._v(" "),e("div",{staticClass:"row"},[e("div",{staticClass:"col-md-6"},[e("div",{staticClass:"form-group bmd-form-group",class:{"is-filled":t.entry.source_date_label,"is-focused":"source_date"==t.activeField}},[e("label",{staticClass:"required"},[t._v("Periode")]),t._v(" "),e("vue-monthly-picker",{attrs:{"input-class":"form-control",placeHolder:"From Period",value:t.entry.source_date_label,"month-labels":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"date-format":"MMM yyyy"},on:{input:t.updateSourceDate}},[t._v("\n                  >\n                  ")])],1),t._v(" "),e("div",{staticClass:"form-group bmd-form-group",class:{"is-filled":t.entry.source_coa_id,"is-focused":"source_coa_id"==t.activeField}},[e("label",{staticClass:"required"},[t._v(t._s(t.$t("cruds.adjustment-period.fields.coa_name")))]),t._v(" "),e("v-select",{key:"source_coa-field",attrs:{name:"source_coa",label:"name",value:t.entry.source_coa_id,options:t.lists.coa,reduce:function(t){return t.id}},on:{input:t.updateSourceCoa},scopedSlots:t._u([{key:"search",fn:function(a){var s=a.attributes,r=a.events;return[e("input",t._g(t._b({staticClass:"vs__search",attrs:{required:!t.entry.source_coa_id}},"input",s,!1),r))]}}])})],1),t._v(" "),e("div",{staticClass:"form-group bmd-form-group",class:{"is-filled":t.entry.destination_coa,"is-focused":"destination_coa"==t.activeField}},[e("label",{staticClass:"required"},[t._v(t._s(t.$t("cruds.adjustment-period.fields.destination_coa")))]),t._v(" "),e("v-select",{key:"destination_coa-field",attrs:{name:"destination_coa",label:"name",value:t.entry.destination_coa_id,options:t.lists.coa,reduce:function(t){return t.id}},on:{input:t.updateSourceCoa},scopedSlots:t._u([{key:"search",fn:function(a){var s=a.attributes,r=a.events;return[e("input",t._g(t._b({staticClass:"vs__search",attrs:{required:!t.entry.destination_coa_id}},"input",s,!1),r))]}}])})],1),t._v(" "),e("div",{staticClass:"form-group bmd-form-group",class:{"is-filled":t.entry.amount,"is-focused":"amount"==t.activeField}},[e("label",{staticClass:"required"},[t._v(t._s(t.$t("cruds.adjustment-period.fields.amount")))]),t._v(" "),e("input",{staticClass:"form-control required",attrs:{type:"text",required:""},domProps:{value:t.entry.amount_label},on:{input:t.updateAmount,keypress:function(e){return t.isNumberOrComma(e)}}})]),t._v(" "),e("div",{staticClass:"form-group bmd-form-group",class:{"is-filled":t.entry.ket,"is-focused":"ket"==t.activeField}},[e("label",{staticClass:"required"},[t._v(t._s(t.$t("cruds.adjustment-period.fields.ket")))]),t._v(" "),e("input",{staticClass:"form-control",attrs:{type:"text"},domProps:{value:t.entry.ket},on:{input:t.updateKet,focus:function(e){return t.focusField("ket")},blur:t.clearFocus}})])]),t._v(" "),e("div",{staticClass:"col-md-6"},[e("div",{staticClass:"form-group bmd-form-group",class:{"is-filled":t.entry.source_coa_id,"is-focused":"source_coa_id"==t.activeField}},[e("label",{staticClass:"required"},[t._v(t._s(t.$t("cruds.adjustment-period.fields.coa_code")))]),t._v(" "),e("v-select",{key:"source_coa-field",attrs:{name:"source_coa",label:"code",value:t.entry.source_coa_id,options:t.lists.coa,reduce:function(t){return t.id},disabled:""}})],1),t._v(" "),e("div",{staticClass:"form-group bmd-form-group"},[e("label",{staticClass:"required"},[t._v("\n                  Current Balance (= Anggaran - Actual OUT -+ Adjustment)\n                ")]),t._v(" "),e("input",{staticClass:"form-control disabled",attrs:{type:"text",disabled:""},domProps:{value:t.entry.source_amount+" (-"+t.entry.amount+")"}})]),t._v(" "),e("div",{staticClass:"form-group bmd-form-group"},[e("label",{staticClass:"required"},[t._v("\n                  Current Balance (= Anggaran - Actual OUT -+ Adjustment)\n                ")]),t._v(" "),e("input",{staticClass:"form-control disabled",attrs:{type:"text",disabled:""},domProps:{value:t.entry.destination_amount+" (+"+t.entry.amount+")"}})])])])],1),t._v(" "),e("div",{staticClass:"card-footer"},[1==t.entry.status&&t.$can("adjustment_edit")?e("div",{staticClass:"col-auto"},[e("button",{staticClass:"btn btn-sm btn-success",staticStyle:{color:"black"},attrs:{type:"button"},on:{click:function(e){return e.preventDefault(),t.submitForm()}}},[t._v("\n                  Simpan\n              ")])]):t._e(),t._v(" "),1==t.entry.status&&t.$can("adjustment_edit")&&t.$can(t.entry.source_coa.bu.code+"-1")?e("div",{staticClass:"col-auto"},[e("button",{staticClass:"btn btn-sm btn-primary",attrs:{type:"button"},on:{click:function(e){return e.preventDefault(),t.approveData()}}},[t._v("\n                  Approve\n              ")])]):t._e(),t._v(" "),1==t.entry.status&&t.$can("adjustment_edit")&&t.$can(t.entry.source_coa.bu.code+"-1")?e("div",{staticClass:"col-auto"},[e("button",{staticClass:"btn btn-sm btn-danger",attrs:{type:"button"},on:{click:function(e){return e.preventDefault(),t.rejectData()}}},[t._v("\n                  Reject\n              ")])]):t._e(),t._v(" "),e("div",{staticClass:"col-auto"},[e("back-button",{staticClass:"btn-sm"})],1)])])])])])}),[function(){var t=this._self._c;return t("div",{staticClass:"card-header card-header-primary card-header-icon"},[t("div",{staticClass:"card-icon"},[t("i",{staticClass:"material-icons"},[this._v("add")])]),this._v(" "),t("h4",{staticClass:"card-title"},[this._v("\n              Proses Adjustment\n            ")]),this._v(" "),t("p",{staticStyle:{color:"black"}},[this._v("Gunakan fitur ini saat anda ingin menyesuaikan anggaran antar periode pada COA tertentu")])])}],!1,null,null,null);e.default=l.exports}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[50],{
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=script&lang=js&":
+/*!***************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=script&lang=js& ***!
+  \***************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _components_BootstrapAlert_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../components/BootstrapAlert.vue */ "./resources/adminapp/js/components/BootstrapAlert.vue");
+/* harmony import */ var xlsx__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! xlsx */ "./node_modules/xlsx/xlsx.mjs");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    BootstrapAlert: _components_BootstrapAlert_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+  data: function data() {
+    return {
+      status: '',
+      activeField: '',
+      query: {
+        bu_id: null
+      }
+    };
+  },
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('CashInProjectionsSingle', ['entry', 'loading', 'lists'])), Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapGetters"])('AuthBu', ['selected_bu'])), {}, {
+    updatedQuery: function updatedQuery() {
+      return _objectSpread(_objectSpread({}, this.query), {}, {
+        bu_id: this.selected_bu ? this.selected_bu.id : null
+      });
+    }
+  }),
+  mounted: function mounted() {
+    // Set the query.id when the component is mounted
+    this.query.bu_id = this.selected_bu ? this.selected_bu.id : null;
+  },
+  watch: {
+    selected_bu: function selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.bu_id = newSelectedBu.id;
+    },
+    query: {
+      handler: function handler(query) {
+        this.setQuery(query);
+        this.fetchCreateData();
+        this.resetState();
+      },
+      deep: true
+    }
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.resetState();
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapActions"])('CashInProjectionsSingle', ['storeData', 'resetState', 'setCashInType', 'setDate', 'setProjectionAmount', 'setBu', 'fetchCreateData', 'addItem', 'deleteItem', 'setQuery', 'setEntry'])), {}, {
+    updateCashInType: function updateCashInType(index, value) {
+      this.setCashInType({
+        index: index,
+        value: value
+      });
+    },
+    updateDate: function updateDate(index, value) {
+      console.log(value);
+      this.setDate({
+        index: index,
+        value: value
+      });
+    },
+    updateProjectionAmount: function updateProjectionAmount(index, e) {
+      this.setProjectionAmount({
+        index: index,
+        value: e.target.value
+      });
+    },
+    updateBu: function updateBu(value) {
+      this.setBu(value);
+    },
+    submitForm: function submitForm() {
+      var _this = this;
+      this.storeData().then(function () {
+        _this.$router.push({
+          name: 'cash-in-projections.index'
+        });
+        _this.$eventHub.$emit('create-success');
+      })["catch"](function (error) {
+        _this.status = 'failed';
+        _.delay(function () {
+          _this.status = '';
+        }, 3000);
+      });
+    },
+    focusField: function focusField(name) {
+      this.activeField = name;
+    },
+    clearFocus: function clearFocus() {
+      this.activeField = '';
+    },
+    addNewRow: function addNewRow() {
+      this.addItem();
+    },
+    deleteRow: function deleteRow(index) {
+      var _this2 = this;
+      console.log(index);
+      this.$swal({
+        title: 'Hapus Item ini ?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes',
+        showCloseButton: true
+      }).then(function (result) {
+        if (result.isConfirmed) {
+          _this2.deleteItem(index);
+        }
+      });
+    },
+    updateExcelCashInType: function updateExcelCashInType(index, value) {
+      var item = this.lists.type.find(function (obj) {
+        return obj.label === value;
+      });
+      this.setCashInType({
+        index: index,
+        value: item.value
+      });
+      // imported from excel
+    },
+    updateExcelProjection: function updateExcelProjection(index, value) {
+      this.setProjectionAmount({
+        index: index,
+        value: value
+      });
+      // imported from excel
+    },
+    updateExcelDate: function updateExcelDate(index, value) {
+      this.setDate({
+        index: index,
+        value: value
+      });
+      // imported from excel
+    },
+    handleFileUpload: function handleFileUpload(event) {
+      var file = event.target.files[0];
+      if (file) {
+        this.readExcelFile(file);
+      }
+    },
+    readExcelFile: function readExcelFile(file) {
+      var _this3 = this;
+      var reader = new FileReader();
+      reader.onload = function (event) {
+        try {
+          var data = event.target.result;
+          var workbook = Object(xlsx__WEBPACK_IMPORTED_MODULE_2__["read"])(data, {
+            type: 'binary'
+          });
+          var sheetName = workbook.SheetNames[0];
+          var worksheet = workbook.Sheets[sheetName];
+          var excelData = xlsx__WEBPACK_IMPORTED_MODULE_2__["utils"].sheet_to_json(worksheet, {
+            raw: false
+          });
+          console.log(excelData);
+          var rowExcel = excelData.filter(function (obj) {
+            return obj.hasOwnProperty('period');
+          });
+          console.log(rowExcel);
+          // Process the excelData and add new rows based on the 'qty' column
+          for (var i = 0; i < rowExcel.length; i++) {
+            var rowData = rowExcel[i];
+            if (rowData.period !== undefined) {
+              if (i !== 0) {
+                _this3.addItem();
+              }
+              console.log(rowData);
+              _this3.updateExcelCashInType(i, rowData.type);
+              _this3.updateExcelProjection(i, rowData.projection);
+              _this3.updateExcelDate(i, rowData.period);
+            }
+          }
+        } catch (error) {
+          alert('Error, try again');
+        }
+        reader.onerror = function (event) {
+          console.error('FileReader error:', event);
+        };
+      };
+      reader.readAsBinaryString(file);
+    }
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=template&id=1110ff3a&":
+/*!*************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=template&id=1110ff3a& ***!
+  \*************************************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "container-fluid"
+  }, [_c("form", {
+    on: {
+      submit: function submit($event) {
+        $event.preventDefault();
+        return _vm.submitForm.apply(null, arguments);
+      }
+    }
+  }, [_c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-header card-header-primary card-header-icon"
+  }, [_vm._m(0), _vm._v(" "), _c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v("\n              " + _vm._s(_vm.$t("global.create")) + "\n              "), _c("strong", [_vm._v(_vm._s(_vm.$t("cruds.cash-in-projection.title_singular")) + " " + _vm._s(this.selected_bu ? this.selected_bu.code : ""))])])]), _vm._v(" "), _c("div", {
+    staticClass: "card-header card-header-primary card-header-icon"
+  }, [_c("h4", {
+    staticClass: "card-title"
+  }, [_c("br"), _c("br"), _vm._v("\n              Upload CSV : "), _c("input", {
+    attrs: {
+      type: "file"
+    },
+    on: {
+      change: _vm.handleFileUpload
+    }
+  })]), _vm._v(" "), _c("input", {
+    attrs: {
+      type: "text",
+      hidden: ""
+    },
+    domProps: {
+      value: _vm.entry.bu_id
+    }
+  })]), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_c("bootstrap-alert"), _vm._v(" "), _c("table", {
+    staticClass: "table table-bordered",
+    attrs: {
+      name: "inputItem"
+    }
+  }, [_vm._m(1), _vm._v(" "), _c("tbody", _vm._l(_vm.entry.items, function (item, k) {
+    return _c("tr", {
+      key: k
+    }, [_c("td", {
+      staticClass: "trashIconContainer",
+      attrs: {
+        scope: "row"
+      }
+    }, [_c("i", {
+      staticClass: "fa fa-trash-o",
+      on: {
+        click: function click($event) {
+          return _vm.deleteRow(k);
+        }
+      }
+    })]), _vm._v(" "), _c("td", [_c("vue-monthly-picker", {
+      attrs: {
+        "input-class": "form-control",
+        value: item.date_label,
+        "month-labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+        "date-format": "MMM yyyy"
+      },
+      on: {
+        input: function input($event) {
+          return _vm.updateDate(k, $event);
+        }
+      }
+    })], 1), _vm._v(" "), _c("td", [_c("v-select", {
+      key: "type-field",
+      attrs: {
+        name: "type",
+        label: "label",
+        value: item.cash_in_type,
+        options: _vm.lists.type,
+        reduce: function reduce(type) {
+          return type.value;
+        }
+      },
+      on: {
+        input: function input($event) {
+          return _vm.updateCashInType(k, $event);
+        }
+      },
+      scopedSlots: _vm._u([{
+        key: "search",
+        fn: function fn(_ref) {
+          var attributes = _ref.attributes,
+            events = _ref.events;
+          return [_c("input", _vm._g(_vm._b({
+            staticClass: "vs__search",
+            attrs: {
+              required: !item.cash_in_type
+            }
+          }, "input", attributes, false), events))];
+        }
+      }], null, true)
+    })], 1), _vm._v(" "), _c("td", [_vm._v("\n                      Rp. "), _c("input", {
+      staticClass: "inputRp wrapText required",
+      attrs: {
+        type: "number",
+        required: ""
+      },
+      domProps: {
+        value: item.projection_amount
+      },
+      on: {
+        input: function input($event) {
+          return _vm.updateProjectionAmount(k, $event);
+        }
+      }
+    })])]);
+  }), 0)]), _vm._v(" "), _c("button", {
+    staticClass: "btn btn-sm btn-dark",
+    attrs: {
+      type: "button"
+    },
+    on: {
+      click: _vm.addNewRow
+    }
+  }, [_c("i", {
+    staticClass: "fa fa-plus-circle"
+  }), _vm._v("\n                Tambah Item\n            ")])], 1), _vm._v(" "), _c("div", {
+    staticClass: "card-footer"
+  }, [_c("vue-button-spinner", {
+    staticClass: "btn-sm btn-primary",
+    attrs: {
+      status: _vm.status,
+      isLoading: _vm.loading,
+      disabled: _vm.loading
+    }
+  }, [_vm._v("\n              " + _vm._s(_vm.$t("global.save")) + "\n            ")])], 1)])])])])]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "card-icon"
+  }, [_c("i", {
+    staticClass: "material-icons"
+  }, [_vm._v("add")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("thead", [_c("th"), _vm._v(" "), _c("th", [_vm._v("Date")]), _vm._v(" "), _c("th", [_vm._v("Type")]), _vm._v(" "), _c("th", [_vm._v("Projection ")])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/adminapp/js/cruds/CashInProjections/Create.vue":
+/*!******************************************************************!*\
+  !*** ./resources/adminapp/js/cruds/CashInProjections/Create.vue ***!
+  \******************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Create_vue_vue_type_template_id_1110ff3a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Create.vue?vue&type=template&id=1110ff3a& */ "./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=template&id=1110ff3a&");
+/* harmony import */ var _Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Create.vue?vue&type=script&lang=js& */ "./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Create_vue_vue_type_template_id_1110ff3a___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Create_vue_vue_type_template_id_1110ff3a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/adminapp/js/cruds/CashInProjections/Create.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=script&lang=js&":
+/*!*******************************************************************************************!*\
+  !*** ./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=script&lang=js& ***!
+  \*******************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Create.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=template&id=1110ff3a&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=template&id=1110ff3a& ***!
+  \*************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_template_id_1110ff3a___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../../node_modules/vue-loader/lib??vue-loader-options!./Create.vue?vue&type=template&id=1110ff3a& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/cruds/CashInProjections/Create.vue?vue&type=template&id=1110ff3a&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_template_id_1110ff3a___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Create_vue_vue_type_template_id_1110ff3a___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ })
+
+}]);

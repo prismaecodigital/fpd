@@ -179,21 +179,21 @@ class DashboardApiController extends Controller
         $arr['saldo_awal'] = $saldo_awal - $total_in + $total_out;
 
         // Cash IN
-        $arr['rev']['total'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 1)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
+        $arr['rev']['unrealized'] = CashIn::getSumUnrealized($bu, 1, $startDate1, $endDate1);
         $arr['rev']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 1);
             })->sum('real_amount');
-        $arr['rev']['unrealized'] = $arr['rev']['total'] - $arr['rev']['realized'];
-        $arr['loan_prisma']['total'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 2)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
+        // $arr['rev']['unrealized'] = $arr['rev']['total'] == 0 ? 0 : $arr['rev']['total'] - $arr['rev']['realized'];
+        $arr['loan_prisma']['unrealized'] = CashIn::getSumUnrealized($bu, 2, $startDate1, $endDate1);
         $arr['loan_prisma']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 2);
             })->sum('real_amount');
-        $arr['loan_prisma']['unrealized'] = $arr['loan_prisma']['total'] - $arr['loan_prisma']['realized'];
-        $arr['loan_bank']['total'] = CashIn::where('bu_id', $bu)->where('cash_in_type', 3)->whereBetween('date', [$startDate1, $endDate1])->sum('amount');
+        // $arr['loan_prisma']['unrealized'] = $arr['loan_prisma']['total'] == 0 ? 0 : $arr['loan_prisma']['total'] - $arr['loan_prisma']['realized'];
+        $arr['loan_bank']['unrealized'] = CashIn::getSumUnrealized($bu, 3, $startDate1, $endDate1);
         $arr['loan_bank']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 3);
             })->sum('real_amount');
-        $arr['loan_bank']['unrealized'] = $arr['loan_bank']['total'] - $arr['loan_bank']['realized'];
+        // $arr['loan_bank']['unrealized'] = $arr['loan_bank']['total'] == 0 ? 0 : $arr['loan_bank']['total'] - $arr['loan_bank']['realized'];
         $arr['cash_in']['unrealized'] = $arr['rev']['unrealized'] + $arr['loan_prisma']['unrealized'] + $arr['loan_bank']['unrealized'];
         $arr['cash_in']['realized'] = $arr['rev']['realized'] + $arr['loan_prisma']['realized'] + $arr['loan_bank']['realized'];
 
@@ -208,7 +208,13 @@ class DashboardApiController extends Controller
         $arr['opex']['unrealized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
                 $q->where('bu_id', $bu)->whereIn('klasifikasi', ['Operasional'])->where('status', '<', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
             })->sum('amount');
-        $arr['cash_out']['unrealized'] = $arr['mc']['unrealized'] + $arr['lc']['unrealized'] + $arr['opex']['unrealized'];
+        $arr['hutang_supplier']['unrealized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
+                $q->where('bu_id', $bu)->whereIn('klasifikasi', ['Hutang_Supplier'])->where('status', '<', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
+            })->sum('amount');
+        $arr['hutang_nonsupplier']['unrealized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
+                $q->where('bu_id', $bu)->whereIn('klasifikasi', ['Hutang_NonSupplier'])->where('status', '<', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
+            })->sum('amount');
+        $arr['cash_out']['unrealized'] = $arr['mc']['unrealized'] + $arr['lc']['unrealized'] + $arr['opex']['unrealized'] + $arr['hutang_supplier']['unrealized'] + $arr['hutang_nonsupplier']['unrealized'];
         /// Realized
         $arr['mc']['realized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
                 $q->where('bu_id', $bu)->where('klasifikasi', 'COGS-MC')->where('status', '>=', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
@@ -219,7 +225,13 @@ class DashboardApiController extends Controller
         $arr['opex']['realized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
                 $q->where('bu_id', $bu)->where('klasifikasi', 'Operasional')->where('status', '>=', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
             })->sum('real_amount');
-        $arr['cash_out']['realized'] = $arr['mc']['realized'] + $arr['lc']['realized'] + $arr['opex']['realized'];
+        $arr['hutang_supplier']['realized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
+                $q->where('bu_id', $bu)->where('klasifikasi', 'Hutang_Supplier')->where('status', '>=', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
+            })->sum('real_amount');
+        $arr['hutang_nonsupplier']['realized'] = FpdItem::whereHas('fpd', function ($q) use($bu, $startDate1, $endDate1) {
+                $q->where('bu_id', $bu)->where('klasifikasi', 'Hutang_NonSupplier')->where('status', '>=', 5)->whereBetween('req_date',[$startDate1, $endDate1]);
+            })->sum('real_amount');
+        $arr['cash_out']['realized'] = $arr['mc']['realized'] + $arr['lc']['realized'] + $arr['opex']['realized'] + $arr['hutang_supplier']['realized'] + $arr['hutang_nonsupplier']['realized'];
 
         $arr['diff']['unrealized'] = $arr['saldo_awal'] + $arr['cash_in']['unrealized'] - $arr['cash_out']['unrealized'];
         $arr['diff']['realized'] = $arr['saldo_awal'] + $arr['cash_in']['realized'] - $arr['cash_out']['realized'];

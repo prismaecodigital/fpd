@@ -258,6 +258,28 @@
                       </tr>
                       <tr>
                         <td class="text-black">
+                          HUTANG SUPPLIER
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.hutang_supplier.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.hutang_supplier.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
+                          HUTANG NON-SUPPLIER
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.hutang_nonsupplier.unrealized}}
+                        </td>
+                        <td class="text-black">
+                          {{chart.summary.hutang_nonsupplier.realized}}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-black">
                           <strong><b></b></strong>
                         </td>
                         <td class="text-black">

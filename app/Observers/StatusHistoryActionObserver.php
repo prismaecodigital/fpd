@@ -32,7 +32,7 @@ class StatusHistoryActionObserver
             $ket = $fpd->ket;
             $action = 'Tidak disetujui';
         }
-        $data  = ['action' => $action, 'id' => $fpd->id, 'code' => $fpd->code, 'status' => $status, 'user' => $statusHistory->user->name, 'users' => $users, 'ket' => $ket];
+        $data  = ['action' => $action, 'id' => $fpd->id, 'code' => $fpd->code, 'status' => $status, 'status_label' => $fpd->status ,'user' => $statusHistory->user->name, 'users' => $users, 'ket' => $ket];
         Notification::send($users, new DataChangeEmailNotification($data));
     }
 }

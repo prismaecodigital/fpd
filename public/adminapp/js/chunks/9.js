@@ -1,1 +1,582 @@
-(window.webpackJsonp=window.webpackJsonp||[]).push([[9],{"/QEr":function(t,e,s){"use strict";s("k1fX")},"0m3d":function(t,e,s){(t.exports=s("I1BE")(!1)).push([t.i,".badge[data-v-1f876ab0]{font-size:.875rem;font-weight:500;text-transform:none}",""])},"37CE":function(t,e,s){var n=s("0m3d");"string"==typeof n&&(n=[[t.i,n,""]]);var r={hmr:!0,transform:void 0,insertInto:void 0};s("aET+")(n,r);n.locals&&(t.exports=n.locals)},"3X9D":function(t,e,s){"use strict";var n={props:["field","row"],computed:{entry:function(){var t=_.split(this.field,".");return{key:t[0],field:t[1]}}}},r=(s("caid"),s("KHd+")),a=Object(r.a)(n,(function(){var t=this,e=t._self._c;return e("div",[t._l(t.row[t.entry.key],(function(s,n){return e("span",{key:n,staticClass:"badge badge-pill badge-azure mr-1"},[t._v("\n    "+t._s(s[t.entry.field])+"\n  ")])})),t._v(" "),0===t.row[t.entry.key].length?e("span",{staticClass:"badge badge-pill badge-orange"},[t._v("\n    Not Assigned\n  ")]):t._e()],2)}),[],!1,null,"1f876ab0",null);e.a=a.exports},"3aEs":function(t,e,s){"use strict";var n={props:["title"]},r=s("KHd+"),a=Object(r.a)(n,(function(){return(0,this._self._c)("span",[this._v("\n  "+this._s(this.$t(this.title))+"\n")])}),[],!1,null,null,null);e.a=a.exports},"9Dra":function(t,e,s){"use strict";s.r(e);var n=s("L2JU"),r=s("qM1Y"),a=s("3aEs"),i=s("PMYq"),o=s("PQI8");s("AKXe"),s("3X9D");function l(t){return(l="function"==typeof Symbol&&"symbol"==typeof Symbol.iterator?function(t){return typeof t}:function(t){return t&&"function"==typeof Symbol&&t.constructor===Symbol&&t!==Symbol.prototype?"symbol":typeof t})(t)}function c(t,e){var s=Object.keys(t);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(t);e&&(n=n.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),s.push.apply(s,n)}return s}function u(t){for(var e=1;e<arguments.length;e++){var s=null!=arguments[e]?arguments[e]:{};e%2?c(Object(s),!0).forEach((function(e){d(t,e,s[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(s)):c(Object(s)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(s,e))}))}return t}function d(t,e,s){return(e=function(t){var e=function(t,e){if("object"!==l(t)||null===t)return t;var s=t[Symbol.toPrimitive];if(void 0!==s){var n=s.call(t,e||"default");if("object"!==l(n))return n;throw new TypeError("@@toPrimitive must return a primitive value.")}return("string"===e?String:Number)(t)}(t,"string");return"symbol"===l(e)?e:String(e)}(e))in t?Object.defineProperty(t,e,{value:s,enumerable:!0,configurable:!0,writable:!0}):t[e]=s,t}var p={components:{GlobalSearch:o.a,HeaderSettings:i.a},data:function(){var t=new URLSearchParams(window.location.search).get("id");return{columns:[{title:"cruds.account.fields.code",field:"code",thComp:a.a,sortable:!0},{title:"cruds.account.fields.name",field:"name",thComp:a.a,sortable:!0},{title:"global.actions",thComp:a.a,tdComp:r.a,visible:!0,thClass:"text-right",tdClass:"text-right td-actions",colStyle:"width: 150px;"}],query:{sort:"id",order:"asc",limit:100,s:"",id:t},xprops:{module:"AccountsIndex",route:"accounts",permission_prefix:"account_"}}},beforeDestroy:function(){this.resetState()},computed:u({},Object(n.c)("AccountsIndex",["data","total","loading"])),watch:{query:{handler:function(t){this.setQuery(t),this.fetchIndexData()},deep:!0}},methods:u({},Object(n.b)("AccountsIndex",["fetchIndexData","setQuery","resetState"]))},f=s("KHd+"),b=Object(f.a)(p,(function(){var t=this,e=t._self._c;return e("div",{staticClass:"container-fluid"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-md-12"},[e("div",{staticClass:"card"},[e("div",{staticClass:"card-header card-header-primary card-header-icon"},[t._m(0),t._v(" "),e("h4",{staticClass:"card-title"},[t._v("\n            "+t._s(t.$t("global.table"))+"\n            "),e("strong",[t._v(t._s(t.$t("cruds.account.title")))])])]),t._v(" "),e("div",{staticClass:"card-body"},[t.$can(t.xprops.permission_prefix+"create")?e("router-link",{staticClass:"btn btn-primary",attrs:{to:{name:t.xprops.route+".create"}}},[e("i",{staticClass:"material-icons"},[t._v("\n              add\n            ")]),t._v("\n            "+t._s(t.$t("global.add"))+"\n          ")]):t._e(),t._v(" "),e("button",{staticClass:"btn btn-default",class:{disabled:t.loading},attrs:{type:"button",disabled:t.loading},on:{click:t.fetchIndexData}},[e("i",{staticClass:"material-icons",class:{"fa-spin":t.loading}},[t._v("\n              refresh\n            ")]),t._v("\n            "+t._s(t.$t("global.refresh"))+"\n          ")])],1),t._v(" "),e("div",{staticClass:"card-body"},[e("div",{staticClass:"row"},[e("div",{staticClass:"col-md-12"},[e("div",{directives:[{name:"show",rawName:"v-show",value:t.loading,expression:"loading"}],staticClass:"table-overlay"},[e("div",{staticClass:"table-overlay-container"},[e("material-spinner"),t._v(" "),e("span",[t._v("Loading...")])],1)]),t._v(" "),e("datatable",{attrs:{columns:t.columns,data:t.data,total:t.total,query:t.query,xprops:t.xprops,HeaderSettings:!1,pageSizeOptions:[10,25,50,100]}},[e("global-search",{staticClass:"pull-left",attrs:{query:t.query}}),t._v(" "),e("header-settings",{staticClass:"pull-right",attrs:{columns:t.columns}})],1)],1)])])])])])])}),[function(){var t=this._self._c;return t("div",{staticClass:"card-icon"},[t("i",{staticClass:"material-icons"},[this._v("assignment")])])}],!1,null,null,null);e.default=b.exports},AKXe:function(t,e,s){"use strict";var n={props:["field","row"],computed:{entry:function(){var t=_.split(this.field,".");return{key:t[0],field:t[1]}}}},r=(s("/QEr"),s("KHd+")),a=Object(r.a)(n,(function(){var t=this._self._c;return t("div",[this.row[this.entry.key]?t("span",{staticClass:"badge-pill badge-azure"},[this._v("\n    "+this._s(this.row[this.entry.key][this.entry.field])+"\n  ")]):t("span",{staticClass:"badge-pill badge-orange"},[this._v("\n    -\n  ")])])}),[],!1,null,"34650de5",null);e.a=a.exports},LbIQ:function(t,e,s){"use strict";s("gtrO")},PMYq:function(t,e,s){"use strict";var n={name:"HeaderSettings",props:["columns"],methods:{isColVisible:function(t){return void 0===t.visible||""+t.visible=="true"},handleChange:function(t){this.$set(t,"visible",!this.isColVisible(t))}}},r=(s("LbIQ"),s("KHd+")),a=Object(r.a)(n,(function(){var t=this,e=t._self._c;return e("div",{attrs:{name:"HeaderSettings"}},[t._m(0),t._v(" "),e("div",{staticClass:"dropdown-menu p-2 mr-5"},[e("h5",{staticClass:"ml-2 mb-1"},[t._v("\n      "+t._s(t.$t("global.datatables.colvis"))+"\n    ")]),t._v(" "),e("hr",{staticClass:"my-1"}),t._v(" "),t._l(t.columns,(function(s,n){return e("div",{key:s.title+n},[e("div",{staticClass:"dropdown-item px-2 mt-0 mb-1",on:{click:function(e){return e.stopPropagation(),e.preventDefault(),t.handleChange(s)}}},[t.isColVisible(s)?e("i",{staticClass:"material-icons text-success mr-2"},[t._v("\n          done\n        ")]):e("i",{staticClass:"material-icons text-rose mr-2"},[t._v("close")]),t._v("\n        "+t._s(t.$t(s.title))+"\n      ")])])})),t._v(" "),e("hr",{staticClass:"my-1"}),t._v(" "),e("button",{staticClass:"btn btn-default btn-sm pull-right",attrs:{type:"button"}},[t._v("\n      "+t._s(t.$t("global.close"))+"\n    ")])],2)])}),[function(){var t=this._self._c;return t("button",{staticClass:"btn btn-default dropdown-toggle",attrs:{type:"button","data-toggle":"dropdown"}},[t("i",{staticClass:"fa fa-cog"}),this._v(" "),t("span",{staticClass:"caret"})])}],!1,null,"b03a5c46",null);e.a=a.exports},PQI8:function(t,e,s){"use strict";var n={props:{query:{type:Object,require:!0}},data:function(){return{focus:!1}},methods:{debounceSearch:_.debounce((function(t){this.query.s=t,this.query.offset=0}),300)}},r=s("KHd+"),a=Object(r.a)(n,(function(){var t=this,e=t._self._c;return e("div",{staticClass:"form-group bmd-form-group",class:{"is-filled":t.query.s,"is-focused":t.focus}},[e("label",{staticClass:"bmd-label-floating"},[t._v("\n    "+t._s(t.$t("global.search"))+"\n  ")]),t._v(" "),e("div",{staticClass:"input-group"},[e("input",{staticClass:"form-control",attrs:{type:"text",name:"search"},domProps:{value:t.query.s},on:{input:function(e){return t.debounceSearch(e.target.value)},focus:function(e){t.focus=!0},blur:function(e){t.focus=!1}}}),t._v(" "),0!==t.query.s.length?e("div",{staticClass:"btn btn-just-icon btn-round btn-link text-dark d-inline-block input-group-append m-0",staticStyle:{height:"36px"},on:{click:function(e){t.query.s=""}}},[e("i",{staticClass:"material-icons"},[t._v("clear")])]):t._e()])])}),[],!1,null,null,null);e.a=a.exports},caid:function(t,e,s){"use strict";s("37CE")},dqDz:function(t,e,s){(t.exports=s("I1BE")(!1)).push([t.i,".dropdown-menu .dropdown-item[data-v-b03a5c46]:focus,.dropdown-menu .dropdown-item[data-v-b03a5c46]:hover{box-shadow:none;background-color:#f4f4f4;color:#000;cursor:pointer!important}",""])},gtrO:function(t,e,s){var n=s("dqDz");"string"==typeof n&&(n=[[t.i,n,""]]);var r={hmr:!0,transform:void 0,insertInto:void 0};s("aET+")(n,r);n.locals&&(t.exports=n.locals)},jgPe:function(t,e,s){(t.exports=s("I1BE")(!1)).push([t.i,".badge[data-v-34650de5]{font-size:.875rem;font-weight:500;text-transform:none}",""])},k1fX:function(t,e,s){var n=s("jgPe");"string"==typeof n&&(n=[[t.i,n,""]]);var r={hmr:!0,transform:void 0,insertInto:void 0};s("aET+")(n,r);n.locals&&(t.exports=n.locals)},qM1Y:function(t,e,s){"use strict";var n={props:["row","xprops"],data:function(){return{}},created:function(){},methods:{destroyData:function(t){var e=this;this.$swal({title:"Are you sure?",text:"You won't be able to revert this!",type:"warning",showCancelButton:!0,confirmButtonText:"Delete",confirmButtonColor:"#dd4b39",focusCancel:!0,reverseButtons:!0}).then((function(s){s.value&&e.$store.dispatch(e.xprops.module+"/destroyData",t).then((function(t){e.$eventHub.$emit("delete-success")}))}))}}},r=s("KHd+"),a=Object(r.a)(n,(function(){var t=this,e=t._self._c;return e("div",{staticClass:"dt-action-container"},[t.$can(t.xprops.permission_prefix+"show")?e("router-link",{staticClass:"btn btn-round btn-info text-azure",attrs:{to:{name:t.xprops.route+".show",params:{id:t.row.id}}}},[e("i",{staticClass:"material-icons"},[t._v("remove_red_eye")])]):t._e(),t._v(" "),t.$can(t.xprops.permission_prefix+"edit")?e("router-link",{staticClass:"btn btn-round btn-success",attrs:{to:{name:t.xprops.route+".edit",params:{id:t.row.id}}}},[e("i",{staticClass:"material-icons"},[t._v("edit")])]):t._e(),t._v(" "),t.$can(t.xprops.permission_prefix+"delete")?e("a",{staticClass:"btn btn-round btn-danger",attrs:{href:"#",type:"button"},on:{click:function(e){return e.preventDefault(),t.destroyData(t.row.id)}}},[e("i",{staticClass:"material-icons"},[t._v("delete")])]):t._e()],1)}),[],!1,null,null,null);e.a=a.exports}}]);
+(window["webpackJsonp"] = window["webpackJsonp"] || []).push([[9],{
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/pages/Dashboard.vue?vue&type=script&lang=js&":
+/*!************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/adminapp/js/pages/Dashboard.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue_chartjs_legacy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue-chartjs/legacy */ "./node_modules/vue-chartjs/legacy/index.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var chart_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! chart.js */ "./node_modules/chart.js/dist/chart.esm.js");
+function _typeof(o) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && "function" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? "symbol" : typeof o; }, _typeof(o); }
+function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
+function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { _defineProperty(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+function _defineProperty(obj, key, value) { key = _toPropertyKey(key); if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+
+
+
+
+chart_js__WEBPACK_IMPORTED_MODULE_2__["Chart"].register(chart_js__WEBPACK_IMPORTED_MODULE_2__["Title"], chart_js__WEBPACK_IMPORTED_MODULE_2__["Tooltip"], chart_js__WEBPACK_IMPORTED_MODULE_2__["Legend"], chart_js__WEBPACK_IMPORTED_MODULE_2__["LineElement"], chart_js__WEBPACK_IMPORTED_MODULE_2__["BarElement"], chart_js__WEBPACK_IMPORTED_MODULE_2__["LinearScale"], chart_js__WEBPACK_IMPORTED_MODULE_2__["CategoryScale"], chart_js__WEBPACK_IMPORTED_MODULE_2__["PointElement"]);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    LineChartGenerator: vue_chartjs_legacy__WEBPACK_IMPORTED_MODULE_0__["Line"],
+    Bar: vue_chartjs_legacy__WEBPACK_IMPORTED_MODULE_0__["Bar"]
+  },
+  props: {
+    chartId: {
+      type: String,
+      "default": 'cashIn'
+    },
+    datasetIdKey: {
+      type: String,
+      "default": 'label'
+    },
+    width: {
+      type: Number,
+      "default": 400
+    },
+    height: {
+      type: Number,
+      "default": 400
+    },
+    cssClasses: {
+      "default": '',
+      type: String
+    },
+    styles: {
+      type: Object,
+      "default": function _default() {}
+    },
+    plugins: {
+      type: Array,
+      "default": function _default() {
+        return [];
+      }
+    }
+  },
+  data: function data() {
+    return {
+      query: {
+        bu_id: null,
+        dept: {
+          id: null,
+          name: null
+        },
+        startDate: null,
+        endDate: null
+      },
+      chartOptions_cash_in: {
+        legend: {
+          display: true
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function label(context) {
+                var label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(context.parsed.y * 100) + '%';
+                return label;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            // 'y' specifies the y-axis
+            beginAtZero: true,
+            ticks: {
+              callback: function callback(value) {
+                return value * 100 + '%'; // Formatting tick labels as percentages
+              }
+            }
+          }
+        },
+
+        responsive: true,
+        maintainAspectRatio: false
+      },
+      chartOptions_cash_out: {
+        legend: {
+          display: true
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function label(context) {
+                var label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(context.parsed.y * 100) + '%';
+                return label;
+              }
+            }
+          }
+        },
+        scales: {
+          y: {
+            // 'y' specifies the y-axis
+            beginAtZero: true,
+            ticks: {
+              callback: function callback(value) {
+                return value * 100 + '%'; // Formatting tick labels as percentages
+              }
+            }
+          }
+        },
+
+        responsive: true,
+        maintainAspectRatio: false
+      },
+      chartOptions_coa_dept: {
+        legend: {
+          display: true
+        },
+        plugins: {
+          tooltip: {
+            callbacks: {
+              label: function label(context) {
+                var label = context.dataset.label || '';
+                if (label) {
+                  label += ': ';
+                }
+                label += Math.round(context.parsed.x * 100) + '%';
+                return label;
+              }
+            }
+          }
+        },
+        indexAxis: 'y',
+        scales: {
+          x: {
+            // 'y' specifies the y-axis
+            beginAtZero: true,
+            ticks: {
+              callback: function callback(value) {
+                return value * 100 + '%'; // Formatting tick labels as percentages
+              }
+            }
+          }
+        },
+
+        responsive: true,
+        maintainAspectRatio: false
+      }
+    };
+  },
+  beforeDestroy: function beforeDestroy() {
+    this.resetState();
+  },
+  computed: _objectSpread(_objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('ChartIndex', ['chart', 'loading', 'lists'])), Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapGetters"])('AuthBu', ['selected_bu'])), {}, {
+    updatedQuery: function updatedQuery() {
+      return _objectSpread(_objectSpread({}, this.query), {}, {
+        bu_id: this.selected_bu ? this.selected_bu.id : null
+      });
+    }
+  }),
+  mounted: function mounted() {
+    // Set the query.id when the component is mounted
+    this.query.bu_id = this.selected_bu ? this.selected_bu.id : null;
+  },
+  watch: {
+    selected_bu: function selected_bu(newSelectedBu) {
+      // React to changes in selected_bu
+      this.query.bu_id = newSelectedBu ? newSelectedBu.id : null;
+    },
+    query: {
+      handler: function handler(query) {
+        this.setQuery(query);
+        this.fetchCharts();
+      },
+      deep: true
+    }
+  },
+  methods: _objectSpread(_objectSpread({}, Object(vuex__WEBPACK_IMPORTED_MODULE_1__["mapActions"])('ChartIndex', ['fetchCharts', 'setQuery', 'resetState'])), {}, {
+    updateStartDate: function updateStartDate(value) {
+      var newValue = JSON.parse(JSON.stringify(value.add(1, 'day')));
+      this.query.startDate = newValue;
+    },
+    updateEndDate: function updateEndDate(value) {
+      var newValue = JSON.parse(JSON.stringify(value.add(1, 'month').subtract(1, 'second'))); // Deep clone with value + 1 month
+      this.query.endDate = newValue;
+    },
+    updateDept: function updateDept(value) {
+      this.query.dept.id = value.id;
+      this.query.dept.name = value.name;
+      console.log(this.query.dept);
+    }
+  })
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/pages/Dashboard.vue?vue&type=template&id=0abe2158&":
+/*!**********************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!./node_modules/vue-loader/lib??vue-loader-options!./resources/adminapp/js/pages/Dashboard.vue?vue&type=template&id=0abe2158& ***!
+  \**********************************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function render() {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "container-fluid"
+  }, [_vm.$can(this.selected_bu ? this.selected_bu.code + "-graph_access" : "-") ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_vm._m(0), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_c("div", {
+    staticClass: "row justify-content-end"
+  }, [_c("div", {
+    staticClass: "col-auto",
+    staticStyle: {
+      width: "200px"
+    }
+  }, [_c("v-select", {
+    key: "dept-field",
+    attrs: {
+      name: "dept",
+      label: "name",
+      value: _vm.query.dept,
+      options: _vm.lists.dept,
+      placeholder: "Dept"
+    },
+    on: {
+      input: _vm.updateDept
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-auto"
+  }, [_c("vue-monthly-picker", {
+    attrs: {
+      "input-class": "form-control",
+      value: _vm.query.startDate,
+      placeHolder: "From Period",
+      "month-labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "date-format": "MMM yyyy"
+    },
+    on: {
+      input: _vm.updateStartDate
+    }
+  }, [_vm._v("\n                    >\n                ")])], 1), _vm._v(" "), _c("div", {
+    staticClass: "col-auto"
+  }, [_vm._v(" --- ")]), _vm._v(" "), _c("div", {
+    staticClass: "col-auto"
+  }, [_c("vue-monthly-picker", {
+    attrs: {
+      "input-class": "form-control",
+      placeHolder: "To Period",
+      value: _vm.query.endDate,
+      "month-labels": ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      "date-format": "MMM yyyy"
+    },
+    on: {
+      input: _vm.updateEndDate
+    }
+  }, [_vm._v("\n                    >\n                    ")])], 1)])]), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
+    staticClass: "card-header"
+  }, [_c("h4", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_c("strong", [_c("b", [_vm._v("\n              Cashflow IN Actual & Projection - " + _vm._s(this.selected_bu ? this.selected_bu.name : "") + "\n            ")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_c("LineChartGenerator", {
+    attrs: {
+      "chart-options": _vm.chartOptions_cash_in,
+      "chart-data": _vm.chart.cash_in_charts,
+      "dataset-id-key": _vm.datasetIdKey,
+      "css-classes": _vm.cssClasses,
+      styles: _vm.styles,
+      width: _vm.width,
+      height: _vm.height
+    }
+  })], 1), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
+    staticClass: "card-header"
+  }, [_c("h4", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_c("strong", [_c("b", [_vm._v("\n              Cashflow OUT Actual & Projection - " + _vm._s(this.selected_bu ? this.selected_bu.name : "") + "\n            ")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_c("LineChartGenerator", {
+    attrs: {
+      "chart-options": _vm.chartOptions_cash_out,
+      "chart-data": _vm.chart.cash_out_charts,
+      "dataset-id-key": _vm.datasetIdKey,
+      "css-classes": _vm.cssClasses,
+      styles: _vm.styles,
+      width: _vm.width,
+      height: _vm.height
+    }
+  })], 1), _vm._v(" "), _c("div", {
+    staticClass: "card-header"
+  }, [_c("h4", {
+    staticStyle: {
+      "text-align": "center"
+    }
+  }, [_c("strong", [_c("b", [_vm._v("\n              Cashflow OUT by DEPT - " + _vm._s(this.query.dept ? this.query.dept.name : "") + "\n            ")])])])]), _vm._v(" "), _c("div", {
+    staticClass: "card-body"
+  }, [_c("Bar", {
+    attrs: {
+      "chart-options": _vm.chartOptions_coa_dept,
+      "chart-data": _vm.chart.coa_dept_charts,
+      "dataset-id-key": _vm.datasetIdKey,
+      "css-classes": _vm.cssClasses,
+      styles: _vm.styles,
+      width: _vm.width,
+      height: _vm.height
+    }
+  })], 1)])])]) : _vm._e(), _vm._v(" "), _vm.query.startDate && _vm.query.endDate && _vm.$can(this.selected_bu ? this.selected_bu.code + "-summary_access" : "-") ? _c("div", {
+    staticClass: "row"
+  }, [_c("div", {
+    staticClass: "col-md-12"
+  }, [_c("div", {
+    staticClass: "card"
+  }, [_c("div", {
+    staticClass: "card-header card-header-success card-header-icon"
+  }, [_vm._m(1), _vm._v(" "), _c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v("\n            Summary\n          ")]), _vm._v(" "), _c("br"), _vm._v(" "), _c("div", {
+    staticClass: "table-responsive"
+  }, [_c("table", {
+    staticClass: "table table-bordered"
+  }, [_c("tbody", [_vm._m(2), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      Saldo Awal\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.saldo_awal) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.saldo_awal) + "\n                    ")])]), _vm._v(" "), _vm._m(3), _vm._v(" "), _vm._m(4), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      REVENUE\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.rev.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.rev.realized) + "\n                    ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      LOAN PRISMA\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.loan_prisma.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.loan_prisma.realized) + "\n                    ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      LOAN BANK\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.loan_bank.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.loan_bank.realized) + "\n                    ")])]), _vm._v(" "), _vm._m(5), _vm._v(" "), _vm._m(6), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      COGS - MATERIAL COST\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.mc.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.mc.realized) + "\n                    ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      COGS - LABOR COST\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.lc.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.lc.realized) + "\n                    ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      OPEX\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.opex.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.opex.realized) + "\n                    ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      HUTANG SUPPLIER\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.hutang_supplier.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.hutang_supplier.realized) + "\n                    ")])]), _vm._v(" "), _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      HUTANG NON-SUPPLIER\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.hutang_nonsupplier.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.hutang_nonsupplier.realized) + "\n                    ")])]), _vm._v(" "), _vm._m(7), _vm._v(" "), _c("tr", [_vm._m(8), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.diff.unrealized) + "\n                    ")]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_vm._v("\n                      " + _vm._s(_vm.chart.summary.diff.realized) + "\n                    ")])])])])])])])])]) : _vm._e()]);
+};
+var staticRenderFns = [function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "card-header card-header-success card-header-icon"
+  }, [_c("div", {
+    staticClass: "card-icon"
+  }, [_c("i", {
+    staticClass: "material-icons"
+  }, [_vm._v("stacked_line_chart")])]), _vm._v(" "), _c("h4", {
+    staticClass: "card-title"
+  }, [_vm._v("\n            Charts\n          ")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("div", {
+    staticClass: "card-icon"
+  }, [_c("i", {
+    staticClass: "material-icons"
+  }, [_vm._v("summarize")])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b", [_vm._v("KETERANGAN")])])]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b", [_vm._v("UNREALIZED")])])]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b", [_vm._v("REALIZED")])])])]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b")])]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b", [_vm._v("CASH IN")])])]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b", [_vm._v("CASH OUT")])])]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("tr", [_c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b")])]), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  }), _vm._v(" "), _c("td", {
+    staticClass: "text-black"
+  })]);
+}, function () {
+  var _vm = this,
+    _c = _vm._self._c;
+  return _c("td", {
+    staticClass: "text-black"
+  }, [_c("strong", [_c("b", [_vm._v("SURPLUS / DEFISIT")])])]);
+}];
+render._withStripped = true;
+
+
+/***/ }),
+
+/***/ "./resources/adminapp/js/pages/Dashboard.vue":
+/*!***************************************************!*\
+  !*** ./resources/adminapp/js/pages/Dashboard.vue ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _Dashboard_vue_vue_type_template_id_0abe2158___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=template&id=0abe2158& */ "./resources/adminapp/js/pages/Dashboard.vue?vue&type=template&id=0abe2158&");
+/* harmony import */ var _Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Dashboard.vue?vue&type=script&lang=js& */ "./resources/adminapp/js/pages/Dashboard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Dashboard_vue_vue_type_template_id_0abe2158___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Dashboard_vue_vue_type_template_id_0abe2158___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/adminapp/js/pages/Dashboard.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/adminapp/js/pages/Dashboard.vue?vue&type=script&lang=js&":
+/*!****************************************************************************!*\
+  !*** ./resources/adminapp/js/pages/Dashboard.vue?vue&type=script&lang=js& ***!
+  \****************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./Dashboard.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/pages/Dashboard.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/adminapp/js/pages/Dashboard.vue?vue&type=template&id=0abe2158&":
+/*!**********************************************************************************!*\
+  !*** ./resources/adminapp/js/pages/Dashboard.vue?vue&type=template&id=0abe2158& ***!
+  \**********************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0abe2158___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??ref--6!../../../../node_modules/vue-loader/lib??vue-loader-options!./Dashboard.vue?vue&type=template&id=0abe2158& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/adminapp/js/pages/Dashboard.vue?vue&type=template&id=0abe2158&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0abe2158___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_loaders_templateLoader_js_ref_6_node_modules_vue_loader_lib_index_js_vue_loader_options_Dashboard_vue_vue_type_template_id_0abe2158___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ })
+
+}]);

@@ -1,3 +1,4 @@
+<!-- not updated -->
 <template>
   <div class="container-fluid">
     <form @submit.prevent="submitForm">
@@ -78,8 +79,6 @@
                       :options="lists.bu"
                       :reduce="entry => entry.id"
                       @input="updateBu"
-                      @search.focus="focusField('bu')"
-                      @search.blur="clearFocus"
                     />
                   </div>
                 </div>

@@ -10,6 +10,7 @@ use App\Http\Resources\Admin\BuResource;
 use App\Models\Account;
 use App\Models\AdditionalLimit;
 use App\Models\Bu;
+use App\Models\Fpd;
 use App\Models\Dept;
 use Gate;
 use Illuminate\Http\Request;
@@ -169,9 +170,16 @@ class AccountApiController extends Controller
     public function getMaxAmount(Request $request)
     {
         $source_coa = Account::find($request->source_coa_id);
-        $source_amount = $source_coa ? $source_coa->getBalance($request->source_date) : 0;
-        $additional = AdditionalLimit::where('coa_id', $request->source_coa_id)->whereYear('date', substr($request->source_date,6,4))->whereMonth('date', substr($request->source_date,3,2))->sum('amount');
-        $source_amount = $source_amount + $additional;
+        $source_amount = $source_coa ? $source_coa->getMaxAmount($request->source_date) : 0;
+        // $additional = AdditionalLimit::where('coa_id', $request->source_coa_id)->whereYear('date', substr($request->source_date,6,4))->whereMonth('date', substr($request->source_date,3,2))->sum('amount');
+        // $source_amount = $source_amount + $additional;
+        if(!empty($request->fpd_id)) {
+            $fpd = Fpd::find($request->fpd_id);
+            if($fpd->status >= 5 && isset($request->fpd_item_id)) {
+                $item_amount = FpdItem::find('id', $request->fpd_item_id)->amount;
+                $source_amount = $source_amount + $item_amount;
+            }
+        }
         return response()->json([
             'source_amount' => $source_amount,
         ]);

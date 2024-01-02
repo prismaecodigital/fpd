@@ -16,7 +16,7 @@
             <div class="card-header card-header-primary card-header-icon">
               <h4 class="card-title">
                 <br><br>
-                Upload XLSX : <input type="file" @change="handleFileUpload" />
+                Upload CSV : <input type="file" @change="handleFileUpload" />
               </h4>
               <input type="text" :value="entry.bu_id" hidden>
             </div>

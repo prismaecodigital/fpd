@@ -16,7 +16,7 @@
             <div class="card-header card-header-primary card-header-icon">
               <h4 class="card-title">
                 <br><br>
-                Upload XLSX : <input type="file" @change="handleFileUpload" />
+                Upload CSV : <input type="file" @change="handleFileUpload" />
               </h4>
               <input type="text" :value="entry.bu_id" hidden >
             </div>
@@ -219,26 +219,36 @@ export default {
       const reader = new FileReader();
 
       reader.onload = (event) => {
-        const data = event.target.result;
-        const workbook = read(data, { type: 'binary' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
-        const excelData = utils.sheet_to_json(worksheet, {raw: false });
-        const rowExcel = excelData.filter(obj => obj.hasOwnProperty('period'));
-        console.log(rowExcel)
-        // Process the excelData and add new rows based on the 'qty' column
-        for (let i = 0; i < rowExcel.length; i++) {
-          const rowData = rowExcel[i];
-          if(rowData.period !== undefined) {
-              if(i !== 0) {
-                this.addItem()
+        try {
+            const data = event.target.result;
+            const workbook = read(data, { type: 'binary' });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const excelData = utils.sheet_to_json(worksheet, {raw: false });
+            console.log(excelData)
+            const rowExcel = excelData.filter(obj => obj.hasOwnProperty('period'));
+            console.log(rowExcel)
+            // Process the excelData and add new rows based on the 'qty' column
+            for (let i = 0; i < rowExcel.length; i++) {
+              const rowData = rowExcel[i];
+              if(rowData.period !== undefined) {
+                  if(i !== 0) {
+                    this.addItem()
+                  }
+                  console.log(rowData)
+                  this.updateExcelCashInType(i, rowData.type)
+                  this.updateExcelProjection(i, rowData.projection)
+                  this.updateExcelDate(i, rowData.period)
               }
-              console.log(rowData)
-              this.updateExcelCashInType(i, rowData.type)
-              this.updateExcelProjection(i, rowData.projection)
-              this.updateExcelDate(i, rowData.period)
-          }
+            }
         }
+        catch (error) {
+          alert('Error, try again')
+        }
+
+        reader.onerror = (event) => {
+          console.error('FileReader error:', event);
+        };
       };
 
       reader.readAsBinaryString(file);

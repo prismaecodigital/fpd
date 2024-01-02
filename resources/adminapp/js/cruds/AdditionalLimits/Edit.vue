@@ -12,10 +12,11 @@
                 <strong>Detail Request Penambahan Limit</strong>
               </h4>
             </div>
+            <br>
             
             <div class="card-body">
               <bootstrap-alert />
-              <div class="row">
+              <div v-if="$can('adjustment_additional_approve')" class="row">
                 <div class="col-md-6">
                   <div
                     class="form-group bmd-form-group"
@@ -128,6 +129,121 @@
                   </div>
                 </div>
               </div>
+              <div v-else class="row">
+                <div class="col-md-6">
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.date,
+                      'is-focused': activeField == 'date'
+                    }"
+                  >
+                    <label class="bmd-label-floating required">{{
+                      $t('cruds.additional-limit.fields.date')
+                    }}</label>
+                    <vue-monthly-picker
+                      input-class="form-control"
+                      :value="entry.date_label"
+                      @input="updateDate"
+                      :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
+                      date-format="MMM yyyy"
+                      disabled>
+                    </vue-monthly-picker>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.amount,
+                      'is-focused': activeField == 'amount'
+                    }"
+                  >
+                    <label class="bmd-label-floating required">{{
+                      $t('cruds.additional-limit.fields.amount')
+                    }}</label>
+                  <input
+                    class="form-control required"
+                    type="text"
+                    :value="entry.amount_label"
+                    @input="updateAmount"
+                    @keypress="isNumberOrComma($event)"
+                    disabled
+                  />
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.ket,
+                      'is-focused': activeField == 'ket'
+                    }"
+                  >
+                    <label class="bmd-label-floating">{{
+                      $t('cruds.additional-limit.fields.ket')
+                    }}</label>
+                    <input
+                      class="form-control"
+                      type="text"
+                      :value="entry.ket"
+                      @input="updateKet"
+                      @focus="focusField('ket')"
+                      @blur="clearFocus"
+                      disabled
+                    />
+                  </div>                  
+                </div>
+                <div class="col-md-6">
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.coa_id,
+                      'is-focused': activeField == 'coa'
+                    }"
+                  >
+                    <label class="required">{{
+                      $t('cruds.additional-limit.fields.coa_name')
+                    }}</label>
+                    <v-select
+                      name="coa"
+                      label="name"
+                      :key="'coa-field'"
+                      :value="entry.coa_id"
+                      :options="lists.coa"
+                      :reduce="entry => entry.id"
+                      @input="updateCoa"
+                      disabled
+                    >
+                    <template #search="{attributes, events}">
+                        <input
+                          class="vs__search"
+                          :required="!entry.coa_id"
+                          v-bind="attributes"
+                          v-on="events"
+                        />
+                      </template>
+                    </v-select>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
+                      'is-filled': entry.coa_id,
+                      'is-focused': activeField == 'coa'
+                    }"
+                  >
+                    <label class="required">{{
+                      $t('cruds.additional-limit.fields.coa_code')
+                    }}</label>
+                    <v-select
+                      name="coa"
+                      label="code"
+                      :key="'coa-field'"
+                      :value="entry.coa_id"
+                      :options="lists.coa"
+                      :reduce="entry => entry.id"
+                      disabled
+                    >
+                    </v-select>
+                  </div>
+                </div>
+              </div>
             </div>
             <div class="card-footer">
               <div v-if="entry.status == 1 && $can('adjustment_edit')" class="col-auto">
@@ -135,12 +251,12 @@
                     Simpan
                 </button>
               </div>
-              <div v-if="entry.status == 1 && $can('adjustment_edit') && $can(entry.coa ? entry.coa.bu.code + '-1' :'---')" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_additional_approve')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-primary" @click.prevent="approveData()">
                     Approve
                 </button>
               </div>
-              <div v-if="entry.status == 1 && $can('adjustment_edit') && $can(entry.coa ? entry.coa.bu.code + '-1' :'---')" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_additional_approve')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-danger" @click.prevent="rejectData()">
                     Reject
                 </button>

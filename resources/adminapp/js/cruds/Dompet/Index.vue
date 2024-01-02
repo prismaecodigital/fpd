@@ -68,7 +68,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import BuDeptSiteActions from '@components/Datatables/BuDeptSiteActions'
+import DompetActions from '@components/Datatables/DompetActions'
 import TranslatedHeader from '@components/Datatables/TranslatedHeader'
 import HeaderSettings from '@components/Datatables/HeaderSettings'
 import GlobalSearch from '@components/Datatables/GlobalSearch'
@@ -111,7 +111,7 @@ export default {
         {
           title: 'global.actions',
           thComp: TranslatedHeader,
-          tdComp: BuDeptSiteActions,
+          tdComp: DompetActions,
           visible: true,
           thClass: 'text-right',
           tdClass: 'text-right td-actions',
