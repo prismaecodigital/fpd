@@ -191,11 +191,11 @@ function initialState() {
     setItemAccount({commit, state}, {index, value}) {
       commit('setItemAccount', {index, value})
       if(state.entry.date !== '' && state.entry.items[index].account !== null) {
-        let params = {source_date: state.entry.req_date, source_coa_id: state.entry.items[index].account.id, fpd_id: state.entry.id, fpd_item_id: state.entry.items[index]?.id}
+        let params = {source_date: state.entry.req_date, fpd_id: state.entry.id, items: state.entry.items}
         axios
-        .get('account/getMaxAmount', { params: params })
+        .get('account/getMaxAmountLrd', { params: params })
         .then(response => {
-          commit('setSourceAmount', {index, value : response.data.source_amount})
+          commit('setSourceAmount', {value : response.data.source_amount})
         })
         .catch(error => {
           message = error.response.data.message || error.message
@@ -204,10 +204,10 @@ function initialState() {
     },
     setItemAmount({commit}, {index, val}) {
       commit('setItemAmount', {index, val})
-      commit('setValidation')
     },
     setItemRealAmount({commit}, {index, val}) {
       commit('setItemRealAmount', {index, val})
+      commit('setValidation')
     },
     setItemSite({commit}, {index, value}) {
       commit('setItemSite', {index, value})
@@ -573,13 +573,16 @@ function initialState() {
     fetchDeptAccount(state, lists) {
       state.lists.accounts = lists;
     },
-    setSourceAmount(state, {index, value}) {
-      state.entry.items[index].source_amount = value
-      state.entry.items[index].source_amount_label = value.toLocaleString('de-DE', {
-        minimumFractionDigits: 0,
-        maximumFractionDigits: 2
-      });
-      console.log(state.entry.items[index].source_amount)
+    setSourceAmount(state, {value}) {
+      console.log(value)
+      state.entry.items.forEach((val, index) => {
+        val.source_amount = value[index];
+
+        val.source_amount_label = value[index].toLocaleString('de-DE', {
+          minimumFractionDigits: 0,
+          maximumFractionDigits: 2
+        });
+      });      
     },
     setValidation(state) {
       const validation = [];
@@ -587,6 +590,7 @@ function initialState() {
     
       state.entry.items.forEach(item => {
         const accountId = item.account.id;
+        console.log(item.account)
         if (!accountSums[accountId]) {
           accountSums[accountId] = {
             amount: 0,

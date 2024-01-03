@@ -76,7 +76,7 @@ class AdjustmentApiController extends Controller
 
     public function edit(Adjustment $adjustment)
     {
-        abort_if(Gate::denies('adjustment_edit'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        abort_if(Gate::denies($adjustment->sourceCoa->bu->code.'-adjustment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return response([
             'data' => new AdjustmentResource($adjustment->load('sourceCoa')),

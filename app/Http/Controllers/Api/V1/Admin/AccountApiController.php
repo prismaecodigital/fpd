@@ -184,4 +184,53 @@ class AccountApiController extends Controller
             'source_amount' => $source_amount,
         ]);
     }
+
+    public function getMaxAmountLrd(Request $request)
+    {
+        $fpd = Fpd::with('items')->where('id', json_decode($request->items[0])->fpd_id)->first();
+        $accountSums1 = [];
+
+        foreach ($fpd->items as $item) {
+            $accountId = $item['account_id'];
+
+            if (!isset($accountSums1[$accountId])) {
+                $accountSums1[$accountId] = [
+                    'amount' => 0,
+                ];
+            }
+
+            $accountSums1[$accountId]['amount'] += floatval($item->real_amount);
+        }
+
+        $accountSums2 = [];
+        foreach(($request->items) as $item) {
+            $accountId = json_decode($item)->account->id;
+
+            if (!isset($accountSums2[$accountId])) {
+                $accountSums2[$accountId] = [
+                    'amount' => 0,
+                ];
+            }
+
+            $accountSums2[$accountId]['amount'] += floatval(json_decode($item)->real_amount);
+        }
+
+        $total_max_amount = [];
+
+        foreach($request->items as $index => $item) {
+            $source_coa = Account::find(json_decode($item)->account->id);
+            $source_amount = $source_coa ? $source_coa->getMaxAmount($request->source_date) : 0;
+            if (isset($accountSums1[json_decode($item)->account->id]) && isset($accountSums1[json_decode($item)->account->id])) {
+                $total_max_amount[$index] = $accountSums1[json_decode($item)->account->id]['amount'] < $accountSums2[json_decode($item)->account->id]['amount'] ?
+                        ($source_amount + $accountSums1[json_decode($item)->account->id]['amount']) : 
+                        ($source_amount + $accountSums2[json_decode($item)->account->id]['amount']);
+            } else {
+                $total_max_amount[$index] = $source_amount;
+            }
+        }
+
+        return response()->json([
+            'source_amount' => $total_max_amount,
+        ]);
+    }
 }

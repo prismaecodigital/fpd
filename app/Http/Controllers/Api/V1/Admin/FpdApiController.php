@@ -247,7 +247,7 @@ class FpdApiController extends Controller
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
                 'klasifikasi'   => Fpd::KLASIFIKASI_SELECT,
-                'accounts'      => Account::where('bu_id', $fpd->bu_id)->get(['id','name']),
+                'accounts'      => Account::where('bu_id', $fpd->bu_id)->get(['id','name', 'projection_lock']),
                 'site'          => Site::where('bu_id', $fpd->bu_id)->orWhere('name','-')->get(['id','name'])
             ],
         ]);

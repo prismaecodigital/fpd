@@ -14,7 +14,7 @@
             </div>
             <div class="card-body">
               <bootstrap-alert />
-              <div v-if="$can('adjustment_additional_approve')" class="row">
+              <div v-if="($can('adjustment_edit') && entry.status == 1) || $can('adjustment_approve')" class="row">
                 <div class="col-md-6">
                   <div
                     class="form-group bmd-form-group"
@@ -345,12 +345,12 @@
                     Simpan
                 </button>
               </div>
-              <div v-if="entry.status == 1 && $can('adjustment_additional_approve')" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_approve')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-primary" @click.prevent="approveData()">
                     Approve
                 </button>
               </div>
-              <div v-if="entry.status == 1 && $can('adjustment_additional_approve')" class="col-auto">
+              <div v-if="entry.status == 1 && $can('adjustment_approve')" class="col-auto">
                 <button type='button' class="btn btn-sm btn-danger" @click.prevent="rejectData()">
                     Reject
                 </button>

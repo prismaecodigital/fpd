@@ -75,7 +75,7 @@ class LrdApiController extends Controller
         foreach ($request->items as $itemData) {
             $item = FpdItem::create([
                 'fpd_id' => $fpd->id,
-                'account_id' => $itemData['account_id'],
+                'account_id' => $itemData['account']['id'],
                 'amount' => $itemData['amount'],
                 'site_id'   => $itemData['site_id'],
                 'ket' => $itemData['ket'] ?? '',
@@ -211,7 +211,7 @@ class LrdApiController extends Controller
         foreach ($request->items as $itemData) {
             $item = FpdItem::create([
                 'fpd_id' => $fpd->id,
-                'account_id' => $itemData['account_id'],
+                'account_id' => $itemData['account']['id'],
                 'amount' => $itemData['amount'] ?? 0,
                 'real_amount' => $itemData['real_amount'],
                 'site_id'   => $itemData['site_id'],
@@ -245,7 +245,15 @@ class LrdApiController extends Controller
         $data = new LrdResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories']));
 
         $data->items = $data->items->transform(function ($item) use ($data) {
-            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw);
+            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw) +
+                    $data->whereHas('items', function ($q) use ($item, $data) {
+                        $q->where('account_id', $item->account->id)->where('fpd_id', $data->id);
+                    })->with(['items' => function ($q) use ($item) {
+                        $q->where('account_id', $item->account->id);
+                    }])->get()->sum(function ($data) {
+                        return $data->items->sum('real_amount');
+                    });
+        
             $item->source_amount_label = number_format($item->source_amount, 0, ',', '.');
             return $item;
         });
@@ -258,7 +266,7 @@ class LrdApiController extends Controller
                 'transact_type' => Fpd::TRANSACT_TYPE_SELECT,
                 'status'        => Fpd::STATUS_SELECT,
                 'klasifikasi'   => Fpd::KLASIFIKASI_SELECT,
-                'accounts'      => Account::where('bu_id', $fpd->bu_id)->get(['id','name']),
+                'accounts'      => Account::where('bu_id', $fpd->bu_id)->get(['id','name', 'projection_lock']),
                 'site'          => Site::where('bu_id', $fpd->bu_id)->orWhere('name','-')->get(['id','name'])
             ],
         ]);

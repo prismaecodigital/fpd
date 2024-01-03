@@ -33,6 +33,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::get('deptaccount', 'AccountApiController@deptaccount');
     Route::get('account/getBalance', 'AccountApiController@getBalance')->name('account.getBalance');
     Route::get('account/getMaxAmount', 'AccountApiController@getMaxAmount')->name('account.getMaxAmount');
+    Route::get('account/getMaxAmountLrd', 'AccountApiController@getMaxAmountLrd')->name('account.getMaxAmountLrd');
 
     // Dept
     Route::resource('depts', 'DeptApiController');
