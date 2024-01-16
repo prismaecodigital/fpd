@@ -15,6 +15,7 @@ function initialState() {
         status: null,
         req_date: '',
         processed_date: '',
+        realization_date: '',
         ket: '',
         lampiran: [],
         bukti_transfer: [],
@@ -160,6 +161,9 @@ function initialState() {
     },
     setProcessedDate({ commit }, value) {
       commit('setProcessedDate', value)
+    },
+    setRealizationDate({ commit }, value) {
+      commit('setRealizationDate', value)
     },
     setKet({ commit }, value) {
       commit('setKet', value)
@@ -452,6 +456,9 @@ function initialState() {
     },
     setProcessedDate(state, value) {
       state.entry.processed_date = value
+    },
+    setRealizationDate(state, value) {
+      state.entry.realization_date = value
     },
     setKet(state, value) {
       state.entry.ket = value

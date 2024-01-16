@@ -110,7 +110,7 @@
             </div>
           </div>
       </div>
-      <div class="row" v-if="query.startDate && query.endDate && $can(this.selected_bu ? this.selected_bu.code + '-summary_access' : '-')">
+      <div class="row" v-if="$can(this.selected_bu ? this.selected_bu.code + '-summary_access' : '-')">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header card-header-success card-header-icon">
@@ -120,8 +120,35 @@
               <h4 class="card-title">
                 Summary
               </h4>
+              <div class="card-body">
+                <div class="row justify-content-end">
+                  <div class="col-auto" style="color: black">
+                    <vue-monthly-picker
+                          input-class="form-control"
+                          :value="query.startDateSummary"
+                          @input="updateStartDateSummary"                    
+                          placeHolder="From Period"
+                          :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
+                          date-format="MMM yyyy">
+                        >
+                    </vue-monthly-picker>
+                  </div>
+                  <div class="col-auto"> --- </div>
+                  <div class="col-auto" style="color: black">
+                      <vue-monthly-picker
+                          input-class="form-control"
+                          placeHolder="To Period"
+                          :value="query.endDateSummary"
+                          @input="updateEndDateSummary"
+                          :month-labels="['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']"
+                          date-format="MMM yyyy">
+                        >
+                        </vue-monthly-picker>
+                  </div>
+                </div>
+              </div>
               <br>
-              <div class="table-responsive">
+              <div v-if="query.startDateSummary !== null && query.endDateSummary !== null" class="table-responsive">
                   <table class="table table-bordered">
                     <tbody>
                       <tr>
@@ -173,10 +200,10 @@
                           REVENUE
                         </td>
                         <td class="text-black">
-                          {{chart.summary.rev.unrealized}}
+                          {{chart.summary.rev?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.rev.realized}}
+                          {{chart.summary.rev?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -184,10 +211,10 @@
                           LOAN PRISMA
                         </td>
                         <td class="text-black">
-                          {{chart.summary.loan_prisma.unrealized}}
+                          {{chart.summary.loan_prisma?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.loan_prisma.realized}}
+                          {{chart.summary.loan_prisma?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -195,10 +222,10 @@
                           LOAN BANK
                         </td>
                         <td class="text-black">
-                          {{chart.summary.loan_bank.unrealized}}
+                          {{chart.summary.loan_bank?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.loan_bank.realized}}
+                          {{chart.summary.loan_bank?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -228,10 +255,10 @@
                           COGS - MATERIAL COST
                         </td>
                         <td class="text-black">
-                          {{chart.summary.mc.unrealized}}
+                          {{chart.summary.mc?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.mc.realized}}
+                          {{chart.summary.mc?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -239,10 +266,10 @@
                           COGS - LABOR COST
                         </td>
                         <td class="text-black">
-                          {{chart.summary.lc.unrealized}}
+                          {{chart.summary.lc?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.lc.realized}}
+                          {{chart.summary.lc?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -250,10 +277,10 @@
                           OPEX
                         </td>
                         <td class="text-black">
-                          {{chart.summary.opex.unrealized}}
+                          {{chart.summary.opex?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.opex.realized}}
+                          {{chart.summary.opex?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -261,10 +288,10 @@
                           HUTANG SUPPLIER
                         </td>
                         <td class="text-black">
-                          {{chart.summary.hutang_supplier.unrealized}}
+                          {{chart.summary.hutang_supplier?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.hutang_supplier.realized}}
+                          {{chart.summary.hutang_supplier?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -272,10 +299,10 @@
                           HUTANG NON-SUPPLIER
                         </td>
                         <td class="text-black">
-                          {{chart.summary.hutang_nonsupplier.unrealized}}
+                          {{chart.summary.hutang_nonsupplier?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.hutang_nonsupplier.realized}}
+                          {{chart.summary.hutang_nonsupplier?.realized}}
                         </td>
                       </tr>
                       <tr>
@@ -294,10 +321,10 @@
                           <strong><b>SURPLUS / DEFISIT</b></strong>
                         </td>
                         <td class="text-black">
-                          {{chart.summary.diff.unrealized}}
+                          {{chart.summary.diff?.unrealized}}
                         </td>
                         <td class="text-black">
-                          {{chart.summary.diff.realized}}
+                          {{chart.summary.diff?.realized}}
                         </td>
                       </tr>
                       
@@ -373,7 +400,7 @@ export default {
   },
   data() {
     return {
-      query: { bu_id: null, dept: {id: null, name: null}, startDate: null, endDate: null },
+      query: { bu_id: null, dept: {id: null, name: null}, startDate: null, endDate: null, startDateSummary: null, endDateSummary: null },
       chartOptions_cash_in: {
         legend: {
           display: true
@@ -509,6 +536,14 @@ export default {
     updateEndDate(value) {
       let newValue = JSON.parse(JSON.stringify(value.add(1, 'month').subtract(1, 'second'))); // Deep clone with value + 1 month
       this.query.endDate = newValue;
+    },
+    updateStartDateSummary(value) {
+      let newValue = JSON.parse(JSON.stringify(value.add(1, 'day')));
+      this.query.startDateSummary = newValue;
+    },
+    updateEndDateSummary(value) {
+      let newValue = JSON.parse(JSON.stringify(value.add(1, 'month').subtract(1, 'second'))); // Deep clone with value + 1 month
+      this.query.endDateSummary = newValue;
     },
     updateDept(value) {
       this.query.dept.id = value.id;

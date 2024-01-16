@@ -95,6 +95,14 @@
                       </tr>
                       <tr>
                         <td class="text-primary">
+                          {{ $t('cruds.fpd.fields.realization_date') }}
+                        </td>
+                        <td>
+                          {{ entry.realization_date ?? '-' }}
+                        </td>
+                      </tr>
+                      <tr>
+                        <td class="text-primary">
                           {{ $t('cruds.fpd.fields.transact_type') }}
                         </td>
                         <td>

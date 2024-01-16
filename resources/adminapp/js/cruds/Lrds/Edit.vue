@@ -89,6 +89,27 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
+                      'is-filled': entry.realization_date,
+                      'is-focused': activeField == 'realization_date'
+                    }"
+                  >
+                    <label class="">{{
+                      $t('cruds.fpd.fields.realization_date') 
+                    }}</label>
+                    <datetime-picker
+                      class="form-control"
+                      type="text"
+                      picker="date"
+                      :value="entry.realization_date"
+                      @input="updateRealizationDate"
+                      @focus="focusField('realization_date')"
+                      @blur="clearFocus"
+                    >
+                    </datetime-picker>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
                       'is-filled': entry.bu_id !== null,
                       'is-focused': activeField == 'bu'
                     }"
@@ -433,6 +454,7 @@ export default {
       'setStatus',
       'setReqDate',
       'setProcessedDate',
+      'setRealizationDate',
       'setKet',
       'setName',
       'insertLampiranFile',
@@ -494,6 +516,9 @@ export default {
     },
     updateProcessedDate(e) {
       this.setProcessedDate(e.target.value)
+    },
+    updateRealizationDate(e) {
+      this.setRealizationDate(e.target.value)
     },
     updateKet(e) {
       this.setKet(e.target.value)

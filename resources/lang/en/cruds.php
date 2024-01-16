@@ -237,6 +237,8 @@ return [
             'req_date_helper'       => ' ',
             'processed_date'        => 'Tanggal Prosess Finance',
             'processed_date_helper' => '',
+            'realization_date'        => 'Tanggal Realisasi',
+            'realization_date_helper' => '',
             'ket'                   => 'Ket',
             'ket_helper'            => ' ',
             'lampiran'              => 'Lampiran',

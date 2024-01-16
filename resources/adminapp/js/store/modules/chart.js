@@ -204,10 +204,13 @@ function initialState() {
         if(state.query.startDate && state.query.endDate) {
             commit('setCashInCharts', response.data.data.dataCashIn)
             commit('setCashOutCharts', response.data.data.dataCashOut)
-            commit('setSummary', response.data.data.summary)
+            
             if(state.query.dept.id) {
               commit('setCoaDeptCharts', response.data.data.dataCoaDept)
             }
+        }
+        if(state.query.startDateSummary && state.query.endDateSummary) {
+          commit('setSummary', response.data.data.summary)
         }
         commit('setLists', response.data.meta)
       })

@@ -30,12 +30,14 @@ class Fpd extends Model implements HasMedia
         'bukti_transfer',
         'req_date_raw',
         'processed_date_raw',
+        'realization_date_raw',
         'accurate_total'
     ];
 
     protected $dates = [
         'req_date',
         'processed_date',
+        'realization_date',
         'created_at',
         'updated_at',
     ];
@@ -186,6 +188,7 @@ class Fpd extends Model implements HasMedia
         'status',
         'req_date',
         'processed_date',
+        'realization_date',
         'ket',
         'journaled',
         'created_at',
@@ -200,6 +203,11 @@ class Fpd extends Model implements HasMedia
     public function getReqDateRawAttribute()
     {
         return $this->attributes['req_date'];
+    }
+
+    public function getRealizationDateRawAttribute()
+    {
+        return $this->attributes['realization_date'] ?? null;
     }
 
     public function getTransactTypeLabelAttribute()
@@ -275,10 +283,20 @@ class Fpd extends Model implements HasMedia
         return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.date_format')) : null;
     }
 
+    public function getRealizationDateAttribute($value)
+    {
+        return $value ? Carbon::createFromFormat('Y-m-d H:i:s', $value)->format(config('project.date_format')) : null;
+    }
+
     public function setReqDateAttribute($value)
     {
         $this->attributes['req_date'] = $value ? Carbon::createFromFormat(config('project.date_format'), $value)->format('Y-m-d') : null;
     }
+
+    public function setRealizationDateAttribute($value)
+    {
+        $this->attributes['realization_date'] = $value ? Carbon::createFromFormat(config('project.date_format'), $value)->format('Y-m-d') : null;
+    } 
 
     public function getProcessedDateAttribute($value)
     {

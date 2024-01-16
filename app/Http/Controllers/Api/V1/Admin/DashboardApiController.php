@@ -27,7 +27,7 @@ class DashboardApiController extends Controller
     {
         $dept = Dept::where('bu_id', $request->bu_id)->get(['id', 'name', 'code']);
 
-        if(empty($request->startDate) || empty($request->endDate)) {
+        if(empty($request->startDate) && empty($request->endDate) && empty($request->startDateSummary) && empty($request->endDateSummary)) {
             return response()->json([
                 'data' => [],
                 'meta' => [
@@ -36,19 +36,36 @@ class DashboardApiController extends Controller
             ]);
         }
 
-        $month_list = $request->startDate && $request->endDate ? $this->createDateRangeArray($request->startDate, $request->endDate) : [];
+        if(!empty($request->startDate) && !empty($request->endDate)) {
 
-        $dataCashIn = $this->dataCashIn($request->bu_id, $month_list);
-        $dataCashOut = $this->dataCashOut($request->bu_id, $month_list);
-        $summary = $this->summary($request->bu_id, $request->startDate, $request->endDate);
+            $month_list = $request->startDate && $request->endDate ? $this->createDateRangeArray($request->startDate, $request->endDate) : [];
+
+            $dataCashIn = $this->dataCashIn($request->bu_id, $month_list);
+            $dataCashOut = $this->dataCashOut($request->bu_id, $month_list);
+
+            if(empty($request->startDateSummary) || empty($request->endDateSummary)) {
+                return response()->json([
+                    'data' => [
+                        'dataCashIn' => $dataCashIn,
+                        'dataCashOut' => $dataCashOut,
+                    ],
+                    'meta' => [
+                        'dept' => $dept
+                    ]
+                ]);
+            }
+
+        }
+
+        $summary = $this->summary($request->bu_id, $request->startDateSummary, $request->endDateSummary);
 
         $deptId = json_decode($request->input('dept'), true); // Decoding to an array
 
         if(empty($deptId['id'])) {
             return response()->json([
                 'data' => [
-                    'dataCashIn' => $dataCashIn,
-                    'dataCashOut' => $dataCashOut,
+                    'dataCashIn' => isset($dataCashIn) ? $dataCashIn : null,
+                    'dataCashOut' => isset($dataCashOut) ? $dataCashOut : null,
                     'summary' => $summary,
                 ],
                 'meta' => [
@@ -61,10 +78,10 @@ class DashboardApiController extends Controller
 
         return response()->json([
             'data' => [
-                'dataCashIn' => $dataCashIn,
-                'dataCashOut' => $dataCashOut,
+                'dataCashIn' => isset($dataCashIn) ? $dataCashIn : null,
+                'dataCashOut' => isset($dataCashOut) ? $dataCashOut : null,
                 'summary' => $summary,
-                'dataCoaDept' => $dataCoaDept,
+                'dataCoaDept' => isset($dataCoaDept) ? $dataCoaDept : null,
             ],
             'meta' => [
                 'dept' => $dept
