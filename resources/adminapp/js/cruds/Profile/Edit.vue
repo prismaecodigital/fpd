@@ -119,8 +119,6 @@
                       multiple
                       :disabled="true"
                       @input="updateRoles"
-                      @search.focus="focusField('roles')"
-                      @search.blur="clearFocus"
                     />
                   </div>
                                     <div
@@ -143,8 +141,6 @@
                       :disabled="true"
                       multiple
                       @input="updateBu"
-                      @search.focus="focusField('depts')"
-                      @search.blur="clearFocus"
                     />
                   </div>
                   <div
@@ -167,8 +163,6 @@
                       multiple
                       :disabled="true"
                       @input="updateDept"
-                      @search.focus="focusField('depts')"
-                      @search.blur="clearFocus"
                     />
                   </div>
                   <div

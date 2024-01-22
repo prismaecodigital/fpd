@@ -41,7 +41,8 @@ class CashInItem extends Model
     ];
 
     protected $casts = [
-        'cash_in_id' => 'integer'
+        'cash_in_id' => 'integer',
+        'status_paid' => 'boolean'
     ];
 
     protected $fillable = [

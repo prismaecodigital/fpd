@@ -284,6 +284,7 @@
                   <th>Tanggal</th>
                   <th>Keterangan </th>
                   <th>Nominal (REALIZED)</th>
+                  <th>Terbayar</th>
                 </thead>
                 <tbody>
                   <tr v-for="(item, k) in entry.cash_in_items" :key="k">
@@ -317,6 +318,12 @@
                           @keypress="isNumberOrComma($event)"
                           required
                         />
+                    </td>
+                    <td>
+                  <input
+                      type="checkbox"
+                      :checked="item.status_paid" @change="updateItemStatusPaid(k)"
+                    />
                     </td>
                   </tr>
                 </tbody>
@@ -392,7 +399,7 @@ export default {
       'setLcPercentage',
       'setPartner', 'setQuery',
       'fetchEditData', 'addItem', 'deleteItem',
-      'setItemDate', 'setItemKet', 'setItemRealAmount'
+      'setItemDate', 'setItemKet', 'setItemRealAmount', 'setItemStatusPaid'
     ]),
     updateKet(e) {
       this.setKet(e.target.value)
@@ -450,6 +457,9 @@ export default {
     },
     updateItemRealAmount(index, e) {
       this.setItemRealAmount({index, value : e.target.value})
+    },
+    updateItemStatusPaid(index) {
+      this.setItemStatusPaid(index)
     },
     closePayment() {
       this.$swal({

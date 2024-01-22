@@ -26,6 +26,8 @@ function initialState() {
           real_amount: '',
           real_amount_label: '',
           cash_in_id: null,
+          status_paid: 0,
+
         }]
       },
       lists: {
@@ -156,6 +158,9 @@ function initialState() {
     setItemKet({commit}, {index,value}) {
       commit('setItemKet', {index,value})
     },
+    setItemStatusPaid({commit}, index) {
+      commit('setItemStatusPaid', index)
+    },
     setItemCashInId({commit}, {index, value}) {
       commit('setItemCashInId', {index, value})
     },
@@ -274,6 +279,9 @@ function initialState() {
     setItemKet(state, {index, value}) {
       state.entry.cash_in_items[index].ket = value
     },
+    setItemStatusPaid(state, index) {
+      state.entry.cash_in_items[index].status_paid = !state.entry.cash_in_items[index].status_paid
+    },
     setItemCashInId(state, {index, value}) {
       state.entry.cash_in_items[index].cash_in_id = value
     },
@@ -297,6 +305,7 @@ function initialState() {
         real_amount: '',
         real_amount_label: '',
         cash_in_id: state.entry.id,
+        status_paid: 0,
       });
     },
     deleteItem(state, index) {
