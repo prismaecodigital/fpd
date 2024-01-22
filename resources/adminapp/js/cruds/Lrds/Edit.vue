@@ -282,10 +282,10 @@
                       :route="getRoute('lrds')"
                       :collection-name="'fpd_lampiran'"
                       :media="entry.lampiran"
-                      :max-file-size="10"
+                      :max-file-size="30"
                       @file-uploaded="insertLampiranFile"
                       @file-removed="removeLampiranFile"
-                      :max-files="10"
+                      :max-files="30"
                     />
                   </div>
                 </div>

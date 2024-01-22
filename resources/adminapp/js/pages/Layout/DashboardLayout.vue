@@ -192,10 +192,25 @@ export default {
           ]
         },
         {
-          title: 'cruds.fpd.calendar',
+          title: 'Calendar',
           icon: 'calendar_view_month',
-          path: { name: 'fpds.calendar' },
-          gate: 'fpd_access'
+          path: {name: 'fpds.calendar'},
+          gate: 'fpd_access',
+          children: [
+            {
+              title: 'cruds.fpd.calendar',
+              icon: 'calendar_view_month',
+              path: { name: 'fpds.calendar' },
+              gate: 'fpd_access'
+            },
+            {
+              title: 'Weekly Cashflow',
+              icon: 'calendar_view_month',
+              path: { name: 'weekly-cashflow' },
+              gate: 'fpd_access'
+            },
+            
+          ]
         },
         {
           title: 'Profile',

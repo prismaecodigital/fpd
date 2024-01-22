@@ -23,11 +23,17 @@ class UpdateFpdRequest extends FormRequest
                 'string',
                 'nullable',
             ],
+            // 'code_voucher' => [
+            //     'required_if:status,4'
+            // ],
+            // 'code_voucher_lrd' => [
+            //     'required_if:status,7'
+            // ],
             'code_voucher' => [
-                'required_if:status,4'
+                'nullable'
             ],
             'code_voucher_lrd' => [
-                'required_if:status,7'
+                'nullable'
             ],
             'transact_type' => [
                 'required',
@@ -96,6 +102,9 @@ class UpdateFpdRequest extends FormRequest
             ],
             'processed_date' => [
                 'required_if:status,3',
+            ],
+            'realization_date' => [
+                'nullable',
             ],
             'lampiran' => [
                 'array',

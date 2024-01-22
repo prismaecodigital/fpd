@@ -46,8 +46,9 @@ const set = key => (state, val) => {
           commit('setLists', response.data.lists)
         })
         .catch(error => {
-          message = error.response.data.message || error.message
-          // TODO error handling
+          if (error.response && error.response.status === 403) {
+            alert('ANDA TIDAK PUNYA AKSES'); // or use a more sophisticated alert system
+          }
         })
         .finally(() => {
           commit('setLoading', false)
@@ -94,6 +95,8 @@ const set = key => (state, val) => {
       .catch(error => {
         // Handle errors
         console.error('Error uploading file', error);
+        let message = error.response.data.message || error.message
+        alert('Gagal. ' + message)
       });
     },
     resetState({ commit }) {
@@ -112,6 +115,7 @@ const set = key => (state, val) => {
           .catch(error => {
             let message = error.response.data.message || error.message
             let errors = error.response.data.errors
+            alert('Gagal. ' + message)
   
             dispatch(
               'Alert/setAlert',

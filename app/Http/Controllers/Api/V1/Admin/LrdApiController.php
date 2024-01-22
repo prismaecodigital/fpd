@@ -30,8 +30,10 @@ class LrdApiController extends Controller
     }
 
     public function index(Request $request)
-    {        
-
+    {
+        $buCode = Bu::where('id', $request->id)->first()->code;
+        abort_if(Gate::denies($buCode.'-fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+        
         return new LrdResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->whereIn('status', [5,6,7,8])->paginate(request('limit', 10)));
     }
 
@@ -150,6 +152,8 @@ class LrdApiController extends Controller
         if($request->approve !== null) {
             if($request->approve === "1" && (int)$fpd->status < 9) 
             {
+                $code_voucher_lrd = $this->setCodeVoucherLrd($fpd->bu->code, Carbon::now()->format('mY'), $fpd->id);
+                $fpd->update(['code_voucher_lrd' => $code_voucher_lrd]);
                 if(($fpd->status === '0' && $userBuRole->role->title === 'leader') || 
                     ($fpd->status === '5' && $userBuRole->role->title === 'direktur') ||                
                     ($fpd->status === '1' &&$userBuRole->role->title === 'leader'))
@@ -221,7 +225,8 @@ class LrdApiController extends Controller
 
         // Added if request tidak memerlukan realisasi
         if($request->approve === "2") {
-            $fpd->update(['status' => '9']);
+            $code_voucher_lrd = $this->setCodeVoucherLrd($fpd->bu->code, Carbon::now()->format('mY'), $fpd->id);
+            $fpd->update(['status' => '9', 'code_voucher_lrd' => $code_voucher_lrd]);
             $new_fpd = Fpd::where('id',$fpd->id)->first();
             foreach($new_fpd->items as $item) {
                 $itemx = FpdItem::where('id', $item->id)->first();
@@ -335,6 +340,11 @@ class LrdApiController extends Controller
                 'bu'            => Bu::get(['id', 'name']),
             ],
         ]);
+    }
+
+    protected function setCodeVoucherLrd($bu, $updatedAt, $id) {
+        $code = 'JV/'.$bu.'/'.$updatedAt.'/'.$id;
+        return $code;
     }
 
 }

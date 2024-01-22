@@ -33,6 +33,10 @@ class FpdDoneApiController extends Controller
     public function index(Request $request)
     {
         $bu = Bu::where('id', $request->id)->first();
+        $buCode = $bu->code;
+        abort_if(Gate::denies($buCode.'-fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
+
+        
         $accurate_bu_id = $bu ? $bu->accurate_bu_id : null;
         $today = Carbon::now();
         $accessToken = Integration::where('id',1)->first()->access_token;
@@ -127,30 +131,24 @@ class FpdDoneApiController extends Controller
         $rules = [];
         $messages = [];
 
-        if(Carbon::now() >= $bu->accurate_session_expire || empty($bu->accurate_bu_id) || $bu->accurate_bu_id == '') {
-            return response()->json('tidak ada session BU didalam accurate');
+        if(Carbon::now() >= $bu->accurate_session_expire || empty($bu->accurate_bu_id) || $bu->accurate_bu_id === '') {
+            return response()->json(['message' => 'tidak ada session BU didalam accurate'], 500);
         }
         
         $validation = [];
         foreach ($data as $item) {
             $account = Account::where('code',$item['account_no'])->first();
-            if(!empty($account)) {
-                if($account->parent_id  === null || $account->parent_id === '') {
-                    $validation['account'][] = $item['account_no'];
-                    $validation['account']['message'] = 'Akun tidak ditemukan atau merupakan parent';
-                }
-            }
             if(empty($account)) {
                 $validation['account'][] = $item['account_no'];
-                $validation['account']['message'] = 'Akun tidak ditemukan atau merupakan parent';
+                $validation['account']['message'] = 'Akun tidak ditemukan. ';
             }
             if($item['amount_type'] !== 'CREDIT' && $item['amount_type'] !== 'DEBIT') {
                 $validation['amount_type'][]  = $item['amount_type'];
-                $validation['amount_type']['message']  = 'Pastikan tipe akun adalah DEBIT atau CREDIT';
+                $validation['amount_type']['message']  = 'Pastikan tipe akun adalah DEBIT atau CREDIT. ';
             }
         }
         if(count($validation) > 0) {
-            dd($validation);
+            return response()->json(['message' => $validation. 'Hubungi Tim Digitalisasi'], 500);
         }
 
         $result = [];
@@ -205,22 +203,22 @@ class FpdDoneApiController extends Controller
         $integration = Integration::where('id',1)->first();
         $accessToken = $integration->access_token;
         if($accessToken == '' || $accessToken == null) {
-            return 'failed';
+            return response()->json(['message' => 'access token tidak ada. Hubungi Tim Digitalisasi'], 500);
         }
         $bu = Bu::where('id', $bu_id)->first();
         $accurate_bu_id = $bu->accurate_bu_id;
         if($accurate_bu_id == '' || $accurate_bu_id == null) {
-            return 'failed';
+            return response()->json(['message' => 'tidak ada accurate_bu_id. Hubungi Tim Digitalisasi'], 500);
         }
         $session = $bu->accurate_session;
         if($session == '' || $session == null) {
-            return 'failed';
+            return response()->json(['message' => 'tidak ada session BU. Hubungi Tim Digitalisasi'], 500);
         }
         $session_expire = $bu->accurate_session_expire;
         $today = Carbon::now();
         $host = $bu->accurate_host;
         if($today >= $session_expire) {
-            return 'failed';
+            return response()->json(['message' => 'Session Expired. Hubungi Tim Digitalisasi'], 500);
         }
 
         // Header
@@ -244,7 +242,7 @@ class FpdDoneApiController extends Controller
 
         $context  = stream_context_create($opts);
         $result = file_get_contents($url, false, $context);
-        return 'ok';
+        return $result;
     }
 
 }

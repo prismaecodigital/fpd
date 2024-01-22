@@ -34,6 +34,7 @@ class FpdProcessApiController extends Controller
         // dd($permissionsArray);
         $bu = Bu::where('id', $request->id)->first();
         $bucode = $bu->code ?? '';
+        abort_if(Gate::denies($bucode.'-fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         return new FpdProcessResource(Fpd::with(['bu', 'dept', 'user'])->advancedFilter()->where('bu_id', $request->id)->whereIn('dept_id', auth()->user()->depts->pluck('id'))->where('status', '<', '5')->paginate(request('limit', 10)));
     }
@@ -67,6 +68,8 @@ class FpdProcessApiController extends Controller
         $data['code'] = $this->generateCode($dept->code, $bu->id, $data['created_at']);
     
         $fpd = Fpd::create($data);
+        $code_voucher_fpd = $this->setCodeVoucherFpd($bu->code, $fpd->created_at, $fpd->id);
+        $fpd->update(['code_voucher' => $code_voucher_fpd]);
 
         if ($media = $request->input('lampiran', [])) {
             Media::whereIn('id', data_get($media, '*.id'))
@@ -356,6 +359,11 @@ class FpdProcessApiController extends Controller
                 'bu'            => Bu::get(['id', 'name']),
             ],
         ]);
+    }
+
+    protected function setCodeVoucherFpd($bu, $createdAt, $id) {
+        $code = 'BKK/'.$bu.'/'.substr($createdAt,5,2).substr($createdAt,2,2).'/'.$id;
+        return $code;
     }
 
 }

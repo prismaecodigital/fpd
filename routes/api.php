@@ -104,5 +104,9 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Dompet
     Route::resource('dompet', 'DompetApiController');
 
+    // Weekly Cashflow
+    Route::get('cashflow', 'CashflowApiController@index')->name('cashflow');
+    Route::get('weekly-cashflow', 'CashflowApiController@weeklyCashflow')->name('weekly-cashflow');
+
 });
 

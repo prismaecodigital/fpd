@@ -97,6 +97,9 @@ class UpdateLrdRequest extends FormRequest
             'processed_date' => [
                 'required_if:status,3',
             ],
+            'realization_date' => [
+                'nullable',
+            ],
             'lampiran' => [
                 'array',
                 'nullable'

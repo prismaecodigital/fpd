@@ -88,16 +88,16 @@ class IntegrationApiController extends Controller
         $fpds = Fpd::with('items')->whereIn('id', $request->fpds)->get();
         $accessToken = $integration->access_token;
         if($accessToken == '' || $accessToken == null) {
-            dd('akses token tidak ada');
+            return response()->json(['message' => 'akses token tidak ada. Hubungi Tim Digitalisasi'], 500);
         }
         $bu = Bu::where('id', $fpds->first()->bu_id)->first();
         $accurate_bu_id = $bu->accurate_bu_id;
         if($accurate_bu_id == '' || $accurate_bu_id == null) {
-            dd('accurate_bu_id tidak ada');
+            return response()->json(['message' => 'accurate_bu_id tidak ada. Hubungi Tim Digitalisasi'], 500);
         }
         $session = $bu->accurate_session;
         if($session == '' || $session == null) {
-            dd('session tidak ada');
+            return response()->json(['message' => 'session accurate tidak ada. Hubungi Tim Digitalisasi'], 500);
         }
         $session_expire = $bu->accurate_session_expire;
         $today = Carbon::now();
@@ -126,6 +126,7 @@ class IntegrationApiController extends Controller
             $journalDate = substr($processDate,8,2).'/'.substr($processDate,5,2).'/'.substr($processDate,0,4);
             
             $params['data'][$x]['transDate'] = $journalDate;
+            $params['data'][$x]['number'] = $fpd->code_voucher_lrd ?? $fpd->code_voucher;
             $params['data'][$x]['description'] = $fpd->ket.' (dana)';
             $params['data'][$x]['detailJournalVoucher'][0]['accountNo'] = $credit_account;
             $params['data'][$x]['detailJournalVoucher'][0]['amount'] = $fpd->accurate_total;
@@ -154,6 +155,5 @@ class IntegrationApiController extends Controller
 
         $context  = stream_context_create($opts);
         $result = file_get_contents($url, false, $context);
-        dd($result);
     }
 }

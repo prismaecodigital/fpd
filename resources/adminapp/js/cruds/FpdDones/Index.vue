@@ -367,7 +367,7 @@ export default {
     submit(bvModalEvent) {
         this.saveJournal()
         .then(() => {
-          window.location.reload();
+          this.fetchIndexData()
           this.$eventHub.$emit('create-success')
         })
         .catch(error => {
@@ -387,6 +387,8 @@ export default {
     importJournal(bvModalEvent) {
       this.importFile()
       console.log('journal imported')
+      this.fetchIndexData()
+      this.$eventHub.$emit('create-success')
     }
   }
 }

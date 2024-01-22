@@ -402,10 +402,24 @@ const routes = [
         meta: { title: 'Profile' }
       },
       {
-        path: 'calendar',
-        name: 'fpds.calendar',
-        component: () => import('@cruds/Fpds/Calendar.vue'),
-        meta: { title: 'Calendar' }
+        path: 'Calendar',
+        name: 'Calendar',
+        component: View,
+        redirect: { name: 'fpds.calendar' },
+        children: [
+          {
+            path: 'calendar',
+            name: 'fpds.calendar',
+            component: () => import('@cruds/Fpds/Calendar.vue'),
+            meta: { title: 'Monthly Calendar' }
+          },
+          {
+            path: 'weekly-cashflow',
+            name: 'weekly-cashflow',
+            component: () => import('@cruds/WeeklyCashflow/Index.vue'),
+            meta: { title: 'Weekly Calendar' }
+          },
+        ]
       },
 
       // Cashflow

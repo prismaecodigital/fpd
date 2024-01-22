@@ -104,6 +104,41 @@
                 </b-modal>
               </div>
             </div>
+            <div class="card-body">
+              Keterangan Warna :<br>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(255, 37, 37);"></div>
+                <div class="col-auto"> : Menunggu Persetujuan Leader</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: orange"></div>
+                <div class="col-auto"> : Menunggu Persetujuan Direktur</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: yellow"></div>
+                <div class="col-auto"> : Menunggu Finance Manager</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(21, 255, 21)"></div>
+                <div class="col-auto"> : Menunggu Penjadwalan Finance</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(19, 98, 167);"></div>
+                <div class="col-auto"> : Menunggu Proses Finance</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(154, 11, 255);"></div>
+                <div class="col-auto"> : Menunggu Realisasi User</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(255, 7, 255)"></div>
+                <div class="col-auto"> : Realisasi, Menunggu Persetujuan Leader</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(175, 22, 160)"></div>
+                <div class="col-auto"> : Realisasi, Menunggu Proses Finance / Konfirmasi User</div>
+            </div>
           </div>
         </div>
 

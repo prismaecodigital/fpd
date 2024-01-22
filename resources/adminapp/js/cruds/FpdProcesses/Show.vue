@@ -14,8 +14,17 @@
           </div>
           <div class="card-body">
             <div class="row">
-              <div class="col-lg-3">
+              <div class="col-auto">
                 <back-button></back-button>
+              </div>
+              <div class="col-auto">
+                <router-link v-if="($can(entry.bu.code + '-admin')) || entry.status == 0 || (entry.status === 1 && $can(entry.bu.code + '-' + parseInt(entry.status)-1))"
+                    class="btn btn-primary"
+                    :to="{ name: 'fpd-processes.editData', params: { id: entry.id } }"
+                    target="_blank"
+                    >
+                    Proses
+                </router-link>
               </div>
             </div>            
           </div>

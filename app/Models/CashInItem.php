@@ -16,7 +16,8 @@ class CashInItem extends Model
 
     protected $appends = [
         'date_label',
-        'real_amount_label'
+        'real_amount_label',
+        'status_label'
     ];
 
     protected $dates = [
@@ -48,9 +49,18 @@ class CashInItem extends Model
         'date',
         'real_amount',
         'ket',
+        'status_paid',
         'created_at',
         'updated_at',
     ];
+
+    public function getStatusLabelAttribute()
+    {
+        if($this->attributes['status_paid']) {
+            return 'Sudah dibayar';
+        }
+        return 'Belum dibayar';
+    }
 
     public function getRealAmountLabelAttribute()
     {
@@ -79,6 +89,6 @@ class CashInItem extends Model
 
     public function cashIn()
     {
-        return $this->belongsTo(CashIn::class, 'cash_in_id');
+        return $this->belongsTo(CashIn::class, 'cash_in_id')->with('partner');
     }
 }

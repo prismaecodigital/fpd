@@ -32,8 +32,9 @@ const set = key => (state, val) => {
           commit('setTotal', response.data.total)
         })
         .catch(error => {
-          message = error.response.data.message || error.message
-          // TODO error handling
+          if (error.response && error.response.status === 403) {
+            alert('ANDA TIDAK PUNYA AKSES'); // or use a more sophisticated alert system
+          }
         })
         .finally(() => {
           commit('setLoading', false)
