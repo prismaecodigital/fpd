@@ -323,8 +323,11 @@ td.day.old, td.day.new {
 .labelCalendar6 {
     background-color: rgb(255, 7, 255);
 }
-.labelCalendar78 {
+.labelCalendar7 {
     background-color: rgb(175, 22, 160);
+}
+.labelCalendar8 {
+    background-color: rgb(0, 0, 0);
 }
 .labelCalendar99 {
     background-color: #d60202;
@@ -415,4 +418,16 @@ table > tbody > tr > td > div > a {
 
 .text-black {
     color: black !important;
+}
+
+.table-groove, .table-groove th, .table-groove td {
+    border: groove;
+}
+
+.background-total {
+    background-color: #4832851c;
+}
+
+.background-total a {
+    color: #000;
 }

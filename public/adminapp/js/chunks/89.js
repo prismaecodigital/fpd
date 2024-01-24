@@ -157,22 +157,32 @@ var render = function render() {
   }, [Object.keys(_vm.data.cashIn).length > 1 ? _c("div", {
     staticClass: "table-responsive"
   }, [Object.keys(_vm.data.cashIn).length > 1 ? _c("table", {
-    staticClass: "table table-bordered"
+    staticClass: "table table-bordered table-groove"
   }, [_c("thead", [_c("th", {
     staticStyle: {
-      "background-color": "#abb6ff"
+      "text-align": "center",
+      "font-size": "14px !important",
+      "background-color": "#483285",
+      color: "white"
     }
   }, [_vm._v("Partner")]), _vm._v(" "), _vm._l(_vm.data.cashIn[0]["data"], function (item, k) {
     return _c("th", {
       key: k,
       staticStyle: {
-        "background-color": "#abb6ff"
+        "text-align": "center",
+        "font-size": "14px !important",
+        "background-color": "#483285",
+        color: "white"
       }
     }, [_vm._v("\r\n                                    " + _vm._s(k) + "\r\n                                ")]);
   })], 2), _vm._v(" "), _c("tbody", _vm._l(_vm.data.cashIn, function (item, k) {
     return _c("tr", {
       key: k
-    }, [_c("td", [k !== "total" ? _c("span", [_c("router-link", {
+    }, [_c("td", {
+      "class": {
+        "background-total": k === "total"
+      }
+    }, [k !== "total" ? _c("span", [_c("router-link", {
       attrs: {
         to: {
           name: "cash-ins.edit",
@@ -182,9 +192,17 @@ var render = function render() {
         },
         target: "_blank"
       }
-    }, [_vm._v("\r\n                                                " + _vm._s(item["partner"]) + "\r\n                                            ")])], 1) : _c("span", [_vm._v("\r\n                                            Total\r\n                                        ")])]), _vm._v(" "), _vm._l(_vm.data.cashIn[0]["data"], function (subitem, l) {
+    }, [_vm._v("\r\n                                                " + _vm._s(item["partner"]) + "\r\n                                            ")])], 1) : _c("span", {
+      staticStyle: {
+        color: "#483285",
+        "font-weight": "bold"
+      }
+    }, [_vm._v("\r\n                                            Total\r\n                                        ")])]), _vm._v(" "), _vm._l(_vm.data.cashIn[0]["data"], function (subitem, l) {
       return _c("td", {
-        key: l
+        key: l,
+        "class": {
+          "background-total": k === "total"
+        }
       }, [k !== "total" && item["data"][l].length > 0 ? _c("span", [!item["data"][l][0]["status_paid"] ? _c("a", {
         staticStyle: {
           color: "red"
@@ -193,34 +211,45 @@ var render = function render() {
         staticStyle: {
           color: "black"
         }
-      }, [_vm._v(_vm._s(item["data"][l][0]["real_amount_label"]))]) : _vm._e()]) : _c("span", [_c("a", {
+      }, [_vm._v(_vm._s(item["data"][l][0]["real_amount_label"]))]) : _vm._e()]) : _c("span", {
         staticStyle: {
-          color: "blue"
+          color: "#483285",
+          "font-weight": "bold"
         }
-      }, [_vm._v(_vm._s(item[l]))])])]);
+      }, [_vm._v("\r\n                                            " + _vm._s(item[l]) + "\r\n                                        ")])]);
     })], 2);
   }), 0)]) : _vm._e()]) : _c("div")]), _vm._v(" "), _vm._m(2), _vm._v(" "), _c("div", {
     staticClass: "card-body"
   }, [Object.keys(_vm.data.cashOut).length > 1 ? _c("div", {
     staticClass: "table-responsive"
   }, [Object.keys(_vm.data.cashOut).length > 1 ? _c("table", {
-    staticClass: "table table-bordered"
+    staticClass: "table table-bordered table-groove"
   }, [_c("thead", [_c("th", {
     staticStyle: {
-      "background-color": "#abb6ff"
+      "text-align": "center",
+      "font-size": "14px !important",
+      "background-color": "#483285",
+      color: "white"
     }
   }, [_vm._v("DANA")]), _vm._v(" "), _vm._l(_vm.data.cashOut[0]["data"], function (item, k) {
     return _c("th", {
       key: k,
       staticStyle: {
-        "background-color": "#abb6ff"
+        "text-align": "center",
+        "font-size": "14px !important",
+        "background-color": "#483285",
+        color: "white"
       }
     }, [_vm._v("\r\n                                    " + _vm._s(k) + "\r\n                                ")]);
   })], 2), _vm._v(" "), _c("tbody", _vm._l(_vm.data.cashOut, function (item, k) {
     var _item$name, _item$name2;
     return _c("tr", {
       key: k
-    }, [_c("td", [k !== "total" ? _c("span", [item["status"] >= 5 ? _c("router-link", {
+    }, [_c("td", {
+      "class": {
+        "background-total": k === "total"
+      }
+    }, [k !== "total" ? _c("span", [item["status"] >= 5 ? _c("router-link", {
       attrs: {
         to: {
           name: "lrds.show",
@@ -240,9 +269,17 @@ var render = function render() {
         },
         target: "_blank"
       }
-    }, [_vm._v("\r\n                                                " + _vm._s((_item$name2 = item["name"]) !== null && _item$name2 !== void 0 ? _item$name2 : item["code"]) + "\r\n                                            ")]) : _vm._e()], 1) : _c("span", [_vm._v("\r\n                                            Total\r\n                                        ")])]), _vm._v(" "), _vm._l(_vm.data.cashOut[0]["data"], function (subitem, l) {
+    }, [_vm._v("\r\n                                                " + _vm._s((_item$name2 = item["name"]) !== null && _item$name2 !== void 0 ? _item$name2 : item["code"]) + "\r\n                                            ")]) : _vm._e()], 1) : _c("span", {
+      staticStyle: {
+        color: "#483285",
+        "font-weight": "bold"
+      }
+    }, [_vm._v("\r\n                                            Total\r\n                                        ")])]), _vm._v(" "), _vm._l(_vm.data.cashOut[0]["data"], function (subitem, l) {
       return _c("td", {
-        key: l
+        key: l,
+        "class": {
+          "background-total": k === "total"
+        }
       }, [k !== "total" && item["data"][l].length != 0 ? _c("span", [item["data"][l]["status"] < 5 ? _c("a", {
         staticStyle: {
           color: "red"
@@ -251,7 +288,12 @@ var render = function render() {
         staticStyle: {
           color: "black"
         }
-      }, [_vm._v(" " + _vm._s(item["data"][l].length == 0 ? "-" : item["data"][l][0]))])]) : _c("span", [_vm._v("\r\n                                            " + _vm._s(item[l]) + "\r\n                                        ")])]);
+      }, [_vm._v(" " + _vm._s(item["data"][l].length == 0 ? "-" : item["data"][l][0]))])]) : _c("span", {
+        staticStyle: {
+          color: "#483285",
+          "font-weight": "bold"
+        }
+      }, [_vm._v("\r\n                                            " + _vm._s(item[l]) + "\r\n                                        ")])]);
     })], 2);
   }), 0)]) : _vm._e()]) : _c("div")]), _vm._v(" "), _c("br")])])])]);
 };

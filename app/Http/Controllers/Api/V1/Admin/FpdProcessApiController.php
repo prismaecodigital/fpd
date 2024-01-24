@@ -68,7 +68,7 @@ class FpdProcessApiController extends Controller
         $data['code'] = $this->generateCode($dept->code, $bu->id, $data['created_at']);
     
         $fpd = Fpd::create($data);
-        $code_voucher_fpd = $this->setCodeVoucherFpd($bu->code, $fpd->created_at, $fpd->id);
+        $code_voucher_fpd = $this->setCodeVoucherFpd($bu->code, Carbon::now()->format('mY'), $fpd->id);
         $fpd->update(['code_voucher' => $code_voucher_fpd]);
 
         if ($media = $request->input('lampiran', [])) {
@@ -362,7 +362,7 @@ class FpdProcessApiController extends Controller
     }
 
     protected function setCodeVoucherFpd($bu, $createdAt, $id) {
-        $code = 'BKK/'.$bu.'/'.substr($createdAt,5,2).substr($createdAt,2,2).'/'.$id;
+        $code = 'BKK/'.$bu.'/'.$createdAt.'/'.$id;
         return $code;
     }
 

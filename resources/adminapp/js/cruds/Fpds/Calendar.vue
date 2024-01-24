@@ -43,7 +43,7 @@
                   <span v-else-if="parseInt(event.extendedProps.status) === 4" class="labelCalendar labelCalendar4">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 5" class="labelCalendar labelCalendar5">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 6" class="labelCalendar labelCalendar6">{{ event.extendedProps.code }}</span>
-                  <span v-else-if="parseInt(event.extendedProps.status) === 7" class="labelCalendar labelCalendar78">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 7" class="labelCalendar labelCalendar7">{{ event.extendedProps.code }}</span>
                   <span v-else class="labelCalendar labelCalendar99">{{ event.extendedProps.code }}</span>
                   </template>
               </full-calendar>

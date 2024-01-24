@@ -26,15 +26,12 @@ class DashboardApiController extends Controller
     public function index(Request $request)
     {
         $dept = Dept::where('bu_id', $request->bu_id)->get(['id', 'name', 'code']);
-
-        if(empty($request->startDate) && empty($request->endDate) && empty($request->startDateSummary) && empty($request->endDateSummary)) {
-            return response()->json([
-                'data' => [],
-                'meta' => [
-                    'dept' => $dept
-                ]
-            ]);
-        }
+        $deptId = json_decode($request->input('dept'), true);
+        
+        $dataCashIn = null;
+        $dataCashOut = null;
+        $dataCoaDept = null;
+        $summary = null;
 
         if(!empty($request->startDate) && !empty($request->endDate)) {
 
@@ -42,46 +39,22 @@ class DashboardApiController extends Controller
 
             $dataCashIn = $this->dataCashIn($request->bu_id, $month_list);
             $dataCashOut = $this->dataCashOut($request->bu_id, $month_list);
-
-            if(empty($request->startDateSummary) || empty($request->endDateSummary)) {
-                return response()->json([
-                    'data' => [
-                        'dataCashIn' => $dataCashIn,
-                        'dataCashOut' => $dataCashOut,
-                    ],
-                    'meta' => [
-                        'dept' => $dept
-                    ]
-                ]);
+            
+            if(!empty($deptId['id'])) {
+                $dataCoaDept = $this->dataCoaDept($deptId['id'], $request->startDate, $request->endDate);
             }
-
         }
 
-        $summary = $this->summary($request->bu_id, $request->startDateSummary, $request->endDateSummary);
-
-        $deptId = json_decode($request->input('dept'), true); // Decoding to an array
-
-        if(empty($deptId['id'])) {
-            return response()->json([
-                'data' => [
-                    'dataCashIn' => isset($dataCashIn) ? $dataCashIn : null,
-                    'dataCashOut' => isset($dataCashOut) ? $dataCashOut : null,
-                    'summary' => $summary,
-                ],
-                'meta' => [
-                    'dept' => $dept
-                ]
-            ]);
+        if(!empty($request->startDateSummary) && !empty($request->endDateSummary)) {
+            $summary = $this->summary($request->bu_id, $request->startDateSummary, $request->endDateSummary);
         }
-
-        $dataCoaDept = $this->dataCoaDept($deptId['id'], $request->startDate, $request->endDate);
 
         return response()->json([
             'data' => [
-                'dataCashIn' => isset($dataCashIn) ? $dataCashIn : null,
-                'dataCashOut' => isset($dataCashOut) ? $dataCashOut : null,
+                'dataCashIn' => $dataCashIn,
+                'dataCashOut' => $dataCashOut,
                 'summary' => $summary,
-                'dataCoaDept' => isset($dataCoaDept) ? $dataCoaDept : null,
+                'dataCoaDept' => $dataCoaDept,
             ],
             'meta' => [
                 'dept' => $dept
@@ -197,17 +170,17 @@ class DashboardApiController extends Controller
 
         // Cash IN
         $arr['rev']['unrealized'] = CashIn::getSumUnrealized($bu, 1, $startDate1, $endDate1);
-        $arr['rev']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
+        $arr['rev']['realized'] = CashInItem::where('status_paid', 1)->whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 1);
             })->sum('real_amount');
         // $arr['rev']['unrealized'] = $arr['rev']['total'] == 0 ? 0 : $arr['rev']['total'] - $arr['rev']['realized'];
         $arr['loan_prisma']['unrealized'] = CashIn::getSumUnrealized($bu, 2, $startDate1, $endDate1);
-        $arr['loan_prisma']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
+        $arr['loan_prisma']['realized'] = CashInItem::where('status_paid', 1)->whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 2);
             })->sum('real_amount');
         // $arr['loan_prisma']['unrealized'] = $arr['loan_prisma']['total'] == 0 ? 0 : $arr['loan_prisma']['total'] - $arr['loan_prisma']['realized'];
         $arr['loan_bank']['unrealized'] = CashIn::getSumUnrealized($bu, 3, $startDate1, $endDate1);
-        $arr['loan_bank']['realized'] = CashInItem::whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
+        $arr['loan_bank']['realized'] = CashInItem::where('status_paid', 1)->whereBetween('date', [$startDate1, $endDate1])->whereHas('cashIn', function($q) use($bu) {
                 $q->where('bu_id', $bu)->where('cash_in_type', 3);
             })->sum('real_amount');
         // $arr['loan_bank']['unrealized'] = $arr['loan_bank']['total'] == 0 ? 0 : $arr['loan_bank']['total'] - $arr['loan_bank']['realized'];

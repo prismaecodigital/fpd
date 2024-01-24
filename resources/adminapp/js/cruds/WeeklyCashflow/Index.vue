@@ -79,16 +79,16 @@
                 <div class="card-body">
                     <!-- Isi tabel -->
                     <div v-if="Object.keys(data.cashIn).length > 1" class="table-responsive">
-                        <table v-if="Object.keys(data.cashIn).length > 1" class="table table-bordered">
+                        <table v-if="Object.keys(data.cashIn).length > 1" class="table table-bordered table-groove">
                             <thead>
-                                <th style="background-color: #abb6ff">Partner</th>
-                                <th v-for="(item, k) in data.cashIn[0]['data']" :key="k" style="background-color: #abb6ff">
+                                <th style="text-align:center; font-size: 14px !important; background-color: #483285; color: white">Partner</th>
+                                <th v-for="(item, k) in data.cashIn[0]['data']" :key="k" style="text-align:center; font-size: 14px !important; background-color: #483285; color: white">
                                     {{k}}
                                 </th>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, k) in data.cashIn" :key="k">
-                                    <td>
+                                    <td :class="{ 'background-total': k === 'total' }">
                                         <span v-if="k !== 'total'">
                                             <router-link
                                                 :to="{ name: 'cash-ins.edit', params: { id: item['id'] } }"
@@ -97,18 +97,18 @@
                                                 {{item['partner']}}
                                             </router-link>
                                         </span>
-                                        <span v-else>
+                                        <span v-else style="color: #483285; font-weight: bold">
                                             Total
                                         </span>
                                     </td>
-                                    <td v-for="(subitem, l) in data.cashIn[0]['data']" :key="l">
+                                    <td v-for="(subitem, l) in data.cashIn[0]['data']" :key="l" :class="{ 'background-total': k === 'total' }">
                                         <span v-if="k !== 'total' && item['data'][l].length > 0">
                                                 
                                             <a v-if="!item['data'][l][0]['status_paid']" style="color:red">{{item['data'][l][0]['real_amount_label']}}</a>
                                             <a v-if="item['data'][l][0]['status_paid']" style="color:black">{{item['data'][l][0]['real_amount_label']}}</a>
                                         </span>
-                                        <span v-else>
-                                            <a style="color:blue">{{item[l]}}</a>
+                                        <span v-else style="color: #483285; font-weight: bold">
+                                            {{item[l]}}
                                         </span>
                                     </td>
                                     
@@ -128,16 +128,16 @@
                 <div class="card-body">
                     <!-- Isi tabel -->
                     <div v-if="Object.keys(data.cashOut).length > 1" class="table-responsive">
-                        <table v-if="Object.keys(data.cashOut).length > 1" class="table table-bordered">
+                        <table v-if="Object.keys(data.cashOut).length > 1" class="table table-bordered table-groove">
                             <thead>
-                                <th style="background-color: #abb6ff">DANA</th>
-                                <th v-for="(item, k) in data.cashOut[0]['data']" :key="k" style="background-color: #abb6ff">
+                                <th style="text-align:center; font-size: 14px !important; background-color: #483285; color: white">DANA</th>
+                                <th v-for="(item, k) in data.cashOut[0]['data']" :key="k" style="text-align:center; font-size: 14px !important; background-color: #483285; color: white">
                                     {{k}}
                                 </th>
                             </thead>
                             <tbody>
                                 <tr v-for="(item, k) in data.cashOut" :key="k">
-                                    <td>
+                                    <td :class="{ 'background-total': k === 'total' }">
                                         <span v-if="k !== 'total'">
                                             <router-link v-if="item['status'] >= 5"
                                                 :to="{ name: 'lrds.show', params: { id: item['id'] } }"
@@ -153,17 +153,17 @@
                                             </router-link>
                                             
                                         </span>
-                                        <span v-else>
+                                        <span v-else style="color: #483285; font-weight: bold">
                                             Total
                                         </span>
                                     </td>
-                                    <td v-for="(subitem, l) in data.cashOut[0]['data']" :key="l">
+                                    <td v-for="(subitem, l) in data.cashOut[0]['data']" :key="l" :class="{ 'background-total': k === 'total' }">
                                         <span v-if="k !== 'total' && item['data'][l].length != 0">
                                             <a v-if="item['data'][l]['status'] < 5" style="color:red"> {{item['data'][l].length == 0 ? '-' : item['data'][l][0]}}</a>
                                             <a v-else style="color:black"> {{item['data'][l].length == 0 ? '-' : item['data'][l][0]}}</a>
                                            
                                         </span>
-                                        <span v-else>
+                                        <span v-else style="color: #483285; font-weight: bold">
                                             {{item[l]}}
                                         </span>
                                     </td>

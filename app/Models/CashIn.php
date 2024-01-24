@@ -195,7 +195,8 @@ class CashIn extends Model
 
     public function getTotalCashInActual($type, $startDate, $endDate)
     {
-        return $this->where('cash_in_type', $type)->cash_in_items()->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+        return $this->where('cash_in_type', $type)->cash_in_items()
+            ->where('status_paid', 1)->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
             $query->whereBetween('source_date', [$startDate, $endDate]);
         })->sum('real_amount');
     }
@@ -203,6 +204,7 @@ class CashIn extends Model
     public function scopeGetSummedActualAmountByType($query, $startDate, $endDate)
     {
         return $query->with(['cash_in_items' => function ($subQuery) use ($startDate, $endDate) {
+            $subQuery->where('status_paid', 1);
             if ($startDate && $endDate) {
                 $subQuery->whereBetween('date', [$startDate, $endDate]);
             }
@@ -228,7 +230,7 @@ class CashIn extends Model
 
             $un_cash = $cashIns->sum('amount');
             $real_cash = $cashIns->reduce(function ($carry, $cashIn) {
-                return $carry + $cashIn->cash_in_items->sum('real_amount');
+                return $carry + $cashIn->cash_in_items->where('status_paid',1)->sum('real_amount');
             }, 0);
 
             return $un_cash - $real_cash;
