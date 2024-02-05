@@ -524,6 +524,10 @@ const routes = [
         name: 'cash-ins.edit',
         component: () => import('@cruds/CashIns/Edit.vue'),
       },
+      {
+        path: '/report-issue',
+        beforeEnter() {window.open('https://docs.google.com/forms/d/e/1FAIpQLSfYMwsBNhOH4WQs-mRFVhrnFsXqnr-tCALB6-4-JyyBgjF_kA/viewform','_blank')}
+      }
     ]
   }
 ]

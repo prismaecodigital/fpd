@@ -44,6 +44,7 @@
                   <span v-else-if="parseInt(event.extendedProps.status) === 5" class="labelCalendar labelCalendar5">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 6" class="labelCalendar labelCalendar6">{{ event.extendedProps.code }}</span>
                   <span v-else-if="parseInt(event.extendedProps.status) === 7" class="labelCalendar labelCalendar7">{{ event.extendedProps.code }}</span>
+                  <span v-else-if="parseInt(event.extendedProps.status) === 8" class="labelCalendar labelCalendar8">{{ event.extendedProps.code }}</span>
                   <span v-else class="labelCalendar labelCalendar99">{{ event.extendedProps.code }}</span>
                   </template>
               </full-calendar>
@@ -137,7 +138,11 @@
             </div>
             <div class="card-body row" style="margin-left: 20px">
                 <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(175, 22, 160)"></div>
-                <div class="col-auto"> : Realisasi, Menunggu Proses Finance / Konfirmasi User</div>
+                <div class="col-auto"> : Realisasi, Menunggu Proses Finance</div>
+            </div>
+            <div class="card-body row" style="margin-left: 20px">
+                <div class="col-auto" style="height: auto; width: 50px; background-color: rgb(0, 0, 0)"></div>
+                <div class="col-auto"> : Konfirmasi User</div>
             </div>
           </div>
         </div>

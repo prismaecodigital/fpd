@@ -163,7 +163,6 @@
                       @input="updateName"
                       @focus="focusField('name')"
                       @blur="clearFocus"
-                      disabled
                     />
                   </div>
                   

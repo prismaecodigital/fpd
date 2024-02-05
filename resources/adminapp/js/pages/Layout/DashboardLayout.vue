@@ -161,7 +161,6 @@ export default {
                 },
               ]
             },
-            
             {
               title: 'Adjustment',
               icon: 'adjust',
@@ -188,26 +187,25 @@ export default {
               path: {name: 'additional-limits.index'},
               gate: 'adjustment_access',
             },
-
           ]
         },
         {
           title: 'Calendar',
           icon: 'calendar_view_month',
           path: {name: 'fpds.calendar'},
-          gate: 'fpd_access',
+          gate: 'calendar_access',
           children: [
             {
               title: 'cruds.fpd.calendar',
               icon: 'calendar_view_month',
               path: { name: 'fpds.calendar' },
-              gate: 'fpd_access'
+              gate: 'calendar_access'
             },
             {
               title: 'Weekly Cashflow',
               icon: 'calendar_view_month',
               path: { name: 'weekly-cashflow' },
-              gate: 'fpd_access'
+              gate: 'calendar_access'
             },
             
           ]
@@ -217,6 +215,11 @@ export default {
           icon: 'person',
           path: { name: 'profile.password.edit' },
           gate: 'profile'
+        },
+        {
+          title: 'Report Issue/Bug',
+          icon: 'bug_report',
+          path: '/report-issue',
         }
       ]
     }
