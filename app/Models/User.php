@@ -53,6 +53,7 @@ class User extends Authenticatable
         'password',
         'remember_token',
         'notifable',
+        'has_completed_survey',
         'created_at',
         'updated_at',
     ];

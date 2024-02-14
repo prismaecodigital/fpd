@@ -15,6 +15,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('roles', 'RolesApiController');
 
     // Users
+    Route::get('update-user-survey', 'UsersApiController@updateUserSurvey');
     Route::get('auth-bu', 'UsersApiController@home');
     Route::resource('users', 'UsersApiController');
 
@@ -107,6 +108,8 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     // Weekly Cashflow
     Route::get('cashflow', 'CashflowApiController@index')->name('cashflow');
     Route::get('weekly-cashflow', 'CashflowApiController@weeklyCashflow')->name('weekly-cashflow');
+
+    
 
 });
 

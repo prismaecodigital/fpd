@@ -28,7 +28,11 @@ class UsersApiController extends Controller
                 'id' => $request->selected_bu === null ? $bus->first()->id : $selected_bu,
                 'code' => $request->selected_bu === null ? $bus->first()->code : $selected_bu,
                 'name' => $request->selected_bu === null ? $bus->first()->name : $selected_bu
-                ]
+            ],
+            'survey' => [
+                'has_completed_survey' => auth()->user()->has_completed_survey,
+                'link'  => 'https://forms.gle/Jy6Yb6fw5xMMTugv9'
+            ]
         ]);
     }
 
@@ -142,5 +146,16 @@ class UsersApiController extends Controller
         $user->delete();
 
         return response(null, Response::HTTP_NO_CONTENT);
+    }
+
+    public function updateUserSurvey()
+    {
+        $user = auth()->user();
+        $user->has_completed_survey = true;
+        $user->save();
+
+        dd($user);
+
+        return response()->json('success');
     }
 }

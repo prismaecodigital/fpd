@@ -335,6 +335,22 @@
           </div>
         </div>
       </div>
+      <div>
+          <b-modal id="formSurvey" centered hide-backdrop ok-only no-close-on-backdrop no-close-on-esc hide-header-close>
+            <template #modal-title>
+              Survey
+            </template>
+            <div>
+              Anda belum mengisi survey. Silahkan isi survey terlebih dahulu. Hanya 1-2 menit, santai saja
+            </div>
+            <template #modal-footer>
+              <b-button size="sm" variant="outline-secondary" @click="goToSurvey">
+                      Klik di sini
+              </b-button>
+              <!-- <a class="btn btn-sm btn-success" :href="'https://google.com'" target="_blank">Klik disini</a> -->
+            </template>
+          </b-modal>
+      </div>
     </div>
 </template>
 
@@ -502,7 +518,7 @@ export default {
   },
   computed: {
     ...mapGetters('ChartIndex', ['chart', 'loading', 'lists']),
-    ...mapGetters('AuthBu', ['selected_bu']),
+    ...mapGetters('AuthBu', ['selected_bu', 'survey']),
     updatedQuery() {
       return {
         ...this.query,
@@ -513,6 +529,7 @@ export default {
   mounted() {
     // Set the query.id when the component is mounted
     this.query.bu_id = this.selected_bu ? this.selected_bu.id : null;
+    
   },
   watch: {
     selected_bu(newSelectedBu) {
@@ -525,10 +542,15 @@ export default {
         this.fetchCharts()
       },
       deep: true
+    },
+    survey() {
+      if(!this.survey.has_completed_survey) {
+        this.$bvModal.show('formSurvey')
+      }
     }
   },
   methods: {
-    ...mapActions('ChartIndex', ['fetchCharts', 'setQuery', 'resetState']),
+    ...mapActions('ChartIndex', ['fetchCharts', 'setQuery', 'resetState', 'updateUserSurvey']),
     updateStartDate(value) {
       let newValue = JSON.parse(JSON.stringify(value.add(1, 'day')));
       this.query.startDate = newValue;
@@ -549,6 +571,12 @@ export default {
       this.query.dept.id = value.id;
       this.query.dept.name = value.name;
       console.log(this.query.dept)
+    },
+    goToSurvey() {
+      window.open(this.survey.link, '_blank');
+      this.$bvModal.hide('formSurvey');
+      this.updateUserSurvey();
+      console.log('ok')
     }
   }
 }

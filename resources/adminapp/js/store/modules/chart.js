@@ -220,6 +220,11 @@ function initialState() {
     },
     resetState({ commit }) {
         commit('resetState')
+    },
+    updateUserSurvey({commit}) {
+      axios.get('update-user-survey').then(response => {
+        console.log('updated')
+      })
     }
   }
   

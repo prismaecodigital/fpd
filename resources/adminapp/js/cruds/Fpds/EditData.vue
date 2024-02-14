@@ -52,7 +52,7 @@
                       $t('cruds.fpd.fields.req_date') 
                     }} *</label>
                     <datetime-picker
-                      class="form-control disabled"
+                      class="form-control"
                       type="text"
                       picker="date"
                       :value="entry.req_date"
@@ -60,7 +60,6 @@
                       @focus="focusField('req_date')"
                       @blur="clearFocus"
                       required
-                      disabled
                     >
                     </datetime-picker>
                   </div>
@@ -103,8 +102,6 @@
                       :options="lists.bu"
                       :reduce="entry => entry.id"
                       @input="updateBu"
-                      @search.focus="focusField('bu')"
-                      @search.blur="clearFocus"
                       disabled
                     >
                       <template #search="{attributes, events}">
@@ -266,7 +263,6 @@
                       :reduce="entry => entry.value"
                       @input="updateKlasifikasi"
                       
-                      disabled
                     />
                   </div>
 
@@ -392,7 +388,7 @@
                         <input disabled class="form-control wrapText required" type="number" :value="parseInt(item.real_amount) - parseInt(item.amount)" required/>
                     </td>
                     <td>
-                    <v-select disabled
+                    <v-select
                       name="site"
                       label="name"
                       :key="'site-field'"

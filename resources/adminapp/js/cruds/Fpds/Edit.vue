@@ -61,7 +61,6 @@
                       @focus="focusField('req_date')"
                       @blur="clearFocus"
                       required
-                      disabled
                     >
                     </datetime-picker>
                   </div>
