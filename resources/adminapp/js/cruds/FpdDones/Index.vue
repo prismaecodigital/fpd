@@ -25,8 +25,8 @@
               </i>
               {{ $t('global.refresh') }}
             </button>
-            <button v-if="$can('finance')" class="btn btn-success" @click="logCheckedValues">Buat Jurnal</button>
-            <button v-if="$can('finance')" class="btn btn-primary" @click="openModalImport">Import Jurnal</button>
+            <button v-if="$can('journal_create')" class="btn btn-success" @click="logCheckedValues">Buat Jurnal</button>
+            <button v-if="$can('journal_create')" class="btn btn-primary" @click="openModalImport">Import Jurnal</button>
           </div>
           
 

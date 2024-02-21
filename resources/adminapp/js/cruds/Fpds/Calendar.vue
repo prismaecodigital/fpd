@@ -92,8 +92,8 @@
                   </div>
 
                   <template v-if="calendarData" #modal-footer="{ hide }">
-                    <a v-if="$can('fpd_show')" class="btn btn-sm btn-info" :href="'fpds/' + calendarData.id" target="_blank">Detail</a>
-                    <a v-if="$can(calendarData.extendedProps?.status)"  class="btn btn-sm btn-success" :href="'fpds/' + calendarData.id +'/editData'" target="_blank">Proses</a>
+                    <a v-if="$can('fpd_show') && calendarData.extendedProps?.status < 5" class="btn btn-sm btn-info" :href="'/admin/fpd-processes/' + calendarData.id" target="_blank">Detail</a>
+                    <a v-if="$can('fpd_show') && calendarData.extendedProps?.status >= 5" class="btn btn-sm btn-info" :href="'/admin/lrds/' + calendarData.id" target="_blank">Detail</a>
                     <b-button size="sm" variant="outline-secondary" @click="hide('forget')">
                       Cancel
                     </b-button>

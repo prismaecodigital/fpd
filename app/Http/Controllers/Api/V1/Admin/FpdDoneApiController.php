@@ -33,7 +33,7 @@ class FpdDoneApiController extends Controller
     public function index(Request $request)
     {
         $bu = Bu::where('id', $request->id)->first();
-        $buCode = $bu->code;
+        $buCode = $bu ? $bu->code : null;
         abort_if(Gate::denies($buCode.'-fpd_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
         

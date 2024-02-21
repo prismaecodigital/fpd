@@ -205,7 +205,7 @@ export default {
               title: 'Weekly Cashflow',
               icon: 'calendar_view_month',
               path: { name: 'weekly-cashflow' },
-              gate: 'calendar_access'
+              gate: 'weekly_calendar_access'
             },
             
           ]

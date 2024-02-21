@@ -20,7 +20,7 @@ class IntegrationApiController extends Controller
         $accurate = Integration::where('id','1')->first();
 
         $today = Carbon::now();
-        $expire_date = Carbon::parse($accurate->expire_date);
+        $expire_date = Carbon::parse($accurate->expire_date ?? '2000-01-01');
 
         if($today >= $expire_date) {
             $accurate->update(['status' => 'expire']);

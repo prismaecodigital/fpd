@@ -147,7 +147,7 @@ var render = function render() {
     _c = _vm._self._c;
   return _c("div", {
     staticClass: "dt-action-container"
-  }, [_vm.$can(_vm.row.bu.code + "-" + _vm.xprops.permission_prefix + "show") ? _c("router-link", {
+  }, [_vm.$can(_vm.xprops.permission_prefix + "show") ? _c("router-link", {
     staticClass: "btn btn-round btn-default text-azure",
     attrs: {
       to: {

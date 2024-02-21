@@ -264,7 +264,7 @@
                       :max-file-size="10"
                       @file-uploaded="insertLampiranFile"
                       @file-removed="removeLampiranFile"
-                      :max-files="10"
+                      :max-files="30"
                     />
                   </div>
                 </div>

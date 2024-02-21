@@ -313,6 +313,11 @@
               <h4 class="card-title">
                 <strong><b>Detail Dana</b></strong>
               </h4>
+              <p v-if="entry.dept_id == 8 && (entry.status == '5' || entry.status == '6')" style="color: black">
+                Upload XLSX : <input type="file" @change="handleFileUpload" />
+                <a href="/template/template-realisasi.xlsx" style="float: right; margin-right: 20px">Download Template</a>
+              </p>
+              
             </div>
             <br>
             <div class="card-body">
@@ -450,6 +455,7 @@ import { mapGetters, mapActions } from 'vuex'
 import Attachment from '@components/Attachments/Attachment'
 import DatatableAttachments from '@components/Datatables/DatatableAttachments'
 import Swal from 'sweetalert2'
+import { read, utils } from 'xlsx';
 
 export default {
   components: {
@@ -593,6 +599,11 @@ export default {
     updateItemAccount(index,value) {
       this.setItemAccount({index, value})
     },
+    updateItemAccountExcel(index,value) {
+      console.log(index,value)
+      const account = this.lists.accounts.find((obj) => obj.id === parseInt(value));
+      this.setItemAccount({index, value: account})
+    },
     updateItemAmount(index, event, val) {
       val = event.target.value
       this.setItemAmount({ index, val });
@@ -605,8 +616,19 @@ export default {
       }
       this.setItemRealAmount({ index, val });
     },
+    updateItemRealAmountExcel(index, val) {
+      if(val !== '') {
+        val = val
+      } else {
+        val = 0
+      }
+      this.setItemRealAmount({ index, val });
+    },
     updateItemKet(index, event, val) {
       val = event.target.value
+      this.setItemKet({index, val})
+    },
+    updateItemKetExcel(index, val) {
       this.setItemKet({index, val})
     },
     updateItemSite(index,value) {
@@ -711,6 +733,41 @@ export default {
         event.preventDefault();
       }
     },
+    handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (file) {
+        this.readExcelFile(file);
+      }
+    },
+    readExcelFile(file) {
+      const reader = new FileReader();
+
+      reader.onload = (event) => {
+        const data = event.target.result;
+        const workbook = read(data, { type: 'binary' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const excelData = utils.sheet_to_json(worksheet, {raw: false });
+        const rowExcel = excelData.filter(obj => obj.hasOwnProperty('account_id'));
+        console.log(rowExcel)
+        // Process the excelData and add new rows based on the 'realisasi' column
+        for (let i = 0; i < rowExcel.length; i++) {
+          const rowData = rowExcel[i];
+          if(rowData.account_id !== undefined && rowData.account_id !== '') {
+              if(i !== 0) {
+                this.addItem()
+              }
+              this.updateItemAccountExcel(i, rowData.account_id)
+              this.updateItemRealAmountExcel(i, rowData.realisasi)
+              this.updateItemKetExcel(i, rowData.notes)
+          }
+        }
+      };
+
+      reader.readAsBinaryString(file);
+    },
   }
 }
 </script>
+
+

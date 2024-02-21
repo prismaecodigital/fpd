@@ -1,7 +1,7 @@
 <template>
   <div class="dt-action-container">
     <router-link
-      v-if="$can(row.bu.code + '-' + xprops.permission_prefix + 'show')"
+      v-if="$can(xprops.permission_prefix + 'show')"
       :to="{ name: xprops.route + '.show', params: { id: row.id } }"
       class="btn btn-round btn-default text-azure"
     >

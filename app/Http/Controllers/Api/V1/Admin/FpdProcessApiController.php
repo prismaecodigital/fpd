@@ -68,8 +68,11 @@ class FpdProcessApiController extends Controller
         $data['code'] = $this->generateCode($dept->code, $bu->id, $data['created_at']);
     
         $fpd = Fpd::create($data);
-        $code_voucher_fpd = $this->setCodeVoucherFpd($bu->code, Carbon::now()->format('mY'), $fpd->id);
-        $fpd->update(['code_voucher' => $code_voucher_fpd]);
+        if(empty($request->code_voucher) || $request->code_voucher === '')
+        {
+            $code_voucher_fpd = $this->setCodeVoucherFpd($bu->code, Carbon::now()->format('mY'), $fpd->id);
+            $fpd->update(['code_voucher' => $code_voucher_fpd]);
+        }
 
         if ($media = $request->input('lampiran', [])) {
             Media::whereIn('id', data_get($media, '*.id'))
