@@ -153,9 +153,6 @@ class UsersApiController extends Controller
         $user = auth()->user();
         $user->has_completed_survey = true;
         $user->save();
-
-        dd($user);
-
         return response()->json('success');
     }
 }

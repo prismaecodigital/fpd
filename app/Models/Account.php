@@ -107,11 +107,11 @@ class Account extends Model
         return $this->hasMany(FpdItem::class, 'account_id');
     }
 
-    public function getTotalCashOutActual($startDate, $endDate)
+    public function getTotalCashOutActual($startDate, $endDate, $deptId)
     {
         return $this->fpdItems()
-                    ->whereHas('fpd', function ($query) use ($startDate, $endDate) {
-                        $query->whereNotNull('processed_date');
+                    ->whereHas('fpd', function ($query) use ($startDate, $endDate, $deptId) {
+                        $query->whereNotNull('processed_date')->where('dept_id', $deptId);
                         if ($startDate && $endDate) {
                             $query->where('status', '>' , 4 )->whereBetween('processed_date', [$startDate, $endDate]);
                         }
@@ -169,24 +169,24 @@ class Account extends Model
         return $this->destinationAdjustments()->where('type', '2')->where('status','9')->whereYear('source_date', $year)->whereMonth('source_date', $month)->sum('amount');
     }
 
-    public function getTotalAmountSourceAdjustment($startDate, $endDate)
+    public function getTotalAmountSourceAdjustment($startDate, $endDate, $deptId)
     {
-        return $this->sourceAdjustments()->where('status','9')->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
-            $query->whereBetween('source_date', [$startDate, $endDate]);
+        return $this->sourceAdjustments()->where('status','9')->when($startDate && $endDate, function ($query) use ($startDate, $endDate, $deptId) {
+            $query->whereBetween('source_date', [$startDate, $endDate])->where('dept_id', $deptId);
         })->sum('amount');
     }
 
-    public function getTotalAmountDestinationAdjustmentPeriod($startDate, $endDate)
+    public function getTotalAmountDestinationAdjustmentPeriod($startDate, $endDate, $deptId)
     {
-        return $this->sourceAdjustments()->where('type', '1')->where('status','9')->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
-            $query->whereBetween('destination_date', [$startDate, $endDate]);
+        return $this->sourceAdjustments()->where('type', '1')->where('status','9')->when($startDate && $endDate, function ($query) use ($startDate, $endDate, $deptId) {
+            $query->whereBetween('destination_date', [$startDate, $endDate])->where('dept_id', $deptId);
         })->sum('amount');
     }
 
-    public function getTotalAmountDestinationAdjustmentCoa($startDate, $endDate)
+    public function getTotalAmountDestinationAdjustmentCoa($startDate, $endDate, $deptId)
     {
-        return $this->destinationAdjustments()->where('type', '2')->where('status','9')->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
-            $query->whereBetween('source_date', [$startDate, $endDate]);
+        return $this->destinationAdjustments()->where('type', '2')->where('status','9')->when($startDate && $endDate, function ($query) use ($startDate, $endDate, $deptId) {
+            $query->whereBetween('source_date', [$startDate, $endDate])->where('dept_id', $deptId);
         })->sum('amount');
     }
 

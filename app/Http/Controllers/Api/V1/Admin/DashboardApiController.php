@@ -134,11 +134,9 @@ class DashboardApiController extends Controller
             $projection = $coa->cashOutProjections()
                         ->whereBetween('date', [$startDate1, $endDate1])
                         ->sum('projection_amount');
-            $actual = $coa->getTotalCashOutActual($startDate1, $endDate1);
+            $actual = $coa->getTotalCashOutActual($startDate1, $endDate1, $deptId);
 
-            if($projection == 0 && $actual == 0) {
-                continue;
-            }
+            
 
             $arr['projection']['data'][] = $projection;
             $arr['projection']['percentage'][] = $projection == 0 ? 0 : 1;

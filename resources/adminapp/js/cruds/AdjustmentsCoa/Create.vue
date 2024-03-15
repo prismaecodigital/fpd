@@ -21,6 +21,38 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
+                      'is-filled': entry.dept_id,
+                      'is-focused': activeField == 'dept_id'
+                    }"
+                  >
+                    <label class="required">Dept</label>
+                    <v-select
+                      name="dept"
+                      :key="'dept-field'"
+                      label="name"
+                      :value="entry.dept_id"
+                      :options="lists.dept"
+                      :reduce="dept => dept.id"
+                      @input="updateDept"
+                    >
+                    <template #search="{attributes, events}">
+                        <input
+                          class="vs__search"
+                          :required="!entry.dept_id"
+                          v-bind="attributes"
+                          v-on="events"
+                        />
+                      </template>
+                    </v-select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
                       'is-filled': entry.source_date_label,
                       'is-focused': activeField == 'source_date'
                     }"
@@ -49,7 +81,7 @@
                       :key="'source_coa-field'"
                       label="name"
                       :value="entry.source_coa_id"
-                      :options="lists.coa"
+                      :options="lists.filteredCoa"
                       :reduce="coa => coa.id"
                       @input="updateSourceCoa"                      
                     >
@@ -76,7 +108,7 @@
                       :key="'source_coa-field'"
                       label="name"
                       :value="entry.destination_coa_id"
-                      :options="lists.coa"
+                      :options="lists.filteredCoa"
                       :reduce="coa => coa.id"
                       @input="updateDestinationCoa"                      
                     >
@@ -230,7 +262,7 @@ export default {
       'setProcessedDate', 'setSourceDate', 'setDestinationCoa',
       'setAmount',
       'setKet',
-      'setSourceCoa',
+      'setSourceCoa', 'setDept',
       'fetchCreateData','setQuery'
     ]),
     updateSourceDate(value) {
@@ -247,6 +279,9 @@ export default {
     },
     updateSourceCoa(value) {
       this.setSourceCoa(value)
+    },
+    updateDept(value) {
+      this.setDept(value)
     },
     submitForm() {
       this.storeData()

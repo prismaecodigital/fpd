@@ -18,11 +18,14 @@ function initialState() {
         destination_amount: '',
         status: '1',
         user_id: null,
+        dept_id: null,
         approve: null,
         reject: null,
       },
       lists: {
-        coa: []
+        coa: [],
+        filteredCoa: [],
+        dept: []
       },
       query: {},
       loading: false
@@ -172,6 +175,12 @@ function initialState() {
     setUser({ commit }, value) {
       commit('setUser', value)
     },
+    setDept({ commit }, value) {
+      commit('setDept', value)
+      commit('setSourceCoa', null)
+      commit('setDestinationCoa', null)
+      commit('setFilteredCoa', value)
+    },
     fetchCreateData({ commit, state }) {
       axios.get(`${route}/create`, {params : state.query}).then(response => {
         commit('setLists', response.data.meta)
@@ -271,6 +280,15 @@ function initialState() {
     },
     setUser(state, value) {
       state.entry.user_id = value
+    },
+    setDept(state, value) {
+      state.entry.dept_id = value
+    },
+    setFilteredCoa(state, value) {
+      state.lists.filteredCoa = state.lists.coa.filter(item => 
+        item.depts.some(dept => dept.id === value)
+      );
+      console.log(value)
     },
     setLists(state, lists) {
       state.lists = lists

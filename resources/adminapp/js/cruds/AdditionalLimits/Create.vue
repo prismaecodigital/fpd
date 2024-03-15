@@ -27,6 +27,33 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
+                      'is-filled': entry.dept_id,
+                      'is-focused': activeField == 'dept_id'
+                    }"
+                  >
+                    <label class="required">Dept</label>
+                    <v-select
+                      name="dept"
+                      :key="'dept-field'"
+                      label="name"
+                      :value="entry.dept_id"
+                      :options="lists.dept"
+                      :reduce="dept => dept.id"
+                      @input="updateDept"
+                    >
+                    <template #search="{attributes, events}">
+                        <input
+                          class="vs__search"
+                          :required="!entry.dept_id"
+                          v-bind="attributes"
+                          v-on="events"
+                        />
+                      </template>
+                    </v-select>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
                       'is-filled': entry.date,
                       'is-focused': activeField == 'date'
                     }"
@@ -98,8 +125,8 @@
                       label="name"
                       :key="'coa-field'"
                       :value="entry.coa_id"
-                      :options="lists.coa"
-                      :reduce="entry => entry.id"
+                      :options="lists.filtered_coa"
+                      :reduce="coa => coa.id"
                       @input="updateCoa"                      
                     >
                     <template #search="{attributes, events}">
@@ -127,8 +154,8 @@
                       label="code"
                       :key="'coa-field'"
                       :value="entry.coa_id"
-                      :options="lists.coa"
-                      :reduce="entry => entry.id"
+                      :options="lists.filtered_coa"
+                      :reduce="coa => coa.id"
                       disabled
                     >
                     </v-select>
@@ -202,11 +229,14 @@ export default {
       'setDate',
       'setCoa',
       'setAmount',
-      'setKet',
+      'setKet', 'setDept',
       'fetchCreateData', 'setQuery'
     ]),
     updateDate(value) {
       this.setDate(value)
+    },
+    updateDept(value) {
+      this.setDept(value)
     },
     updateCoa(value) {
       this.setCoa(value)

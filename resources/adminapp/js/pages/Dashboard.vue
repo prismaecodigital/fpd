@@ -103,9 +103,9 @@
                   Cashflow OUT by DEPT - {{this.query.dept ? this.query.dept.name : ''}}
                 </b></strong></h4>
               </div>
-              <div class="card-body">
+              <div class="card-body" >
                   <Bar :chart-options="chartOptions_coa_dept" :chart-data="chart.coa_dept_charts" :dataset-id-key="datasetIdKey"
-                  :css-classes="cssClasses" :styles="styles" :width="width" :height="height" />
+                  :css-classes="cssClasses" :styles="styles" :width="width" :style="{ height: dynamicHeight + 'px' }" />
               </div>
             </div>
           </div>
@@ -525,6 +525,13 @@ export default {
         bu_id: this.selected_bu ? this.selected_bu.id : null,
       };
     },
+    dynamicHeight() {
+      // Assuming each item needs 50px of height and an additional 100px for padding, axis labels, etc.
+      const itemHeight = 10;
+      const baseHeight = 15; // Adjust base height for chart padding, labels, etc.
+      const numberOfItems = this.chart.coa_dept_charts.datasets.reduce((acc, curr) => acc + curr.data.length, 0);
+      return numberOfItems * itemHeight + baseHeight;
+    }
   },
   mounted() {
     // Set the query.id when the component is mounted

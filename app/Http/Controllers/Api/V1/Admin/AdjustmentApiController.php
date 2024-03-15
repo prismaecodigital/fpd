@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdjustmentResource;
 use App\Models\Adjustment;
 use App\Models\Bu;
+use App\Models\Dept;
 use App\Models\Account;
 use App\Models\StatusAdjustment;
 use Gate;
@@ -47,10 +48,10 @@ class AdjustmentApiController extends Controller
 
         return response([
             'meta' => [
-                'coa' => Account::where('bu_id', $request->bu_id)->whereHas('depts', function($q) {
+                'coa' => Account::with('depts')->where('bu_id', $request->bu_id)->whereHas('depts', function($q) {
                     $q->whereIn('dept_id', auth()->user()->depts->pluck('id'));
-                })
-                ->get(['id', 'code', 'name']),
+                })->get(['id', 'code', 'name'])->load('depts'),
+                'dept' => Dept::where('bu_id', $request->bu_id)->whereIn('id', auth()->user()->depts->pluck('id'))->get(['id', 'code', 'name'])
             ],
         ]);
     }

@@ -14,7 +14,9 @@ function initialState() {
         reject: null,
       },
       lists: {
-        coa: []
+        coa: [],
+        filtered_coa: [],
+        dept: [],
       },
       query: {},
       loading: false
@@ -100,6 +102,11 @@ function initialState() {
     setCoa({ commit }, value) {
       commit('setCoa', value)
     },
+    setDept({ commit }, value) {
+      commit('setDept', value)
+      commit('setCoa', null)
+      commit('setFilteredCoa', value)
+    },
     setAmount({ commit }, value) {
       commit('setAmount', value)
     },
@@ -154,6 +161,14 @@ function initialState() {
     },
     setCoa(state, value) {
       state.entry.coa_id = value
+    },
+    setDept(state, value) {
+      state.entry.dept_id = value
+    },
+    setFilteredCoa(state, value) {
+      state.lists.filtered_coa = state.lists.coa.filter(item => 
+        item.depts.some(dept => dept.id === value)
+      );
     },
     setAmount(state, value) {
       const parsedValue = parseFloat(value.replace(/\./g, '').replace(',', '.'));

@@ -18,11 +18,14 @@ function initialState() {
         destination_amount: '',
         status: '1',
         user_id: null,
+        dept_id: null,
         approve: null,
         reject: null,
       },
       lists: {
-        coa: []
+        coa: [],
+        filteredCoa: [],
+        dept: []
       },
       query: {},
       loading: false
@@ -178,6 +181,12 @@ function initialState() {
     setStatus({ commit }, value) {
       commit('setStatus', value)
     },
+    setDept({ commit }, value) {
+      commit('setDept', value)
+      commit('setSourceCoa', null)
+      commit('setDestinationCoa', null)
+      commit('setFilteredCoa', value)
+    },
     setReject({ commit }, value) {
       commit('setReject', value)
     },
@@ -277,6 +286,15 @@ function initialState() {
     },
     setStatus(state, value) {
       state.entry.status = value
+    },
+    setDept(state, value) {
+      state.entry.dept_id = value
+    },
+    setFilteredCoa(state, value) {
+      state.lists.filteredCoa = state.lists.coa.filter(item => 
+        item.depts.some(dept => dept.id === value)
+      );
+      console.log(value)
     },
     setReject(state, value) {
       state.entry.reject = value

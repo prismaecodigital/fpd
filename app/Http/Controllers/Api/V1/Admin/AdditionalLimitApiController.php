@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\AdditionalLimitResource;
 use App\Models\AdditionalLimit;
 use App\Models\Bu;
+use App\Models\Dept;
 use App\Models\Account;
 use App\Models\StatusAdditional;
 use Gate;
@@ -51,9 +52,11 @@ class AdditionalLimitApiController extends Controller
 
         return response([
             'meta' => [
-                'coa' => Account::where('bu_id', $request->bu_id)->whereHas('depts', function($q) {
+                'coa' => Account::with('depts')->where('bu_id', $request->bu_id)->whereHas('depts', function($q) {
                     $q->whereIn('dept_id', auth()->user()->depts->pluck('id'));
                 })->get(['id', 'code', 'name']),
+                'filtered_coa' => [],
+                'dept' => Dept::where('bu_id', $request->bu_id)->whereIn('id', auth()->user()->depts->pluck('id'))->get(['id', 'code', 'name'])
             ],
         ]);
     }

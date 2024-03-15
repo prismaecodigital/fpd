@@ -393,12 +393,12 @@ function initialState() {
               }
             }
           }
-          if(entry.status !== '8') {
+          if(entry.status !== '9') {
             state.timelineData[entry.status_histories.length].tanggal = ''
             state.timelineData[entry.status_histories.length].user = ''
             state.timelineData[entry.status_histories.length].proses = 'proses'
           }
-          if(entry.status === '8') {
+          if(entry.status === '9') {
             state.timelineData[entry.status_histories.length].tanggal = ''
             state.timelineData[entry.status_histories.length].user = ''
             state.timelineData[entry.status_histories.length].proses = 'selesai'

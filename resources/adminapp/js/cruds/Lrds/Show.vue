@@ -196,7 +196,7 @@
               <tbody>
                 <tr v-for="(item, k) in entry.items" :key="k">
                   <td>
-                      {{item.account.name}}
+                      {{item.account?.name}}
                   </td>
                   <td>
                       {{formatCurrency(item.amount)}}

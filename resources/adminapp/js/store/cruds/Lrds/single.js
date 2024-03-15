@@ -379,17 +379,17 @@ function initialState() {
             if (entry.status_histories.hasOwnProperty(y)) {
               if (parseInt(state.timelineData[y].status_val) + 1 === parseInt(entry.status_histories[y].status)) {
                 state.timelineData[y].tanggal = moment(entry.status_histories[y].created_at).format('DD MMMM YYYY, HH:mm');
-                state.timelineData[y].user = entry.status_histories[y].user.name;
+                state.timelineData[y].user = entry.status_histories[y]?.user?.name;
                 state.timelineData[y].proses = 'selesai';
               }
             }
           }
-          if(entry.status !== '8') {
+          if(entry.status !== '9') {
             state.timelineData[entry.status_histories.length].tanggal = ''
             state.timelineData[entry.status_histories.length].user = ''
             state.timelineData[entry.status_histories.length].proses = 'proses'
           }
-          if(entry.status === '8') {
+          if(entry.status === '9') {
             state.timelineData[entry.status_histories.length].tanggal = ''
             state.timelineData[entry.status_histories.length].user = ''
             state.timelineData[entry.status_histories.length].proses = 'selesai'

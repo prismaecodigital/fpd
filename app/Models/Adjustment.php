@@ -76,7 +76,8 @@ class Adjustment extends Model
         'updated_at',
         'status',
         'ket',
-        'reject'
+        'reject',
+        'dept_id'
     ];
 
     public const TYPE_SELECT = [
@@ -188,5 +189,10 @@ class Adjustment extends Model
     public function status_adjustments()
     {
         return $this->hasMany(StatusAdjustment::class, 'adjustment_id');
+    }
+
+    public function dept()
+    {
+        return $this->belongsTo(Dept::class);
     }
 }

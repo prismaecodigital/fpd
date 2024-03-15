@@ -271,7 +271,7 @@
                 <strong><b>Realized Cash In (Pendapatan yang sudah masuk)</b></strong>
               </h4>
               <br v-if="entry.status == 0">
-              <button v-if="entry.status == 0" type='button' class="btn btn-sm btn-info" @click="addNewRow">
+              <button v-if="entry.status == 0 && $can('cash_in_edit')" type='button' class="btn btn-sm btn-info" @click="addNewRow">
                   <i class="fa fa-plus-circle"></i>
                   Add Payment
               </button>
@@ -330,7 +330,7 @@
               </table>
               
             </div>
-            <div class="card-footer">
+            <div v-if="$can('cash_in_edit')" class="card-footer">
               <vue-button-spinner v-if="entry.status == 0"
                 class="btn-sm btn-success"
                 :status="status"

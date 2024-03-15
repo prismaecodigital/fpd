@@ -27,15 +27,15 @@ class CashOutProjectionApiController extends Controller
         $startDate = $request->startDate ? Carbon::parse(trim($request->startDate, '"'))->format('Y-m-d') : null;
         $endDate = $request->endDate ? Carbon::parse(trim($request->endDate, '"'))->format('Y-m-d') : null;
 
-        $data = CashOutProjection::where('bu_id', $request->id)->getSummedProjectionAmountByCoa($startDate, $endDate)->with('dept')->paginate(request('limit', 10));
+        $data = CashOutProjection::where('bu_id', $request->id)->getSummedProjectionAmountByCoa($startDate, $endDate)->with('dept')->orderBy('dept_id')->paginate(request('limit', 10));
         $data->getCollection()->transform(function ($item) use ($startDate, $endDate) {
             $item->percentage = $item->total_projection_amount != 0 && $item->total_projection_amount != null ? 
-                    number_format($item->coa->getTotalCashOutActual($startDate, $endDate) * 100 / $item->total_projection_amount, 2,',','.') . '%' : '-';
-            $item->total_anggaran_after_adjustment = ' - ' .number_format( $item->coa->getTotalAmountSourceAdjustment($startDate, $endDate), 0,',','.') .  ' + ' .
-                    number_format($item->coa->getTotalAmountDestinationAdjustmentPeriod($startDate, $endDate), 0,',','.') . ' + ' . 
-                    number_format($item->coa->getTotalAmountDestinationAdjustmentCoa($startDate, $endDate), 0,',','.');
+                    number_format($item->coa->getTotalCashOutActual($startDate, $endDate, $item->dept_id) * 100 / $item->total_projection_amount, 2,',','.') . '%' : '-';
+            $item->total_anggaran_after_adjustment = ' - ' .number_format( $item->coa->getTotalAmountSourceAdjustment($startDate, $endDate, $item->dept_id), 0,',','.') .  ' + ' .
+                    number_format($item->coa->getTotalAmountDestinationAdjustmentPeriod($startDate, $endDate, $item->dept_id), 0,',','.') . ' + ' . 
+                    number_format($item->coa->getTotalAmountDestinationAdjustmentCoa($startDate, $endDate, $item->dept_id), 0,',','.');
             $item->total_projection_amount = number_format($item->total_projection_amount, 0, ',', '.');
-            $item->total_cash_out_actual = number_format($item->coa->getTotalCashOutActual($startDate, $endDate), 0, ',', '.');
+            $item->total_cash_out_actual = number_format($item->coa->getTotalCashOutActual($startDate, $endDate, $item->dept_id), 0, ',', '.');
             return $item;
         });
 

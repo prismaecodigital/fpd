@@ -28,7 +28,8 @@ class AdditionalLimit extends Model
         'created_at',
         'updated_at',
         'status',
-        'reject'
+        'reject',
+        'dept_id'
     ];
 
     protected $dates = [
@@ -104,6 +105,11 @@ class AdditionalLimit extends Model
     public function setDateAttribute($value)
     {
         $this->attributes['date'] = $value ? Carbon::createFromFormat(config('project.date_format'), $value)->format('Y-m-d') : null;
+    }
+
+    public function dept()
+    {
+        return $this->belongsTo(Dept::class);
     }
 
 }

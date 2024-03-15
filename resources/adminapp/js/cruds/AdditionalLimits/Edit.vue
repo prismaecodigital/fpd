@@ -21,6 +21,33 @@
                   <div
                     class="form-group bmd-form-group"
                     :class="{
+                      'is-filled': entry.dept_id,
+                      'is-focused': activeField == 'dept_id'
+                    }"
+                  >
+                    <label class="required">Dept</label>
+                    <v-select
+                      name="dept"
+                      :key="'dept-field'"
+                      label="name"
+                      :value="entry.dept_id"
+                      :options="lists.dept"
+                      :reduce="dept => dept.id"
+                      @input="updateDept"
+                    >
+                    <template #search="{attributes, events}">
+                        <input
+                          class="vs__search"
+                          :required="!entry.dept_id"
+                          v-bind="attributes"
+                          v-on="events"
+                        />
+                      </template>
+                    </v-select>
+                  </div>
+                  <div
+                    class="form-group bmd-form-group"
+                    :class="{
                       'is-filled': entry.date,
                       'is-focused': activeField == 'date'
                     }"
@@ -92,7 +119,7 @@
                       label="name"
                       :key="'coa-field'"
                       :value="entry.coa_id"
-                      :options="lists.coa"
+                      :options="lists.filteredCoa"
                       :reduce="entry => entry.id"
                       @input="updateCoa"
                     >
@@ -121,7 +148,7 @@
                       label="code"
                       :key="'coa-field'"
                       :value="entry.coa_id"
-                      :options="lists.coa"
+                      :options="lists.filteredCoa"
                       :reduce="entry => entry.id"
                       disabled
                     >
@@ -206,7 +233,7 @@
                       label="name"
                       :key="'coa-field'"
                       :value="entry.coa_id"
-                      :options="lists.coa"
+                      :options="lists.filteredCoa"
                       :reduce="entry => entry.id"
                       @input="updateCoa"
                       disabled
@@ -236,7 +263,7 @@
                       label="code"
                       :key="'coa-field'"
                       :value="entry.coa_id"
-                      :options="lists.coa"
+                      :options="lists.filteredCoa"
                       :reduce="entry => entry.id"
                       disabled
                     >
@@ -304,7 +331,7 @@ export default {
       'resetState',
       'setDate',
       'setCoa',
-      'setAmount',
+      'setAmount', 'setDept',
       'setKet', 'setStatus', 'setReject', 'updateData',
       'fetchEditData', 'setQuery'
     ]),
@@ -316,6 +343,9 @@ export default {
     },
     updateAmount(e) {
       this.setAmount(e.target.value)
+    },
+    updateDept(value) {
+      this.setDept(value)
     },
     updateKet(e) {
       this.setKet(e.target.value)
