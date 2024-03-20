@@ -238,7 +238,7 @@
                     }"
                   >
                     <label class="required">{{
-                      $t('cruds.adjustment-period.fields.coa_name')
+                      $t('cruds.adjustment-period.fields.source_coa')
                     }}</label>
                     <v-select
                       name="source_coa"
