@@ -152,13 +152,13 @@ class AccountApiController extends Controller
         $source_coa = Account::find($request->source_coa_id);
         $destination_coa = Account::find($request->destination_coa_id);
     
-        $source_amount = $source_coa ? $source_coa->getBalance($request->source_date) : 0;
+        $source_amount = $source_coa ? $source_coa->getBalance($request->source_date, $request->dept_id) : 0;
         $destination_amount = 1;
         if($request->type == 1) {
-            $destination_amount = $source_coa ? $source_coa->getBalance($request->destination_date) : 0;
+            $destination_amount = $source_coa ? $source_coa->getBalance($request->destination_date, $request->dept_id) : 0;
         }
         if($request->type == 2) {
-            $destination_amount = $destination_coa ? $destination_coa->getBalance($request->source_date) : 0;
+            $destination_amount = $destination_coa ? $destination_coa->getBalance($request->source_date, $request->dept_id) : 0;
         }
     
         return response()->json([
