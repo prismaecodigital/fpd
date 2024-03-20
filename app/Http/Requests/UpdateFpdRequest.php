@@ -74,7 +74,7 @@ class UpdateFpdRequest extends FormRequest
                     $projection_lock = $this->validation[$itemIndex]['projection_lock'];
 
                     if ($projection_lock == true && $value > $sourceAmount) {
-                        $fail('Nominal pengajuan harus kurang dari maksimum yang dibatasi');
+                        $fail('Nominal pengajuan harus kurang dari maksimum yang dibatasi. Lakukan penambahan RAT dengan adjustment / additional');
                     }
                 }
             ],

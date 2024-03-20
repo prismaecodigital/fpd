@@ -119,22 +119,23 @@ class Account extends Model
                     ->sum('real_amount');
     }
 
-    public function getCashOutActual($date)
+    public function getCashOutActual($date, $deptId)
     {
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
-        return $this->fpdItems()->whereHas('fpd', function($query) use ($month, $year) {
-            $query->where('status', '>' , 4 )->whereYear('processed_date', $year)->whereMonth('processed_date', $month);
+        return $this->fpdItems()->whereHas('fpd', function($query) use ($month, $year, $deptId) {
+            $query->where('status', '>' , 4 )->whereYear('processed_date', $year)->whereMonth('processed_date', $month)->where('dept_id', $deptId);
         })->sum('real_amount');
     }
 
-    public function getProjection($date)
+    public function getProjection($date, $deptId)
     {
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
         return $this->cashOutProjections()
                     ->whereYear('date', $year)
                     ->whereMonth('date', $month)
+                    ->where('dept_id', $deptId)
                     ->sum('projection_amount');
     }
 
@@ -148,25 +149,25 @@ class Account extends Model
         return $this->hasMany(Adjustment::class, 'destination_coa_id');
     }
 
-    public function getAmountSourceAdjustment($date)
+    public function getAmountSourceAdjustment($date, $deptId)
     {
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
-        return $this->sourceAdjustments()->where('status','9')->whereYear('source_date', $year)->whereMonth('source_date', $month)->sum('amount');
+        return $this->sourceAdjustments()->where('status','9')->where('dept_id', $deptId)->whereYear('source_date', $year)->whereMonth('source_date', $month)->sum('amount');
     }
 
-    public function getAmountDestinationAdjustmentPeriod($date)
+    public function getAmountDestinationAdjustmentPeriod($date, $deptId)
     {
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
-        return $this->sourceAdjustments()->where('type', '1')->where('status','9')->whereYear('destination_date', $year)->whereMonth('destination_date', $month)->sum('amount');
+        return $this->sourceAdjustments()->where('type', '1')->where('dept_id', $deptId)->where('status','9')->whereYear('destination_date', $year)->whereMonth('destination_date', $month)->sum('amount');
     }
 
-    public function getAmountDestinationAdjustmentCoa($date)
+    public function getAmountDestinationAdjustmentCoa($date, $deptId)
     {
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
-        return $this->destinationAdjustments()->where('type', '2')->where('status','9')->whereYear('source_date', $year)->whereMonth('source_date', $month)->sum('amount');
+        return $this->destinationAdjustments()->where('type', '2')->where('dept_id', $deptId)->where('status','9')->whereYear('source_date', $year)->whereMonth('source_date', $month)->sum('amount');
     }
 
     public function getTotalAmountSourceAdjustment($startDate, $endDate, $deptId)
@@ -190,10 +191,10 @@ class Account extends Model
         })->sum('amount');
     }
 
-    public function getBalance($date)
+    public function getBalance($date, $deptId)
     {
-        return $this->getProjection($date) - $this->getCashOutActual($date) -
-               $this->getAmountSourceAdjustment($date) + $this->getAmountDestinationAdjustmentPeriod($date) + $this->getAmountDestinationAdjustmentCoa($date);
+        return $this->getProjection($date, $deptId) - $this->getCashOutActual($date, $deptId) -
+               $this->getAmountSourceAdjustment($date, $deptId) + $this->getAmountDestinationAdjustmentPeriod($date, $deptId) + $this->getAmountDestinationAdjustmentCoa($date, $deptId);
     }
 
     public function additionalLimits()
@@ -201,15 +202,15 @@ class Account extends Model
         return $this->hasMany(AdditionalLimit::class,'coa_id');
     }
 
-    public function getAdditionalLimit($date)
+    public function getAdditionalLimit($date, $deptId)
     {
         $month = Carbon::parse($date)->month;
         $year = Carbon::parse($date)->year;
-        return $this->additionalLimits()->where('status','9')->whereYear('date', $year)->whereMonth('date', $month)->sum('amount');
+        return $this->additionalLimits()->where('status','9')->where('dept_id', $deptId)->whereYear('date', $year)->whereMonth('date', $month)->sum('amount');
     }
 
-    public function getMaxAmount($date)
+    public function getMaxAmount($date, $deptId)
     {
-        return $this->getBalance($date) + $this->getAdditionalLimit($date);
+        return $this->getBalance($date, $deptId) + $this->getAdditionalLimit($date, $deptId);
     }
 }

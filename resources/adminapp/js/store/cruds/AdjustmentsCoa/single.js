@@ -14,6 +14,7 @@ function initialState() {
         source_coa_id: '',
         source_coa: null,
         source_amount: '',
+        source_amount_number: 0,
         destination_coa_id: '',
         destination_amount: '',
         status: '1',
@@ -266,11 +267,11 @@ function initialState() {
       state.entry.source_coa_id = value
     },
     setSourceAmount(state, value) {
+      state.entry.source_amount_number = value
       state.entry.source_amount = value.toLocaleString('de-DE', {
         minimumFractionDigits: 0,
         maximumFractionDigits: 2
       });
-      console.log(state.entry.source_amount)
     },
     setDestinationCoa(state, value) {
       state.entry.destination_coa_id = value

@@ -527,8 +527,8 @@ export default {
     },
     dynamicHeight() {
       // Assuming each item needs 50px of height and an additional 100px for padding, axis labels, etc.
-      const itemHeight = 10;
-      const baseHeight = 15; // Adjust base height for chart padding, labels, etc.
+      const itemHeight = 15;
+      const baseHeight = 20; // Adjust base height for chart padding, labels, etc.
       const numberOfItems = this.chart.coa_dept_charts.datasets.reduce((acc, curr) => acc + curr.data.length, 0);
       return numberOfItems * itemHeight + baseHeight;
     }

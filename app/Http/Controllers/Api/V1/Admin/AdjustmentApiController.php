@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Http\Requests\StoreAdjustmentRequest;
 
 class AdjustmentApiController extends Controller
 {
@@ -27,7 +28,7 @@ class AdjustmentApiController extends Controller
             })->where('type', $request->type)->paginate(request('limit', 10)));
     }
 
-    public function store(Request $request)
+    public function store(StoreAdjustmentRequest $request)
     {
         $adjustment = null;
         
@@ -82,8 +83,13 @@ class AdjustmentApiController extends Controller
         return response([
             'data' => new AdjustmentResource($adjustment->load('sourceCoa')),
             'meta' => [
-                'coa' => Account::where('bu_id', $adjustment->sourceCoa->bu_id)->get(['id', 'code', 'name']),
-                'type' => Adjustment::TYPE_SELECT,
+                'coa' => Account::with('depts')->where('bu_id', $adjustment->sourceCoa->bu_id)->whereHas('depts', function($q) {
+                    $q->whereIn('dept_id', auth()->user()->depts->pluck('id'));
+                })->get(['id', 'code', 'name'])->load('depts'),
+                'filteredCoa' => Account::with('depts')->where('bu_id', $adjustment->sourceCoa->bu_id)->whereHas('depts', function($q) use($adjustment) {
+                    $q->where('dept_id', $adjustment->dept_id);
+                })->get(['id', 'code', 'name'])->load('depts'),
+                'dept' => Dept::where('bu_id', $adjustment->sourceCoa->bu_id)->whereIn('id', auth()->user()->depts->pluck('id'))->get(['id', 'code', 'name'])
             ],
         ]);
     }

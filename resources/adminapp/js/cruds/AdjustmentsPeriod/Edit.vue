@@ -60,7 +60,7 @@
                       :value="entry.source_coa_id"
                       :options="lists.filteredCoa"
                       :reduce="coa => coa.id"
-                      @input="updateSourceCoa"                      
+                      @input="updateSourceCoa"
                     >
                     <template #search="{attributes, events}">
                         <input

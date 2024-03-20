@@ -195,7 +195,7 @@ function initialState() {
     setItemAccount({commit, state}, {index, value}) {
       commit('setItemAccount', {index, value})
       if(state.entry.date !== '' && state.entry.items[index].account !== null) {
-        let params = {source_date: state.entry.req_date, fpd_id: state.entry.id, items: state.entry.items}
+        let params = {source_date: state.entry.req_date, fpd_id: state.entry.id, items: state.entry.items, dept_id: state.entry.dept_id}
         axios
         .get('account/getMaxAmountLrd', { params: params })
         .then(response => {

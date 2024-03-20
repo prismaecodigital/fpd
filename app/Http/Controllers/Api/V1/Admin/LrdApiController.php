@@ -250,7 +250,7 @@ class LrdApiController extends Controller
         $data = new LrdResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories']));
 
         $data->items = $data->items->transform(function ($item) use ($data) {
-            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw) +
+            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw, $data->dept_id) +
                     $data->whereHas('items', function ($q) use ($item, $data) {
                         $q->where('account_id', $item->account->id)->where('fpd_id', $data->id);
                     })->with(['items' => function ($q) use ($item) {

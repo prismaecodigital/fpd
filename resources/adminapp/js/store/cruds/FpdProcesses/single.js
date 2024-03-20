@@ -159,7 +159,7 @@ function initialState() {
       commit('setReqDate', value)
       state.entry.items.forEach(function(item, index) {
         if(state.entry.date !== '' && item.account !== null) {
-          let params = {source_date: state.entry.req_date, source_coa_id: item.account.id}
+          let params = {source_date: state.entry.req_date, source_coa_id: item.account.id, dept_id: state.entry.dept_id}
           axios
           .get('account/getMaxAmount', { params: params })
           .then(response => {
@@ -204,7 +204,7 @@ function initialState() {
     setItemAccount({commit, state}, {index, value}) {
       commit('setItemAccount', {index, value})
       if(state.entry.date !== '' && state.entry.items[index].account !== null) {
-        let params = {source_date: state.entry.req_date, source_coa_id: state.entry.items[index].account.id}
+        let params = {source_date: state.entry.req_date, source_coa_id: state.entry.items[index].account.id, dept_id: state.entry.dept_id}
         axios
         .get('account/getMaxAmount', { params: params })
         .then(response => {

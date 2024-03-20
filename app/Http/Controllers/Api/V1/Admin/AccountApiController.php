@@ -170,7 +170,7 @@ class AccountApiController extends Controller
     public function getMaxAmount(Request $request)
     {
         $source_coa = Account::find($request->source_coa_id);
-        $source_amount = $source_coa ? $source_coa->getMaxAmount($request->source_date) : 0;
+        $source_amount = $source_coa ? $source_coa->getMaxAmount($request->source_date, $request->dept_id) : 0;
         // $additional = AdditionalLimit::where('coa_id', $request->source_coa_id)->whereYear('date', substr($request->source_date,6,4))->whereMonth('date', substr($request->source_date,3,2))->sum('amount');
         // $source_amount = $source_amount + $additional;
         if(!empty($request->fpd_id)) {
@@ -219,7 +219,7 @@ class AccountApiController extends Controller
 
         foreach($request->items as $index => $item) {
             $source_coa = Account::find(json_decode($item)->account->id);
-            $source_amount = $source_coa ? $source_coa->getMaxAmount($request->source_date) : 0;
+            $source_amount = $source_coa ? $source_coa->getMaxAmount($request->source_date, $request->dept_id) : 0;
             if (isset($accountSums1[json_decode($item)->account->id]) && isset($accountSums1[json_decode($item)->account->id])) {
                 $total_max_amount[$index] = $accountSums1[json_decode($item)->account->id]['amount'] < $accountSums2[json_decode($item)->account->id]['amount'] ?
                         ($source_amount + $accountSums1[json_decode($item)->account->id]['amount']) : 

@@ -265,7 +265,7 @@ class FpdProcessApiController extends Controller
         $data = new FpdProcessResource($fpd->load(['bu', 'dept', 'items','user', 'statusHistories']));
 
         $data->items = $data->items->transform(function ($item) use ($data) {
-            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw);
+            $item->source_amount = $item->account->getMaxAmount($data->req_date_raw, $data->dept_id);
             $item->source_amount_label = number_format($item->source_amount, 0, ',','.');
             return $item;
         });

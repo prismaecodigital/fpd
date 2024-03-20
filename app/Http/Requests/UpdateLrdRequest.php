@@ -68,7 +68,7 @@ class UpdateLrdRequest extends FormRequest
                     $projection_lock = $this->validation[$itemIndex]['projection_lock'];
 
                     if ($projection_lock == true && $value > $sourceAmount) {
-                        $fail('Nominal realisasi harus kurang dari maksimum yang dibatasi');
+                        $fail('Nominal realisasi harus kurang dari maksimum yang dibatasi. Lakukan penambahan RAT dengan adjustment / additional');
                     }
                 }
             ],
