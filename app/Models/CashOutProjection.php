@@ -39,7 +39,8 @@ class CashOutProjection extends Model
         'projection_amount',
         'coa_name',
         'bu.name',
-        'dept.name'
+        'dept.name',
+        'dept.code',
     ];
 
     protected $casts = [

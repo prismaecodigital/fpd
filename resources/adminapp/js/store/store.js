@@ -47,6 +47,7 @@ import DompetSingle from './cruds/Dompet/single'
 
 import ChartIndex from './modules/Chart'
 import AuthBu from './modules/AuthBu'
+import DetailFpdItem from './modules/DetailFpdItem'
 import WeeklyCashflow from './cruds/WeeklyCashflow/index'
 
 Vue.use(Vuex)
@@ -99,7 +100,8 @@ export default new Vuex.Store({
     DompetIndex,
     DompetSingle,
     ChartIndex,
-    WeeklyCashflow
+    WeeklyCashflow,
+    DetailFpdItem
   },
   strict: debug
 })

@@ -431,3 +431,7 @@ table > tbody > tr > td > div > a {
 .background-total a {
     color: #000;
 }
+
+.custom-modal-width .modal-dialog {
+    max-width: 80%;
+  }

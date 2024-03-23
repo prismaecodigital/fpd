@@ -75,6 +75,9 @@
                   :HeaderSettings="false"
                   :pageSizeOptions="[10, 25, 50, 100]"
                 >
+                        <template slot="ActualActions">
+                          <ActualActions :query="query" />
+                        </template>
                 </datatable>
               </div>
             </div>
@@ -87,7 +90,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex'
-import BuDeptSiteActions from '@components/Datatables/BuDeptSiteActions'
+import ActualActions from '@components/Datatables/ActualActions'
 import TranslatedHeader from '@components/Datatables/TranslatedHeader'
 import HeaderSettings from '@components/Datatables/HeaderSettings'
 import GlobalSearch from '@components/Datatables/GlobalSearch'
@@ -129,8 +132,10 @@ export default {
         },
         {
           title: 'cruds.cash-out-projection.fields.actual',
-          field: 'total_cash_out_actual',
           thComp: TranslatedHeader,
+          field: 'total_cash_out_actual',
+          tdComp: ActualActions,
+          visible: true,
           sortable: true
         },
         {
@@ -146,8 +151,9 @@ export default {
           tdComp: DatatableSingle,
           sortable: true
         },
+
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '', id: null, startDate: null, endDate: null },
+      query: { sort: 'dept_id', order: 'desc', limit: 100, s: '', id: null, startDate: null, endDate: null },
       xprops: {
         module: 'CashOutProjectionsIndex',
         route: 'cash-out-projections',
@@ -180,7 +186,9 @@ export default {
     query: {
       handler(query) {
         this.setQuery(query)
-        this.fetchIndexData()
+        if(this.query.id) {
+          this.fetchIndexData()
+        }
       },
       deep: true
     }

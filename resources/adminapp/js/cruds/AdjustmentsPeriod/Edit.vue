@@ -494,7 +494,7 @@ export default {
       this.updateData()
         .then(() => {
           this.$router.push({ name: 'adjustments-period.index' })
-          this.$eventHub.$emit('create-success')
+          this.$eventHub.$emit('update-success')
         })
         .catch(error => {
           this.status = 'failed'

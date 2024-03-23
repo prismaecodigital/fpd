@@ -31,6 +31,34 @@
               </i>
               {{ $t('global.refresh') }}
             </button>
+            <button v-if="this.query.status != '1'"
+              type="button"
+              class="btn btn-sm btn-info"
+              @click="updateStatus(['1'])"
+              :disabled="loading"
+              :class="{ disabled: loading }"
+            >
+              
+              On Progress
+            </button>
+            <button v-if="this.query.status == '1'"
+              type="button"
+              class="btn btn-sm btn-info"
+              @click="updateStatus(['9','99'])"
+              :disabled="loading"
+              :class="{ disabled: loading }"
+            >
+              Archive (yang sudah selesai)
+            </button>
+            <button v-if="this.query.status == '1'"
+              type="button"
+              class="btn btn-sm btn-success"
+              @click="approveSelected"
+              :disabled="loading"
+              :class="{ disabled: loading }"
+            >
+              Approve Selected
+            </button>
           </div>
           <div class="card-body">
             <div class="row">
@@ -50,6 +78,10 @@
                   :HeaderSettings="false"
                   :pageSizeOptions="[10, 25, 50, 100]"
                 >
+                <global-search :query="query" class="pull-left" />
+                        <template slot="DatatableCheckboxAdj" slot-scope="props">
+                          <DatatableCheckboxAdj :value="props.row.selected" />
+                        </template>
                 </datatable>
               </div>
             </div>
@@ -68,6 +100,7 @@ import HeaderSettings from '@components/Datatables/HeaderSettings'
 import GlobalSearch from '@components/Datatables/GlobalSearch'
 import DatatableSingle from '@components/Datatables/DatatableSingle'
 import DatatableEnum from '@components/Datatables/DatatableEnum'
+import DatatableCheckboxAdj from '../../components/Datatables/DatatableCheckboxAdj.vue'
 
 export default {
   components: {
@@ -77,6 +110,20 @@ export default {
   data() {
     return {
       columns: [
+        {
+          title: '',
+          field: 'selected',
+          thComp: '',
+          tdComp: DatatableCheckboxAdj,
+          sortable: false
+        },
+        {
+          title: 'cruds.adjustment-period.fields.dept_name',
+          field: 'dept.code',
+          thComp: TranslatedHeader,
+          tdComp: DatatableSingle,
+          sortable: true,
+        },
         {
           title: 'cruds.adjustment-period.fields.source_date',
           field: 'source_date_label',
@@ -117,7 +164,7 @@ export default {
           colStyle: 'width: 80px;'
         }
       ],
-      query: { sort: 'id', order: 'desc', limit: 100, s: '', bu_id: null, type: 2 },
+      query: { sort: 'id', order: 'desc', limit: 100, s: '', bu_id: null, type: 2, status: ['1'] },
       xprops: {
         module: 'AdjustmentsCoaIndex',
         route: 'adjustments-coa',
@@ -150,17 +197,43 @@ export default {
     query: {
       handler(query) {
         this.setQuery(query)
-        this.fetchIndexData()
+        if(this.query.bu_id) {
+          this.fetchIndexData()
+        }
       },
       deep: true
     }
   },
   methods: {
-    ...mapActions('AdjustmentsCoaIndex', ['fetchIndexData', 'setQuery', 'resetState']),
+    ...mapActions('AdjustmentsCoaIndex', ['fetchIndexData', 'setQuery', 'resetState', 'massUpdate']),
     updateEndDate(value) {
       let newValue = JSON.parse(JSON.stringify(value.add(1, 'month').subtract(1, 'second'))); // Deep clone with value + 1 month
       this.query.endDate = newValue;
     },
+    updateStatus(k) {
+      this.query.status = k
+      console.log(this.query.status)
+    },
+    approveSelected() {
+      const obj = this.data.filter(row => row.selected);
+      const ids = obj.map(row => row.id);
+      console.log(ids)
+      if(ids.length == 0) {
+        alert('tidak ada yang dipilih')
+        return;
+      }
+      this.massUpdate(ids)
+        .then(() => {
+          this.fetchIndexData()
+          this.$eventHub.$emit('approve-success')
+        })
+        .catch(error => {
+          this.status = 'failed'
+          _.delay(() => {
+            this.status = ''
+          }, 3000)
+        })
+    }
   }
 }
 </script>

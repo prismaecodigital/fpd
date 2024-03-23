@@ -37,6 +37,28 @@ const set = key => (state, val) => {
           commit('setLoading', false)
         })
     },
+    massUpdate({ commit, dispatch}, ids) {
+      axios
+        .post('additional/massUpdate', {ids: ids})
+        .then(response => {
+          resolve(response)
+        })
+        .catch(error => {
+          let message = error.response.data.message || error.message
+          let errors = error.response.data.errors
+
+          dispatch(
+            'Alert/setAlert',
+            { message: message, errors: errors, color: 'danger' },
+            { root: true }
+          )
+
+          reject(error)
+        })
+        .finally(() => {
+          commit('setLoading', false)
+        })
+    },
     destroyData({ commit, state, dispatch }, id) {
       axios
         .delete(`${route}/${id}`)
@@ -48,6 +70,9 @@ const set = key => (state, val) => {
           // TODO error handling
         })
     },
+    toggleSelect({commit}, row) {
+      commit('toggleSelect', row)
+    },
     setQuery({ commit }, value) {
       commit('setQuery', _.cloneDeep(value))
     },
@@ -57,7 +82,15 @@ const set = key => (state, val) => {
   }
   
   const mutations = {
-    setData: set('data'),
+    setData: (state, data) => {
+      state.data = data.map(item => ({
+        ...item,
+        selected: false
+      }));
+    },
+    toggleSelect(state, row) {
+      state.data[row].selected = !state.data[row].selected;
+    },
     setTotal: set('total'),
     setQuery(state, query) {
       query.page = (query.offset + query.limit) / query.limit

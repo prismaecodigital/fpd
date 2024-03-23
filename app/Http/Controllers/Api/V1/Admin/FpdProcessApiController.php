@@ -369,4 +369,15 @@ class FpdProcessApiController extends Controller
         return $code;
     }
 
+    public function getDetailFpd(Request $request) {
+        $items = FpdItem::with('fpd')->where('account_id', $request->coa)->whereHas('fpd', function ($query) use ($request) {
+            $query->where('status', '>' , 4 )->where('status', '<' , 10 )->whereNotNull('processed_date')->where('dept_id', $request->dept);
+            if ($request->startDate && $request->endDate) {
+                $query->whereBetween('processed_date', [$request->startDate, $request->endDate]);
+            }
+        })->advancedFilter()->paginate(request('limit', 10));
+
+        return response()->json($items, 200);
+    }
+
 }

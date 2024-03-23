@@ -6,6 +6,7 @@ use App\Support\HasAdvancedFilter;
 use DateTimeInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Carbon\Carbon;
 
 class FpdItem extends Model
 {
@@ -16,6 +17,7 @@ class FpdItem extends Model
     protected $appends = [
         'amount_label',
         'real_amount_label',
+        'created_at_label'
     ];
 
     protected $orderable = [
@@ -57,6 +59,11 @@ class FpdItem extends Model
     public function getAmountLabelAttribute()
     {
         return $this->attributes['amount'] ? number_format($this->attributes['amount'], 0, ',','.') : 0;
+    }
+
+    public function getCreatedAtLabelAttribute()
+    {
+        return $this->attributes['created_at'] ? Carbon::createFromFormat('Y-m-d H:i:s', $this->attributes['created_at'])->format(config('project.date_format')) : null;
     }
 
     public function getRealAmountLabelAttribute()

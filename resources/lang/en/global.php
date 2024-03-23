@@ -101,6 +101,7 @@ return [
     'create_success'                       => 'Item anda telah berhasil tersimpan',
     'update_success'                       => 'Item berhasil diubah.',
     'delete_success'                       => 'Item berhasil dihapus',
+    'approve_success'                       => 'Item berhasil disetujui',
     'action'                               => 'Aksi',
     'action_id'                            => 'Id Aksi',
     'action_model'                         => 'Model Aksi',

@@ -55,6 +55,7 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('status-histories','StatusHistoryApiController')->except(['create','edit']);
 
     // Fpd Process
+    Route::get('detailFpd', 'FpdProcessApiController@getDetailFpd')->name('detailFpd');
     Route::get('listFpdProcess','FpdProcessApiController@list')->name('listFpdProcess');
     Route::post('fpd-processes/media', 'FpdProcessApiController@storeMedia')->name('fpd-processes.storeMedia');
     Route::resource('fpd-processes', 'FpdProcessApiController')->parameters(['fpd-processes' => 'fpd']);
@@ -93,9 +94,11 @@ Route::group(['prefix' => 'v1', 'as' => 'api.', 'namespace' => 'Api\V1\Admin', '
     Route::resource('cash-out-projections', 'CashOutProjectionApiController');
 
     // Additional
+    Route::post('additional/massUpdate', 'AdditionalLimitApiController@massUpdate')->name('additional.massUpdate');
     Route::resource('additional-limits', 'AdditionalLimitApiController');
 
     // Adjustment
+    Route::post('adjustments/massUpdate', 'AdjustmentApiController@massUpdate')->name('adjustments.massUpdate');
     Route::resource('adjustments-period', 'AdjustmentApiController')->parameters(['adjustments-period' => 'adjustment']);
     Route::resource('adjustments-coa', 'AdjustmentApiController')->parameters(['adjustments-coa' => 'adjustment']);
 

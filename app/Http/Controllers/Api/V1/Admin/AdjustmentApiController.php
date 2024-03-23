@@ -23,9 +23,9 @@ class AdjustmentApiController extends Controller
         $buCode = Bu::where('id', $request->bu_id)->first()->code;
         abort_if(Gate::denies($buCode.'-adjustment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
 
-        return new AdjustmentResource(Adjustment::with(['sourceCoa', 'destinationCoa'])->advancedFilter()->whereHas('sourceCoa', function($query) use ($request) {
+        return new AdjustmentResource(Adjustment::with(['sourceCoa', 'destinationCoa', 'dept'])->advancedFilter()->whereIn('status', $request->status)->whereHas('sourceCoa', function($query) use ($request) {
             $query->where('bu_id', $request->bu_id);
-            })->where('type', $request->type)->paginate(request('limit', 10)));
+        })->where('type', $request->type)->paginate(request('limit', 10)));
     }
 
     public function store(StoreAdjustmentRequest $request)
@@ -74,6 +74,19 @@ class AdjustmentApiController extends Controller
         return (new AdjustmentResource($adjustment))
             ->response()
             ->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    public function massUpdate(Request $request)
+    {
+        DB::transaction(function () use ($request) {
+            foreach($request->ids as $adjustment) {
+                $adjustment = Adjustment::findOrFail($adjustment);
+                $adjustment->update(['status' => '9']);
+                StatusAdjustment::create(['status' => $adjustment->status, 'adjustment_id' => $adjustment->id, 'user_id' => auth()->user()->id]);
+            }
+        });
+
+        return response()->json(['success' => true], 200);
     }
 
     public function edit(Adjustment $adjustment)

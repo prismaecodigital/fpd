@@ -47,6 +47,7 @@ class Adjustment extends Model
     protected $filterable = [
         'id',
         'type',
+        'dept.code',
         'processed_date',
         'source_date',
         'destination_date',

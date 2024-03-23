@@ -42,6 +42,7 @@ class AdditionalLimit extends Model
         'date',
         'coa.name',
         'coa.code',
+        'dept.code',
         'amount',
         'ket',
     ];

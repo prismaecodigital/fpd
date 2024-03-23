@@ -22,10 +22,11 @@ class AdditionalLimitApiController extends Controller
         abort_if(Gate::denies($buCode.'-adjustment_access'), Response::HTTP_FORBIDDEN, '403 Forbidden');
         
         return new AdditionalLimitResource(
-            AdditionalLimit::with('coa')
+            AdditionalLimit::with(['coa', 'dept'])
                            ->whereHas('coa', function($query) use ($request) {
                                $query->where('bu_id', $request->bu_id);
                            })
+                           ->whereIn('status', $request->status)
                            ->advancedFilter()
                            ->paginate(request('limit', 10))
         );
@@ -37,7 +38,7 @@ class AdditionalLimitApiController extends Controller
         
         DB::transaction(function () use ($request, &$additionalLimit) {
             $additionalLimit = AdditionalLimit::create($request->all());
-            statusAdditional::create(['status' => $additionalLimit->status, 'additional_id' => $additionalLimit->id, 'user_id' => auth()->user()->id]);
+            StatusAdditional::create(['status' => $additionalLimit->status, 'additional_id' => $additionalLimit->id, 'user_id' => auth()->user()->id]);
         });
 
         return (new AdditionalLimitResource($additionalLimit))
@@ -74,12 +75,25 @@ class AdditionalLimitApiController extends Controller
     {
         DB::transaction(function () use ($request, &$additionalLimit) {
             $additionalLimit->update($request->all());
-            statusAdditional::create(['status' => $additionalLimit->status, 'additional_id' => $additionalLimit->id, 'user_id' => auth()->user()->id]);
+            StatusAdditional::create(['status' => $additionalLimit->status, 'additional_id' => $additionalLimit->id, 'user_id' => auth()->user()->id]);
         });
 
         return (new AdditionalLimitResource($additionalLimit))
             ->response()
             ->setStatusCode(Response::HTTP_ACCEPTED);
+    }
+
+    public function massUpdate(Request $request)
+    {
+        DB::transaction(function () use ($request) {
+            foreach($request->ids as $additional) {
+                $additionalLimit = AdditionalLimit::findOrFail($additional);
+                $additionalLimit->update(['status' => '9']);
+                StatusAdditional::create(['status' => $additionalLimit->status, 'additional_id' => $additionalLimit->id, 'user_id' => auth()->user()->id]);
+            }
+        });
+
+        return response()->json(['success' => true], 200);
     }
 
     public function edit(AdditionalLimit $additionalLimit)
