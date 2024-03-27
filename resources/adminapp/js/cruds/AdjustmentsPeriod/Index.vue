@@ -50,7 +50,7 @@
             >
               Archive (yang sudah selesai)
             </button>
-            <button v-if="this.query.status == '1'"
+            <button v-if="this.query.status == '1' && $can('adjustment_approve')"
               type="button"
               class="btn btn-sm btn-success"
               @click="approveSelected"

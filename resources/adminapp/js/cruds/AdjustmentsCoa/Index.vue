@@ -8,7 +8,7 @@
               <i class="material-icons">assignment</i>1
             </div>
             <h4 class="card-title">
-              Adjustment Anggaran antar PERIODE <strong>[ {{this.selected_bu ? this.selected_bu.code : ''}} ]</strong>
+              Adjustment Anggaran antar COA <strong>[ {{this.selected_bu ? this.selected_bu.code : ''}} ]</strong>
             </h4>
             <p style="color: black">Daftar Penyesuaian Anggaran Antar COA</p>
           </div>
@@ -50,7 +50,7 @@
             >
               Archive (yang sudah selesai)
             </button>
-            <button v-if="this.query.status == '1'"
+            <button v-if="this.query.status == '1' && $can('adjustment_approve')"
               type="button"
               class="btn btn-sm btn-success"
               @click="approveSelected"
