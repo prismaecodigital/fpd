@@ -209,6 +209,7 @@ function initialState() {
         .get('account/getMaxAmount', { params: params })
         .then(response => {
           commit('setSourceAmount', {index, value : response.data.source_amount})
+          commit('setValidation')
         })
         .catch(error => {
           message = error.response.data.message || error.message
